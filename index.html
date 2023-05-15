@@ -256,6 +256,29 @@
         event.preventDefault();
       }
     });
+
+
+    // fix double-pasting inside webviews
+    function handleInnerWebviewPaste(webview) {
+      webview.addEventListener('dom-ready', function () {
+        webview.executeJavaScript(`
+      let pasted = false;
+      window.addEventListener('paste', function(event) {
+          if (pasted) {
+              event.preventDefault();
+              pasted = false;
+          } else {
+              pasted = true;
+          }
+      });
+    `);
+      });
+    }
+
+    handleInnerWebviewPaste(webviewOAI);
+    handleInnerWebviewPaste(webviewBARD);
+    handleInnerWebviewPaste(webviewCLAUDE);
+
   </script>
 </body>
 
