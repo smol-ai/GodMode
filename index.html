@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>ChatGPT</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body class="myarrow">
+  <form id="form" class=""><input id="prompt" type="text" name="prompt" placeholder="enter a prompt here" /><button
+      id="btn" type="submit">submit</button></form>
+  <div class="flex">
+    <div class="page darwin">
+      <webview id="webviewOAI" src="https://chat.openai.com/chat" autosize="on">
+      </webview>
+    </div>
+    <div class="page darwin">
+      <webview id="webviewBARD" src="https://bard.google.com" autosize="on">
+      </webview>
+    </div>
+  </div>
+  <script>
+    const webviewOAI = document.getElementById('webviewOAI');
+    const webviewBARD = document.getElementById('webviewBARD');
+    // add event listener for btn
+    const promptEl = document.getElementById('prompt');
+    promptEl.addEventListener('input', function (event) {
+      // get prompt from input
+      const xxx = promptEl.value
+      webviewBARD.executeJavaScript(`
+      var inputElement = document.querySelector("#mat-input-0");
+
+      // try to send keyboard event to trigger the re-enable of the disabled button
+      // thanks chatgpt!
+      var event = new Event('input', { bubbles: true });
+      event.simulated = true;
+      var tracker = inputElement._valueTracker;
+      if (tracker) {
+        tracker.setValue("${xxx}");
+      }
+      inputElement.dispatchEvent(event);
+        inputElement.value = "${xxx}"`)
+      webviewOAI.executeJavaScript(`
+      var inputElement = document.querySelector('textarea[placeholder="Send a message."]')
+      inputElement.value = "${xxx}"`)
+    })
+    const form = document.getElementById('form');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      // get prompt from input
+      // const xxx = promptEl.value
+      webviewBARD.executeJavaScript(`
+      var btn = document.querySelector("button[aria-label='Send message']");
+      btn.setAttribute("aria-disabled", "false"); // doesnt work alone
+      btn.click()`)
+      webviewOAI.executeJavaScript(`
+      var btn = document.querySelector("textarea[placeholder='Send a message.']+button");
+      btn.disabled = false;
+      btn.click()`)
+    })
+
+
+    webviewBARD.addEventListener('dom-ready', function () {
+      // hide message below text input, sidebar, suggestions on new chat
+      webviewBARD.insertCSS(`
+        .gmat-caption {
+          opacity: 0;
+          height: 0;
+        }
+        header {
+          display: none !important;
+        }
+        header + div {
+          display: none !important;
+        }
+      `)
+    })
+    webviewOAI.addEventListener('dom-ready', function () {
+
+      // hide message below text input, sidebar, suggestions on new chat
+      webviewOAI.insertCSS(`
+        .text-xs.text-center {
+          opacity: 0;
+          height: 0;
+          margin-bottom: -10px;
+        }
+        
+        .sticky,
+        .pointer-events-auto.flex.border-orange-500,
+        [class*="shared__Capabilities"] {
+          display: none !important;
+        }
+
+        [class*="shared__Wrapper"] {
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          margin-top: 15vh;
+        }
+
+        [class*="shared__Wrapper"] h3 {
+          margin-top: -40px;
+          font-size: 20px;
+        }
+      `)
+
+      // const element = webviewOAI.executeJavaScript(`
+      //  document.querySelector("[class*='shared__Wrapper']").innerHTML += "<h3>Start by asking anything.</h3>"
+      // `);
+    });
+
+  </script>
+</body>
+
+</html>

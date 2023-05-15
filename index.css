@@ -1,0 +1,84 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+:root {
+  /* account for the arrow */
+  --actual-height: calc(100vh - 12px - 50px);
+}
+
+.myarrow {
+  position: relative;
+  /* padding-top: 12px; */
+  padding: 12px 0 0 0 ;
+}
+
+.myarrow:before {
+  content: '';
+  height: 0;
+  width: 0;
+  border-width: 0 8px 12px 8px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+  position: absolute;
+
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .myarrow:before {
+    border-color: transparent transparent #343541 transparent !important;
+  }
+}
+
+.page {
+  background: #eeeeee;
+  width: 100%;
+  height: 100vh;
+  margin-top: 12px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.flex {
+  display: flex;
+}
+.flex.darwin {
+  flex: 1;
+}
+.darwin.page {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#form {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  padding: 5px;
+}
+#form input {
+  width: 100%;
+  border: none;
+  padding: 0 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+webview {
+  /* overflow: hidden; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:  calc(100vh - 12px - 50px);
+  display: inline-flex !important;
+}
+
