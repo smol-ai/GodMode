@@ -40,7 +40,7 @@ body {
 .page {
   background: #eeeeee;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 12px - 50px);
   margin-top: 12px;
   margin: 0 auto;
   position: relative;
@@ -70,6 +70,9 @@ body {
   padding: 0 12px;
   font-size: 16px;
   outline: none;
+}
+#form button {
+  margin: 0 12px;
 }
 
 webview {

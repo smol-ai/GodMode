@@ -8,8 +8,6 @@
 </head>
 
 <body class="myarrow">
-  <form id="form" class=""><input id="prompt" type="text" name="prompt" placeholder="enter a prompt here" /><button
-      id="btn" type="submit">submit</button></form>
   <div class="flex">
     <div class="page darwin">
       <webview id="webviewOAI" src="https://chat.openai.com/chat" autosize="on">
@@ -20,6 +18,8 @@
       </webview>
     </div>
   </div>
+  <form id="form" class=""><input id="prompt" type="text" name="prompt" placeholder="enter a prompt here" /><button
+    id="btn" type="submit">submit</button></form>
   <script>
     const webviewOAI = document.getElementById('webviewOAI');
     const webviewBARD = document.getElementById('webviewBARD');
@@ -73,6 +73,12 @@
         }
         header + div {
           display: none !important;
+        }
+        .capabilities-disclaimer {
+          display: none !important;
+        }
+        .input-area-container .input-area {
+          padding: 0;
         }
       `)
     })
