@@ -28,3 +28,15 @@ npm run make # or npm run build
 ```
 
 outputs to `/out/make`
+
+## why
+
+Google [dropped its waitlist for Bard recently](https://www.theverge.com/2023/5/10/23718066/google-bard-ai-features-waitlist-dark-mode-visual-search-io), so now there is some reason to try it out.
+
+People have bad first impressions on Bard, but in May 2023 it has been receiving some positive feedback:
+
+[![image](https://github.com/smol-ai/menubar/assets/6764957/0d86234e-1d91-4863-8311-580888511b20)](https://twitter.com/masadfrost/status/1655802654927507457?s=46&t=90xQ8sGy63D2OtiaoGJuww)
+
+[![image](https://github.com/smol-ai/menubar/assets/6764957/e191701a-0b32-43aa-abc0-42e6fd9584aa)](https://twitter.com/amasad/status/1657510601202221056?s=46&t=90xQ8sGy63D2OtiaoGJuww)
+
+these folks aren't neutral, but its clear of course that Bard will be better for some things than others, and we might as well lower the barrier for trying them out.
