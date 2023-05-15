@@ -8,6 +8,10 @@ whatever is typed at the top is entered into both chatgpt and bard simultaneousl
 
 you can access the full power of each since they are both just webviews, so for example you can use chatgpt plugins despite there not being an api for them.
 
+## video demo
+
+https://youtu.be/jrlxT1K4LEU
+
 ## install
 
 either download the precompiled binaries: https://github.com/smol-ai/menubar/releases/tag/v0.0.1
