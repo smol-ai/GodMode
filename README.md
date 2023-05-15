@@ -2,7 +2,7 @@
 
 This is a smol menubar app that helps you quickly access both openai chatgpt and google bard with a single keyboard shortcut.
 
-![image](https://github.com/smol-ai/menubar/assets/6764957/cb7ad970-d109-41d4-aae1-789a02bb401b)
+![image](https://github.com/smol-ai/menubar/assets/6764957/f753f880-b544-4c61-a12b-6359460db4e0)
 
 whatever is typed at the top is entered into both chatgpt and bard simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews.
 
