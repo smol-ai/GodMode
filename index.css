@@ -85,3 +85,14 @@ webview {
   height: calc(100vh - 12px - 50px);
   display: inline-flex !important;
 }
+
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+  background-image: url("images/vertical-grip.png");
+  cursor: col-resize;
+}

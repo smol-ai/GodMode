@@ -5,19 +5,20 @@
   <meta charset="UTF-8" />
   <title>ChatGPT</title>
   <link rel="stylesheet" href="index.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
 </head>
 
 <body class="myarrow">
   <div class="flex">
-    <div class="page darwin">
+    <div id="one" class="page darwin">
       <webview id="webviewOAI" src="https://chat.openai.com/chat" autosize="on">
       </webview>
     </div>
-    <div class="page darwin">
+      <div id="two" class="page darwin">
       <webview id="webviewBARD" src="https://bard.google.com" autosize="on">
       </webview>
     </div>
-    <div class="page darwin">
+    <div id="three" class="page darwin">
       <webview id="webviewCLAUDE" src="https://console.anthropic.com/chat/new" autosize="on">
       </webview>
     </div>
@@ -189,6 +190,42 @@
       // `);
     });
 
+      const splitInstance = Split(["#one", "#two", "#three"], {
+        direction: "horizontal",
+        minSize: 0,
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        const isCmdOrCtrl = event.metaKey || event.ctrlKey;
+
+        if (isCmdOrCtrl) {
+          switch (event.key) {
+            case "1":
+              splitInstance.setSizes([100, 0, 0]);
+              event.preventDefault();
+              break;
+            case "2":
+              splitInstance.setSizes([0, 100, 0]);
+              event.preventDefault();
+              break;
+            case "3":
+              splitInstance.setSizes([0, 0, 100]);
+              event.preventDefault();
+              break;
+            case "a":
+            case "A":
+              splitInstance.setSizes([33.33, 33.33, 33.33]);
+              event.preventDefault();
+              break;
+            default:
+              return;
+          }
+        }
+      });
   </script>
 </body>
 
