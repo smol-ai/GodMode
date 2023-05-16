@@ -1,8 +1,8 @@
 {
   "name": "smol-menubar",
   "productName": "smol-menubar",
-  "version": "0.0.1",
-  "description": "smol menubar app for Bard and ChatGPT",
+  "version": "0.0.2",
+  "description": "smol menubar app for Bard, ChatGPT, Claude",
   "main": "index.js",
   "scripts": {
     "start": "electron-forge start",

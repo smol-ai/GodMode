@@ -39,6 +39,8 @@ body {
 
 .page {
   background: #eeeeee;
+  overflow: auto;
+  resize: both;
   width: 100%;
   height: calc(100vh - 12px - 50px);
   margin-top: 12px;
@@ -49,12 +51,12 @@ body {
 .flex {
   display: flex;
 }
-.flex.darwin {
-  flex: 1;
-}
+/* .flex.darwin {
+  flex: auto;
+} */
 .darwin.page {
   border-radius: 8px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 #form {

@@ -29,7 +29,7 @@ app.on("ready", () => {
         webviewTag: true,
         // nativeWindowOpen: true,
       },
-      width: 900,
+      width: 1200,
       height: 750,
     },
     tray,
