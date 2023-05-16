@@ -4,7 +4,7 @@ This is a smol menubar app that helps you quickly access ChatGPT, Bard, and Anth
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/753c6128-d978-4bb4-8642-588d42121ff5)
 
-whatever is typed at the bottom is entered into all 3 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews.
+whatever is typed at the bottom is entered into all 3 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. 
 
 so for example you can use chatgpt plugins despite there not being an api for them. or you can use bard/anthropic without needing api access.
 
@@ -15,7 +15,7 @@ so for example you can use chatgpt plugins despite there not being an api for th
 
 ## install
 
-either download the precompiled binaries: https://github.com/smol-ai/menubar/releases/tag/v0.0.2
+either download the precompiled binaries: https://github.com/smol-ai/menubar/releases/tag/v0.0.3
 
 or build from source (see below)
 
@@ -26,13 +26,13 @@ dont worry i dont track anything. inspect and build from source if you wish.
 
 ## usage
 
-I usually just always press Cmd+Shift+G -> quick open
+I usually just always press Cmd+Shift+G -> quick open to use it. You can modify this keyboard shortcut if you build it from source.
 
-you can resize the overall window with a click n drag, but unfortuantely my attempts to make the individual webviews resizable have not worked.
+Login for Anthropic via Google SSO is broken right now - it requires a popup which is blocked at least in my testing. Would welcome a PR to fix that, but otherwise regular email + login token works fine.
+
+you can resize the overall window with a click n drag. Cmd+1/2/3/A or drag to resize the internal webviews as you wish.
 
 to start a new conversation, cmd+R (simple window refresh, nothing special)
-
-copy and paste doesnt seem to work right now in the superprompt. you have to paste individually inside of each webview. PR a fix if you know whats going on?
 
 ## build from source
 
