@@ -60,4 +60,4 @@ these folks aren't neutral, but its clear of course that Bard will be better for
 
 - i need a new set of icons for the images
 - better styling for the window? maybe normalize the bard window to the openai dimensions?
-- need help to put the joint input at the bottom instead of the top
+- switch the superprompt from an input to a textarea... but make it easy to submit - by cmd + enter?

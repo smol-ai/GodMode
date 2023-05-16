@@ -1,5 +1,5 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
   padding: 0;
   margin: 0;
@@ -14,11 +14,11 @@ body {
 .myarrow {
   position: relative;
   /* padding-top: 12px; */
-  padding: 12px 0 0 0 ;
+  padding: 12px 0 0 0;
 }
 
 .myarrow:before {
-  content: '';
+  content: "";
   height: 0;
   width: 0;
   border-width: 0 8px 12px 8px;
@@ -39,8 +39,9 @@ body {
 
 .page {
   background: #eeeeee;
-  overflow: auto;
-  resize: both;
+  /* overflow: auto; */
+  /* disabled because its quite buggy */
+  /* resize: both;  */
   width: 100%;
   height: calc(100vh - 12px - 50px);
   margin-top: 12px;
@@ -50,13 +51,8 @@ body {
 
 .flex {
   display: flex;
-}
-/* .flex.darwin {
-  flex: auto;
-} */
-.darwin.page {
   border-radius: 8px;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 #form {
@@ -69,6 +65,9 @@ body {
 #form input {
   width: 100%;
   border: none;
+  resize: vertical;
+  overflow: auto; /* Adds a scrollbar when the content is too big */
+
   padding: 0 12px;
   font-size: 16px;
   outline: none;
@@ -83,7 +82,6 @@ webview {
   top: 0;
   left: 0;
   width: 100%;
-  height:  calc(100vh - 12px - 50px);
+  height: calc(100vh - 12px - 50px);
   display: inline-flex !important;
 }
-
