@@ -30,6 +30,12 @@ dont worry i dont track anything. inspect and build from source if you wish.
 
 I usually just always press Cmd+Shift+G -> quick open
 
+you can resize the overall window with a click n drag, but unfortuantely my attempts to make the individual webviews resizable have not worked.
+
+to start a new conversation, cmd+R (simple window refresh, nothing special)
+
+copy and paste doesnt seem to work right now in the superprompt. you have to paste individually inside of each webview. PR a fix if you know whats going on?
+
 ## build from source
 
 ```bash
