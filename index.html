@@ -10,23 +10,23 @@
 
 <body class="myarrow">
   <div class="flex">
-    <div id="one" class="page darwin">
+    <div id="one" class="split page darwin">
       <webview id="webviewOAI" src="https://chat.openai.com/chat" autosize="on">
       </webview>
     </div>
-      <div id="two" class="page darwin">
+      <div id="two" class="split page darwin">
       <webview id="webviewBARD" src="https://bard.google.com" autosize="on">
       </webview>
     </div>
-    <div id="three" class="page darwin">
+    <div id="three" class="split page darwin">
       <webview id="webviewCLAUDE" src="https://console.anthropic.com/chat/new" autosize="on">
       </webview>
     </div>
   </div>
   <form id="form" class="">
     <!-- we tried switching this to a textarea but the UX suffered from the lack of hitting enter to send  -->
-    <input rows="4" style="background-color:skyblue" id="prompt" type="text" name="prompt"
-      placeholder="enter a prompt here"></input><button id="btn" type="submit">submit</button>
+    <input rows="4" style="background-color:bisque" id="prompt" type="text" name="prompt"
+      placeholder="enter a prompt here (you can Cmd+1/2/3/A to resize windows)"></input><button id="btn" type="submit">submit</button>
   </form>
   <script>
     const webviewOAI = document.getElementById('webviewOAI');

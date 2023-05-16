@@ -135,8 +135,22 @@ app.on("ready", () => {
 
   app.on("web-contents-created", (e, contents) => {
     if (contents.getType() == "webview") {
+
+      // contents.on("will-navigate", (event, url, frameName, disposition, options, additionalFeatures) => {
+      //   console.log({frameName})
+      //   if (frameName === 'my_popup') {
+      //     // Open `url` in a new window...
+      //     event.preventDefault()
+      //     Object.assign(options, {
+      //       parent: win,
+      //       width: 500,
+      //       height: 400
+      //     })
+      //     event.newGuest = new BrowserWindow(options)
+      //   }
+      // })
       // open link with external browser in webview
-      contents.on("new-window", (e, url) => {
+      contents.setWindowOpenHandler("new-window", (e, url) => {
         e.preventDefault();
         shell.openExternal(url);
       });

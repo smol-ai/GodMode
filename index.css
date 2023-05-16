@@ -64,13 +64,18 @@ body {
 }
 #form input {
   width: 100%;
-  border: none;
   resize: vertical;
   overflow: auto; /* Adds a scrollbar when the content is too big */
-
   padding: 0 12px;
   font-size: 16px;
   outline: none;
+  box-shadow: 
+    0 0 0 1px #d9d9d9, /* inner shadow */
+    0 0 0 2px #fff, /* inner white */
+    0 1px 3px rgba(0, 0, 0, 0.12), /* subtle box shadow */
+    0 1px 2px rgba(0, 0, 0, 0.24); /* bottom shadow */
+  border: 2px black solid;
+  border-radius: 4px; /* rounded corners */
 }
 #form button {
   margin: 0 12px;
@@ -95,4 +100,17 @@ webview {
 .gutter.gutter-horizontal {
   background-image: url("images/vertical-grip.png");
   cursor: col-resize;
+}
+
+
+/* this doesnt color the bar properly */
+
+/* Customize the bar color for Split.js */
+.split .split-content::after  {
+  background: linear-gradient(to right, #4c6ef5, #9059ff);
+}
+
+/* Customize the bar color on hover */
+.split .split-bar:hover {
+  background: linear-gradient(to right, #4c6fff, #9f59ff);
 }
