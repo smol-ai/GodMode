@@ -8,6 +8,9 @@ whatever is typed at the bottom is entered into all 3 windows simultaneously, ho
 
 so for example you can use chatgpt plugins despite there not being an api for them. or you can use bard/anthropic without needing api access.
 
+> **Note**
+> I understand not everybody has access to Anthropic yet. You can [modify the source](https://github.com/smol-ai/menubar/issues/5) to just swap it to something like Bing Chat or OpenAssistant. I'd happily take a PR to make the panels customizable to different URLs and input targets!
+
 ## video demo
 
 - https://youtu.be/jrlxT1K4LEU
