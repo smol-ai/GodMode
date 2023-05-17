@@ -25,8 +25,8 @@
   </div>
   <form id="form" class="">
     <!-- we tried switching this to a textarea but the UX suffered from the lack of hitting enter to send  -->
-    <input rows="4" style="background-color:bisque" id="prompt" type="text" name="prompt"
-      placeholder="enter a superprompt here (you can Cmd+1/2/3/A to resize windows)"></input><button id="btn" type="submit">submit</button>
+    <textarea rows="4" style="background-color:bisque" id="prompt" type="text" name="prompt"
+      placeholder="Enter a superprompt here (Press Cmd/Ctrl+Enter to Submit or Cmd/Ctrl+1/2/3/A to resize windows)"></textarea><button id="btn" type="submit">submit</button>
   </form>
   <script>
     const webviewOAI = document.getElementById('webviewOAI');
@@ -34,9 +34,17 @@
     const webviewCLAUDE = document.getElementById('webviewCLAUDE');
     // add event listener for btn
     const promptEl = document.getElementById('prompt');
+    // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
+    promptEl.addEventListener("keydown", function(event) {
+      if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
+        document.getElementById('btn').click();
+      }
+    });
     promptEl.addEventListener('input', function (event) {
-      // get prompt from input
-      const xxx = promptEl.value.replace(/"/g, '\\"') // sanitize or ele will break the insertion below
+      // get prompt from input and sanitize or else will break the insertion below
+      const xxx = promptEl.value.replace(/"|\n/g, function(matched) {
+        return matched === '"' ? '\\"' : '\\n';
+      });
       webviewBARD.executeJavaScript(`
       var inputElement = document.querySelector("#mat-input-0");
 
@@ -48,13 +56,25 @@
       if (tracker) {
         tracker.setValue("${xxx}");
       }
-      // Dispatch the event after a short delay to fix the button state
+      // Dispatch the event after a short delay to let the input update
       setTimeout(function() {
         inputElement.dispatchEvent(event);
       }, 100);
         inputElement.value = "${xxx}"`)
       webviewOAI.executeJavaScript(`
       var inputElement = document.querySelector('textarea[placeholder="Send a message."]')
+
+      // try to send keyboard event to trigger textarea resize
+      var event = new Event('input', { bubbles: true });
+      event.simulated = true;
+      var tracker = inputElement._valueTracker;
+      if (tracker) {
+        tracker.setValue("${xxx}");
+      }
+      // Dispatch the event after a short delay to let the input update
+      setTimeout(function() {
+        inputElement.dispatchEvent(event);
+      }, 100);
       inputElement.value = "${xxx}"`)
       webviewCLAUDE.executeJavaScript(`
       var inputElement = document.querySelector('div.ProseMirror')
@@ -62,22 +82,13 @@
     })
     const form = document.getElementById('form');
     form.addEventListener('submit', function (event) {
-      const xxx = promptEl.value.replace(/"/g, '\\"')
+      // get prompt from input and sanitize or else will break the insertion below
+      const xxx = promptEl.value.replace(/"|\n/g, function(matched) {
+        return matched === '"' ? '\\"' : '\\n';
+      });
       event.preventDefault();
-      // get prompt from input
-      // const xxx = promptEl.value
       webviewBARD.executeJavaScript(`
       var inputElement = document.querySelector("#mat-input-0");
-
-      // try to send keyboard event to trigger the re-enable of the disabled button
-      // thanks chatgpt!
-      var event = new Event('input', { bubbles: true });
-      event.simulated = true;
-      var tracker = inputElement._valueTracker;
-      if (tracker) {
-        tracker.setValue("${xxx}");
-      }
-      inputElement.dispatchEvent(event);
       inputElement.value = "${xxx}"
       var btn = document.querySelector("button[aria-label='Send message']");
       btn.setAttribute("aria-disabled", "false"); // doesnt work alone

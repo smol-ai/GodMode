@@ -8,12 +8,11 @@ body {
 
 :root {
   /* account for the arrow */
-  --actual-height: calc(100vh - 12px - 50px);
+  --actual-height: calc(100vh - 12px - 100px);
 }
 
 .myarrow {
   position: relative;
-  /* padding-top: 12px; */
   padding: 12px 0 0 0;
 }
 
@@ -43,7 +42,7 @@ body {
   /* disabled because its quite buggy */
   /* resize: both;  */
   width: 100%;
-  height: calc(100vh - 12px - 50px);
+  height: calc(100vh - 12px - 70px);
   margin-top: 12px;
   margin: 0 auto;
   position: relative;
@@ -56,13 +55,13 @@ body {
 }
 
 #form {
-  height: 50px;
+  height: 60px;
   width: 100%;
   display: flex;
   gap: 1rem;
   padding: 5px;
 }
-#form input {
+#form input, #form textarea {
   width: 100%;
   resize: vertical;
   overflow: auto; /* Adds a scrollbar when the content is too big */
@@ -77,6 +76,7 @@ body {
   border: 2px black solid;
   border-radius: 4px; /* rounded corners */
 }
+
 #form button {
   margin: 0 12px;
 }
@@ -87,7 +87,7 @@ webview {
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100vh - 12px - 50px);
+  height: calc(100vh - 12px - 70px);
   display: inline-flex !important;
 }
 
