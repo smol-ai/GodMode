@@ -5,17 +5,23 @@ const { menubar } = require("menubar");
 const path = require("path");
 const {
   app,
+  BrowserWindow,
   nativeImage,
   Tray,
   Menu,
   globalShortcut,
   shell,
 } = require("electron");
+
+const Store = require('electron-store');
+const store = new Store();
+
 const contextMenu = require("electron-context-menu");
 
 const image = nativeImage.createFromPath(
   path.join(__dirname, `images/newiconTemplate.png`)
 );
+
 
 app.on("ready", () => {
 
@@ -25,8 +31,11 @@ app.on("ready", () => {
     browserWindow: {
       icon: image,
       transparent: path.join(__dirname, `images/iconApp.png`),
+      autoHideMenuBar: false,
       webPreferences: {
         webviewTag: true,
+        nodeIntegration: true,
+        contextIsolation: false,
         // nativeWindowOpen: true,
       },
       width: 1200,
@@ -92,6 +101,35 @@ app.on("ready", () => {
       },
       {
         type: "separator",
+      },
+      {
+        label: 'Preferences',
+        click: () => {
+          const preferencesWindow = new BrowserWindow({
+            parent: null,
+            modal: false,
+            alwaysOnTop: true,
+            show: false,
+            autoHideMenuBar: true,
+            width: 500,
+            height: 300,
+            webPreferences: {
+              nodeIntegration: true,
+              contextIsolation: false
+            }
+          });
+          preferencesWindow.loadFile('preferences.html');
+          preferencesWindow.once('ready-to-show', () => {
+            mb.hideWindow();
+            preferencesWindow.show();
+          });
+
+          // When the preferences window is closed, show the main window again
+          preferencesWindow.on('close', () => {
+            mb.showWindow();
+            mb.window.reload(); // reload the main window to apply the new settings
+          });
+        }
       },
       {
         label: "View on GitHub",
