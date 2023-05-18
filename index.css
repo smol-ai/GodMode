@@ -8,7 +8,7 @@ body {
 
 :root {
   /* account for the arrow */
-  --actual-height: calc(100vh - 12px - 100px);
+  --actual-height: calc(100vh - 12px - 80px);
 }
 
 .myarrow {
@@ -42,7 +42,7 @@ body {
   /* disabled because its quite buggy */
   /* resize: both;  */
   width: 100%;
-  height: calc(100vh - 12px - 70px);
+  height: calc(100vh - 12px - 80px);
   margin-top: 12px;
   margin: 0 auto;
   position: relative;
@@ -55,30 +55,26 @@ body {
 }
 
 #form {
-  height: 60px;
+  height: 80px;
   width: 100%;
   display: flex;
-  gap: 1rem;
   padding: 5px;
 }
-#form input, #form textarea {
+#form textarea {
   width: 100%;
-  resize: vertical;
-  overflow: auto; /* Adds a scrollbar when the content is too big */
+  height: 80px;
+  resize: none;
+  overflow-y: auto; /* Adds a scrollbar when the content is too big */
   padding: 0 12px;
   font-size: 16px;
   outline: none;
-  box-shadow: 
-    0 0 0 1px #d9d9d9, /* inner shadow */
-    0 0 0 2px #fff, /* inner white */
-    0 1px 3px rgba(0, 0, 0, 0.12), /* subtle box shadow */
-    0 1px 2px rgba(0, 0, 0, 0.24); /* bottom shadow */
-  border: 2px black solid;
-  border-radius: 4px; /* rounded corners */
+  background-color: bisque;
+  flex-grow: 1;
 }
 
 #form button {
-  margin: 0 12px;
+  margin: 0 4px;
+  padding: 0 12px;
 }
 
 webview {
@@ -87,7 +83,7 @@ webview {
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100vh - 12px - 70px);
+  height: calc(100vh - 12px - 80px);
   display: inline-flex !important;
 }
 

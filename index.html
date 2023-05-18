@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <title>ChatGPT</title>
   <link rel="stylesheet" href="index.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.0/split.min.js"></script>
 </head>
 
 <body class="myarrow">
@@ -14,7 +14,7 @@
       <webview id="webviewOAI" src="https://chat.openai.com/chat" autosize="on">
       </webview>
     </div>
-      <div id="two" class="split page darwin">
+    <div id="two" class="split page darwin">
       <webview id="webviewBARD" src="https://bard.google.com" autosize="on">
       </webview>
     </div>
@@ -24,9 +24,9 @@
     </div>
   </div>
   <form id="form" class="">
-    <!-- we tried switching this to a textarea but the UX suffered from the lack of hitting enter to send  -->
-    <textarea rows="4" style="background-color:bisque" id="prompt" type="text" name="prompt"
-      placeholder="Enter a superprompt here (Press Cmd/Ctrl+Enter to Submit or Cmd/Ctrl+1/2/3/A to resize windows)"></textarea><button id="btn" type="submit">submit</button>
+    <textarea rows="4" id="prompt" name="prompt"
+      placeholder="Enter a superprompt here (Cmd/Ctrl+Enter to Submit or Cmd+1/2/3/A to resize windows)"></textarea>
+    <button id="btn" type="submit">submit</button>
   </form>
   <script>
     const webviewOAI = document.getElementById('webviewOAI');
@@ -41,10 +41,8 @@
       }
     });
     promptEl.addEventListener('input', function (event) {
-      // get prompt from input and sanitize or else will break the insertion below
-      const xxx = promptEl.value.replace(/"|\n/g, function(matched) {
-        return matched === '"' ? '\\"' : '\\n';
-      });
+      // get prompt from input
+      const sanitizedInput = promptEl.value.replace(/"/g, '\\"').replace(/\n/g, '\\n');
       webviewBARD.executeJavaScript(`
       var inputElement = document.querySelector("#mat-input-0");
 
@@ -54,42 +52,49 @@
       event.simulated = true;
       var tracker = inputElement._valueTracker;
       if (tracker) {
-        tracker.setValue("${xxx}");
+        tracker.setValue("${sanitizedInput}");
       }
-      // Dispatch the event after a short delay to let the input update
-      setTimeout(function() {
-        inputElement.dispatchEvent(event);
-      }, 100);
-        inputElement.value = "${xxx}"`)
+      inputElement.dispatchEvent(event);
+      inputElement.value = "${sanitizedInput}"`)
       webviewOAI.executeJavaScript(`
-      var inputElement = document.querySelector('textarea[placeholder="Send a message."]')
+      function simulateUserInput(element, text) {
+        const inputEvent = new Event('input', { bubbles: true });
+        element.focus();
+        element.value = text;
+        element.dispatchEvent(inputEvent);
+      }
+      var inputElement = document.querySelector('textarea[placeholder="Send a message."]');
+      simulateUserInput(inputElement, "${sanitizedInput}");
+      `)
+      webviewCLAUDE.executeJavaScript(`
+      var inputElement = document.querySelector('div.ProseMirror')
+      inputElement.innerHTML = "${sanitizedInput}"`)
+    })
+    promptEl.addEventListener("keydown", function (event) {
+      const isCmdOrCtrl = event.metaKey || event.ctrlKey;
+      if (isCmdOrCtrl && event.key === "Enter") {
+        event.preventDefault();
+        form.dispatchEvent(new Event("submit"));
+      }
+    });
+    const form = document.getElementById('form');
+    form.addEventListener('submit', function (event) {
+      const sanitizedInput = promptEl.value.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+      promptEl.value = "";
+      event.preventDefault();
+      webviewBARD.executeJavaScript(`
+      var inputElement = document.querySelector("#mat-input-0");
 
-      // try to send keyboard event to trigger textarea resize
+      // try to send keyboard event to trigger the re-enable of the disabled button
+      // thanks chatgpt!
       var event = new Event('input', { bubbles: true });
       event.simulated = true;
       var tracker = inputElement._valueTracker;
       if (tracker) {
-        tracker.setValue("${xxx}");
+        tracker.setValue("${sanitizedInput}");
       }
-      // Dispatch the event after a short delay to let the input update
-      setTimeout(function() {
-        inputElement.dispatchEvent(event);
-      }, 100);
-      inputElement.value = "${xxx}"`)
-      webviewCLAUDE.executeJavaScript(`
-      var inputElement = document.querySelector('div.ProseMirror')
-      inputElement.innerHTML = "${xxx}"`)
-    })
-    const form = document.getElementById('form');
-    form.addEventListener('submit', function (event) {
-      // get prompt from input and sanitize or else will break the insertion below
-      const xxx = promptEl.value.replace(/"|\n/g, function(matched) {
-        return matched === '"' ? '\\"' : '\\n';
-      });
-      event.preventDefault();
-      webviewBARD.executeJavaScript(`
-      var inputElement = document.querySelector("#mat-input-0");
-      inputElement.value = "${xxx}"
+      inputElement.dispatchEvent(event);
+      inputElement.value = "${sanitizedInput}"
       var btn = document.querySelector("button[aria-label='Send message']");
       btn.setAttribute("aria-disabled", "false"); // doesnt work alone
       btn.click()`)
@@ -204,42 +209,42 @@
       // `);
     });
 
-      const splitInstance = Split(["#one", "#two", "#three"], {
-        direction: "horizontal",
-        minSize: 0,
-      });
+    const splitInstance = Split(["#one", "#two", "#three"], {
+      direction: "horizontal",
+      minSize: 0,
+    });
 
-      document.addEventListener("keydown", (event) => {
-        if (event.defaultPrevented) {
-          return;
+    document.addEventListener("keydown", (event) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      const isCmdOrCtrl = event.metaKey || event.ctrlKey;
+
+      if (isCmdOrCtrl) {
+        switch (event.key) {
+          case "1":
+            splitInstance.setSizes([100, 0, 0]);
+            event.preventDefault();
+            break;
+          case "2":
+            splitInstance.setSizes([0, 100, 0]);
+            event.preventDefault();
+            break;
+          case "3":
+            splitInstance.setSizes([0, 0, 100]);
+            event.preventDefault();
+            break;
+          case "a":
+          case "A":
+            splitInstance.setSizes([33.33, 33.33, 33.33]);
+            event.preventDefault();
+            break;
+          default:
+            return;
         }
-
-        const isCmdOrCtrl = event.metaKey || event.ctrlKey;
-
-        if (isCmdOrCtrl) {
-          switch (event.key) {
-            case "1":
-              splitInstance.setSizes([100, 0, 0]);
-              event.preventDefault();
-              break;
-            case "2":
-              splitInstance.setSizes([0, 100, 0]);
-              event.preventDefault();
-              break;
-            case "3":
-              splitInstance.setSizes([0, 0, 100]);
-              event.preventDefault();
-              break;
-            case "a":
-            case "A":
-              splitInstance.setSizes([33.33, 33.33, 33.33]);
-              event.preventDefault();
-              break;
-            default:
-              return;
-          }
-        }
-      });
+      }
+    });
   </script>
 </body>
 
