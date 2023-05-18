@@ -29,13 +29,15 @@
     <button id="btn" type="submit">submit</button>
   </form>
   <script>
+    const Store = require('electron-store');
+    const store = new Store();
     const webviewOAI = document.getElementById('webviewOAI');
     const webviewBARD = document.getElementById('webviewBARD');
     const webviewCLAUDE = document.getElementById('webviewCLAUDE');
     // add event listener for btn
     const promptEl = document.getElementById('prompt');
     // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
-    promptEl.addEventListener("keydown", function(event) {
+    promptEl.addEventListener("keydown", function (event) {
       if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
         document.getElementById('btn').click();
       }
@@ -214,35 +216,41 @@
       minSize: 0,
     });
 
+    window.addEventListener('DOMContentLoaded', () => {
+      updateSplitSizes();
+    });
+
+    function updateSplitSizes() {
+      const webviewOAIEnabled = store.get('webviewOAIEnabled', true);
+      const webviewBARDEnabled = store.get('webviewBARDEnabled', true);
+      const webviewCLAUDEEnabled = store.get('webviewCLAUDEEnabled', true);
+
+      const sizes = [
+        webviewOAIEnabled ? 33.33 : 0,
+        webviewBARDEnabled ? 33.33 : 0,
+        webviewCLAUDEEnabled ? 33.33 : 0,
+      ];
+
+      const total = sizes.reduce((a, b) => a + b, 0);
+      const normalizedSizes = sizes.map(size => (total === 0 ? 33.33 : (size / total) * 100)); // if all disabled, show all
+      splitInstance.setSizes(normalizedSizes);
+    }
+
+    const paneStates = {
+      "1": [true, false, false],
+      "2": [false, true, false],
+      "3": [false, false, true],
+      "a": [true, true, true],
+    };
+
     document.addEventListener("keydown", (event) => {
-      if (event.defaultPrevented) {
-        return;
-      }
+      if ((event.metaKey || event.ctrlKey) && event.key in paneStates) {
+        store.set('webviewOAIEnabled', paneStates[event.key][0]);
+        store.set('webviewBARDEnabled', paneStates[event.key][1]);
+        store.set('webviewCLAUDEEnabled', paneStates[event.key][2]);
 
-      const isCmdOrCtrl = event.metaKey || event.ctrlKey;
-
-      if (isCmdOrCtrl) {
-        switch (event.key) {
-          case "1":
-            splitInstance.setSizes([100, 0, 0]);
-            event.preventDefault();
-            break;
-          case "2":
-            splitInstance.setSizes([0, 100, 0]);
-            event.preventDefault();
-            break;
-          case "3":
-            splitInstance.setSizes([0, 0, 100]);
-            event.preventDefault();
-            break;
-          case "a":
-          case "A":
-            splitInstance.setSizes([33.33, 33.33, 33.33]);
-            event.preventDefault();
-            break;
-          default:
-            return;
-        }
+        updateSplitSizes();
+        event.preventDefault();
       }
     });
   </script>

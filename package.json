@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "electron-context-menu": "^3.6.0",
+    "electron-store": "^8.1.0",
     "menubar": "^9.2.3",
     "update-electron-app": "^2.0.1"
   },
