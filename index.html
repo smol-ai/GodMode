@@ -56,7 +56,10 @@
       if (tracker) {
         tracker.setValue("${sanitizedInput}");
       }
-      inputElement.dispatchEvent(event);
+      // Dispatch the event after a short delay to fix the button state
+      setTimeout(function() {
+        inputElement.dispatchEvent(event);
+      }, 100);
       inputElement.value = "${sanitizedInput}"`)
       webviewOAI.executeJavaScript(`
       function simulateUserInput(element, text) {
