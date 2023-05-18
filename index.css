@@ -13,7 +13,6 @@ body {
 
 .myarrow {
   position: relative;
-  /* padding-top: 12px; */
   padding: 12px 0 0 0;
 }
 
@@ -72,6 +71,7 @@ body {
   background-color: bisque;
   flex-grow: 1;
 }
+
 #form button {
   margin: 0 4px;
   padding: 0 12px;

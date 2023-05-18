@@ -25,7 +25,7 @@
   </div>
   <form id="form" class="">
     <textarea rows="4" id="prompt" name="prompt"
-      placeholder="Enter a superprompt here (you can Cmd+1/2/3/A to resize windows)"></textarea>
+      placeholder="Enter a superprompt here (Cmd/Ctrl+Enter to Submit or Cmd+1/2/3/A to resize windows)"></textarea>
     <button id="btn" type="submit">submit</button>
   </form>
   <script>
@@ -34,6 +34,12 @@
     const webviewCLAUDE = document.getElementById('webviewCLAUDE');
     // add event listener for btn
     const promptEl = document.getElementById('prompt');
+    // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
+    promptEl.addEventListener("keydown", function(event) {
+      if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
+        document.getElementById('btn').click();
+      }
+    });
     promptEl.addEventListener('input', function (event) {
       // get prompt from input
       const sanitizedInput = promptEl.value.replace(/"/g, '\\"').replace(/\n/g, '\\n');
