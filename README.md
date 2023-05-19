@@ -9,7 +9,7 @@ whatever is typed at the bottom is entered into all 3 windows simultaneously, ho
 so for example you can use chatgpt plugins despite there not being an api for them. or you can use bard/anthropic without needing api access.
 
 > **Note**
-> I understand not everybody has access to Anthropic yet. You can [modify the source](https://github.com/smol-ai/menubar/issues/5) to just swap it to something like Bing Chat or OpenAssistant. I'd happily take a PR to make the panels customizable to different URLs and input targets!
+> I understand not everybody has access to Anthropic yet. You can hide individual webviews from the preferences modal. I'd happily take a PR to make the panels customizable to different URLs and input targets!
 
 ## video demo
 
@@ -18,7 +18,7 @@ so for example you can use chatgpt plugins despite there not being an api for th
 
 ## install
 
-either download the precompiled binaries: https://github.com/smol-ai/menubar/releases/tag/v0.0.3
+either download the precompiled binaries: https://github.com/smol-ai/menubar/releases/latest
 
 or build from source (see below)
 
@@ -29,13 +29,18 @@ dont worry i dont track anything. inspect and build from source if you wish.
 
 ## usage
 
-I usually just always press Cmd+Shift+G -> quick open to use it. You can modify this keyboard shortcut if you build it from source.
+I usually just always press Cmd+Shift+G -> quick open to use it and Cmd+Enter to submit.
+
+You can resize the overall window with a click n drag. Cmd+1/2/3/A or drag to resize the internal webviews as you wish.
+
+You can also disable models from the preferences modal and your choice is persisted.
+
+To start a new conversation, cmd+R (simple window refresh, nothing special)
+
+You can modify these keyboard shortcuts if you build it from source.
 
 Login for Anthropic via Google SSO is broken right now - it requires a popup which is blocked at least in my testing. Would welcome a PR to fix that, but otherwise regular email + login token works fine.
 
-you can resize the overall window with a click n drag. Cmd+1/2/3/A or drag to resize the internal webviews as you wish.
-
-to start a new conversation, cmd+R (simple window refresh, nothing special)
 
 ## build from source
 
@@ -61,4 +66,3 @@ these folks aren't neutral, but its clear of course that Bard will be better for
 
 - i need a new set of icons for the images
 - better styling for the window? maybe normalize the bard window to the openai dimensions?
-- switch the superprompt from an input to a textarea... but make it easy to submit - by cmd + enter?
