@@ -82,6 +82,22 @@
         form.dispatchEvent(new Event("submit"));
       }
     });
+    const clearBtn = document.getElementById('clearBtn');
+    clearBtn.addEventListener('click', function(event) {
+      webviewBARD.executeJavaScript(`
+        document.querySelector(".chat-history").innerHTML = "";
+      `);
+      webviewOAI.executeJavaScript(`
+        const messages = document.querySelectorAll(".chat-message");
+        messages.forEach(function(message) {
+          message.remove();
+        });
+      `);
+      webviewCLAUDE.executeJavaScript(`
+        document.querySelector(".conversation-container").innerHTML = "";
+      `);
+    });
+
     const form = document.getElementById('form');
     form.addEventListener('submit', function (event) {
       const sanitizedInput = promptEl.value.replace(/"/g, '\\"').replace(/\n/g, '\\n');
