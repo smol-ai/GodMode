@@ -18,9 +18,9 @@ so for example you can use chatgpt plugins despite there not being an api for th
 
 ## install
 
-either download the precompiled binaries: https://github.com/smol-ai/menubar/releases/latest
+either download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest
 
-or build from source (see below)
+or build from source to get a build optimized for your system (see below)
 
 then log into your google account (either will do, both rely on google login)
 ![image](https://github.com/smol-ai/menubar/assets/6764957/dce5b127-e8c2-4be2-97d3-e2fa3042ef24)
@@ -44,11 +44,33 @@ Login for Anthropic via Google SSO is broken right now - it requires a popup whi
 
 ## build from source
 
+To build from source, you will need to clone the repo and open the project folder:
+
+```bash
+git clone https://github.com/smol-ai/menubar.git
+cd menubar
+```
+
+Then install Electron Forge. Follow the instructions [here](https://www.electronforge.io/import-existing-project):
+
+```bash
+npm install --save-dev @electron-forge/cli
+npm exec --package=@electron-forge/cli -c "electron-forge import"
+```
+
+On Windows, you will also need Squirrel.
+
+```bash
+npm install electron-squirrel-startup
+ ```
+
+To generate binaries:
+
 ```bash
 npm run make # or npm run build
 ```
 
-outputs to `/out/make`
+Outputs go to `/out/make`.
 
 ## why
 
