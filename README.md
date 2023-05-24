@@ -51,14 +51,13 @@ git clone https://github.com/smol-ai/menubar.git
 cd menubar
 ```
 
-Then install Electron Forge. Follow the instructions [here](https://www.electronforge.io/import-existing-project):
+Then install dependencies:
 
 ```bash
-npm install --save-dev @electron-forge/cli
-npm exec --package=@electron-forge/cli -c "electron-forge import"
+npm install
 ```
 
-On Windows, you will also need Squirrel.
+On Windows, you'll also need Squirrel.
 
 ```bash
 npm install electron-squirrel-startup
@@ -70,7 +69,7 @@ To generate binaries:
 npm run make # or npm run build
 ```
 
-Outputs go to `/out/make`. Run `smol-menubar.exe` to fire it up. Note that it may start minimized to your taskbar, in which case you'll have to click the icon to use it.
+Outputs go to `/out/make`. Run `smol-menubar.exe` to fire up the app. Note that it may start minimized to your taskbar, in which case you'll have to click the icon to use it:
 
 ![image](images/minimized.jpg)
 
