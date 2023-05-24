@@ -70,7 +70,9 @@ To generate binaries:
 npm run make # or npm run build
 ```
 
-Outputs go to `/out/make`.
+Outputs go to `/out/make`. Run `smol-menubar.exe` to fire it up. Note that it may start minimized to your taskbar, in which case you'll have to click the icon to use it.
+
+![image](images/minimized.jpg)
 
 ## why
 
