@@ -87,5 +87,6 @@ typings/
 
 # Electron-Forge
 out/
+forge.config.js
 
 .env
