@@ -1,4 +1,5 @@
-require("update-electron-app")();
+// require("update-electron-app")(); // uncomment this line to enable auto-updates.
+// we commented out because of https://github.com/smol-ai/menubar/issues/17
 
 const { menubar } = require("menubar");
 
