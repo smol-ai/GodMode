@@ -26,7 +26,7 @@
   <form id="form" class="">
     <textarea rows="4" id="prompt" name="prompt"
       placeholder="Enter a superprompt here (Cmd/Ctrl+Enter to Submit or Cmd+1/2/3/A to resize windows)"></textarea>
-    <button id="btn" type="submit">submit</button>
+    <button id="btn" type="submit">Cmd/Ctrl+Enter to Submit</button>
   </form>
   <script>
     const Store = require('electron-store');
@@ -68,7 +68,7 @@
         element.value = text;
         element.dispatchEvent(inputEvent);
       }
-      var inputElement = document.querySelector('textarea[placeholder="Send a message."]');
+      var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
       simulateUserInput(inputElement, "${sanitizedInput}");
       `)
       webviewCLAUDE.executeJavaScript(`
@@ -100,11 +100,11 @@
       }
       inputElement.dispatchEvent(event);
       inputElement.value = "${sanitizedInput}"
-      var btn = document.querySelector("button[aria-label='Send message']");
+      var btn = document.querySelector("button[aria-label*='Send message']");
       btn.setAttribute("aria-disabled", "false"); // doesnt work alone
       btn.click()`)
       webviewOAI.executeJavaScript(`
-      var btn = document.querySelector("textarea[placeholder='Send a message.']+button");
+      var btn = document.querySelector("textarea[placeholder*='Send a message']+button");
       btn.disabled = false;
       btn.click()`)
       webviewCLAUDE.executeJavaScript(`
