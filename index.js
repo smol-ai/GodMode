@@ -63,21 +63,21 @@ app.on("ready", () => {
       // add links to github repo and vince's twitter
       {
         label: "Quit",
-        accelerator: "Command+Q",
+        accelerator: "CommandorControl+Q",
         click: () => {
           app.quit();
         },
       },
       {
         label: "Reload",
-        accelerator: "Command+R",
+        accelerator: "CommandorControl+R",
         click: () => {
           window.reload();
         },
       },
       {
         label: "Quick Open",
-        accelerator: "Command+Shift+G",
+        accelerator: "CommandorControl+Shift+G",
         click: () => {
           window.reload();
         },
