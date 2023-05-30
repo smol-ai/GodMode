@@ -73,9 +73,21 @@ Outputs go to `/out/make`. Run `smol-menubar.exe` to fire up the app. Note that 
 
 ![image](images/minimized.jpg)
 
+## windows builds
+
+by default we're mac only - i only have a mac sorry.
+
+i think you can run
+
+```bash
+electron-forge make --platform=win32 --arch=ia32,x64
+```
+
+and it might work? let us know and i'd happily take a PR to include it in the default `make` process.
+
 ## debugging
 
-have the devtools up all the time by uncommenting this line
+have the devtools up all the time by uncommenting this line. it's enabled by default when running `npm start`
 
 ```js
 window.webContents.openDevTools();
@@ -87,9 +99,9 @@ Google [dropped its waitlist for Bard recently](https://www.theverge.com/2023/5/
 
 People have bad first impressions on Bard, but in May 2023 it has been receiving some positive feedback:
 
-[![image](https://github.com/smol-ai/menubar/assets/6764957/0d86234e-1d91-4863-8311-580888511b20)](https://twitter.com/masadfrost/status/1655802654927507457?s=46&t=90xQ8sGy63D2OtiaoGJuww)
+- https://twitter.com/masadfrost/status/1655802654927507457?s=46&t=90xQ8sGy63D2OtiaoGJuww
 
-[![image](https://github.com/smol-ai/menubar/assets/6764957/e191701a-0b32-43aa-abc0-42e6fd9584aa)](https://twitter.com/amasad/status/1657510601202221056?s=46&t=90xQ8sGy63D2OtiaoGJuww)
+- https://twitter.com/amasad/status/1657510601202221056?s=46&t=90xQ8sGy63D2OtiaoGJuww
 
 these folks aren't neutral, but its clear of course that Bard will be better for some things than others, and we might as well lower the barrier for trying them out.
 
