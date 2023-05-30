@@ -67,6 +67,8 @@ npm install electron-squirrel-startup
 To generate binaries:
 
 ```bash
+# if publishing, bump versions
+# npm version patch
 npm run make # or npm run build
 ```
 
