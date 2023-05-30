@@ -15,6 +15,7 @@ so for example you can use chatgpt plugins despite there not being an api for th
 
 - https://youtu.be/jrlxT1K4LEU
 - https://twitter.com/swyx/status/1658403625717338112
+- https://twitter.com/swyx/status/1663290955804360728?s=20
 
 ## install
 
