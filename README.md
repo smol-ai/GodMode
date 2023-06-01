@@ -32,7 +32,7 @@ dont worry i dont track anything. inspect and build from source if you wish.
 
 I usually just always press Cmd+Shift+G -> quick open to use it and Cmd+Enter to submit.
 
-You can resize the overall window with a click n drag. Cmd+1/2/3/A or drag to resize the internal webviews as you wish.
+You can resize the overall window with a click n drag. Cmd+1/2/3/A/+/- or drag to resize the internal webviews as you wish.
 
 You can also disable models from the preferences modal and your choice is persisted.
 
