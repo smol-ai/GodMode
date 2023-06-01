@@ -262,14 +262,18 @@
     function handleInnerWebviewPaste(webview) {
       webview.addEventListener('dom-ready', function () {
         webview.executeJavaScript(`
-      let pasted = false;
+      let lastPastedText = null;
+      let lastPasteTime = 0;
       window.addEventListener('paste', function(event) {
-          if (pasted) {
-              event.preventDefault();
-              pasted = false;
-          } else {
-              pasted = true;
-          }
+        const currentTime = Date.now();
+        const clipboardData = event.clipboardData || window.clipboardData;
+        const pastedText = clipboardData.getData('text');
+        if (lastPastedText === pastedText && currentTime - lastPasteTime < 100) {
+          event.preventDefault();
+        } else {
+          lastPastedText = pastedText;
+          lastPasteTime = currentTime;
+        }
       });
     `);
       });
