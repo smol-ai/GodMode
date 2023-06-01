@@ -37,6 +37,7 @@ app.on("ready", () => {
         webviewTag: true,
         nodeIntegration: true,
         contextIsolation: false,
+        enableWebView: true  // from chatgpt
         // nativeWindowOpen: true,
       },
       width: 1200,
