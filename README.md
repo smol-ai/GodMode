@@ -2,9 +2,9 @@
 
 This is a smol menubar app that helps you quickly access ChatGPT, Bard, and Anthropic with a single keyboard shortcut.
 
-![image](https://github.com/smol-ai/menubar/assets/6764957/753c6128-d978-4bb4-8642-588d42121ff5)
+[![image](https://github.com/smol-ai/menubar/assets/6764957/753c6128-d978-4bb4-8642-588d42121ff5)](https://youtu.be/ThfFFgG-AzE)
 
-whatever is typed at the bottom is entered into all 3 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. 
+whatever is typed at the bottom is entered into all 3 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://youtu.be/ThfFFgG-AzE).
 
 so for example you can use chatgpt plugins despite there not being an api for them. or you can use bard/anthropic without needing api access.
 
@@ -13,7 +13,8 @@ so for example you can use chatgpt plugins despite there not being an api for th
 
 ## video demo
 
-- https://youtu.be/jrlxT1K4LEU
+- original version https://youtu.be/jrlxT1K4LEU
+- Jun 1 version https://youtu.be/ThfFFgG-AzE
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 
