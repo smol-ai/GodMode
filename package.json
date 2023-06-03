@@ -6,7 +6,7 @@
   "description": "smol menubar app for Bard, ChatGPT, Claude",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development electron-forge start",
+    "start": "NODE_ENV=development node setup.js && electron-forge start",
     "package": "electron-forge package --arch arm64,x64",
     "make": "electron-forge make --arch arm64,x64",
     "build": "npm run make",
