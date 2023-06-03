@@ -1,6 +1,6 @@
 {
-  "name": "smol-menubar",
-  "productName": "smol-menubar",
+  "name": "smolmenubar",
+  "productName": "smolmenubar",
   "version": "0.0.7",
   "author": "smol-ai",
   "description": "smol menubar app for Bard, ChatGPT, Claude",
@@ -39,6 +39,7 @@
     "@electron-forge/publisher-github": "^6.0.4",
     "dotenv": "^16.0.3",
     "electron": "^21.0.0",
+    "electron-forge": "^5.2.4",
     "electron-squirrel-startup": "^1.0.0"
   }
 }
