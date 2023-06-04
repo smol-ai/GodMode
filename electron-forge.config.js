@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   packagerConfig: {
     executableName: 'smolmenubar',
@@ -7,9 +9,11 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
     },
     {
       name: '@electron-forge/maker-zip',
+      platforms: ['win32'],
     },
     {
       name: '@electron-forge/maker-rpm',
@@ -21,7 +25,26 @@ module.exports = {
     }
     {
       name: '@electron-forge/maker-dmg',
+      platforms: ['darwin'],
     },
+  ],
+  plugins: [
+    [
+      '@electron-forge/plugin-webpack',
+      {
+        mainConfig: "./webpack.main.config.js",
+        renderer: {
+          config: "./webpack.renderer.config.js",
+          entryPoints: [
+            {
+              html: "./src/index.html",
+              js: "./src/renderer.js",
+              name: "main_window",
+            },
+          ],
+        },
+      },
+    ],
   ],
   publishers: [
     {

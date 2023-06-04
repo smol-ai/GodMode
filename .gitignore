@@ -89,4 +89,7 @@ typings/
 out/
 forge.config.js
 
+# First run flag
+first-run.flag
+
 .env

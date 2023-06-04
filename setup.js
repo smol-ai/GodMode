@@ -1,5 +1,10 @@
+const fs = require('fs');
+const ws = require('windows-shortcuts');
+const path = require('path');
 
 const firstRunFile = path.join(__dirname, 'first-run.flag');
+
+// TODO: make sure first run file is not created if setup fails
 
 
 fs.access(firstRunFile, fs.constants.F_OK, (err) => {
@@ -13,7 +18,6 @@ fs.access(firstRunFile, fs.constants.F_OK, (err) => {
     console.log(`Architecture: ${arch}`);
 
     // Linux
-    const fs = require('fs');
 
     if (platform === 'linux') {
       const appName = 'smol-menubar';
@@ -26,7 +30,7 @@ fs.access(firstRunFile, fs.constants.F_OK, (err) => {
       const desktopEntryContent = `[Desktop Entry]
 Type=Application
 Name=${appName}
-Exec=${appPath}
+Exec=/bin/bash -c "cd ${appDir}&& npm run launch"
 Icon=${appIconPath}
 Terminal=false
 Categories=Utility;`;
@@ -39,20 +43,29 @@ Categories=Utility;`;
           console.error('Error creating .desktop file:', err);
         } else {
           console.log('.desktop file created');
+
+          //Install the .desktop file 
+          const { exec  } = require('child_process');
+          const installCommand = `desktop-file-install --dir=$HOME/.local/share/applications ${desktopEntryPath}`;
+
+          exec(installCommand, (err, stdout, stderr) => {
+            if (err) {
+              console.error('Error executing desktop-file-install command:', err);
+              return;
+              
+            }
+            console.log('Desktop file installed successfully');
+          })
         }
       });
     }
 
-
     // Windows
-    const ws = require('windows-shortcuts');
-    const path = require('path');
-
-
+	  
     if (platform === 'win32') {
       const appName = 'smol-menubar';
       const appFileName = '${appName}.lnk';
-      const shortcutPath = path.join('C:\\Users\\${process.env.USERNAME}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup', appFileName')
+      const shortcutPath = path.join('C:\\Users\\${process.env.USERNAME}\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup', appFileName);
 
       const appEntryPoint = 'index.js'
       const appDir = __dirname; 
@@ -71,7 +84,7 @@ Categories=Utility;`;
     // macOS
     const { exec } = require('child_process');
 
-    if (platfor === 'darwin') {
+    if (platform === 'darwin') {
       const appName = 'smol-menubar';
       const appEntryPoint = 'index.js';
       const appDir = __dirname;
