@@ -9,7 +9,19 @@ whatever is typed at the bottom is entered into all 3 windows simultaneously, ho
 so for example you can use chatgpt plugins despite there not being an api for them. or you can use bard/anthropic without needing api access.
 
 > **Note**
-> I understand not everybody has access to Anthropic yet. You can hide individual webviews from the preferences modal. I'd happily take a PR to make the panels customizable to different URLs and input targets!
+> I understand not everybody has access to Anthropic yet. I am working on providing an alternative - will have to require a login.
+> 
+> For now, you can hide individual webviews from the preferences modal. 
+
+## seeking contributors!
+
+this is a FOSS effort and will never be commercialized (no tracking, will not be a paid app (but the chat apps within might), etc). please check out the feature requests (https://github.com/smol-ai/menubar/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) if you'd like to help! in particular, we'd like:
+
+- **a PR to make the 3 panels customizable to different URLs and input targets!**
+- a "Windows maintainer" to handle Windows user needs and beta test every release to make sure we didn't break something for them
+- Design
+   - i need a new set of icons for the images
+   - better styling for the window? maybe normalize the bard window to the openai dimensions?
 
 ## video demo
 
@@ -18,13 +30,13 @@ so for example you can use chatgpt plugins despite there not being an api for th
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 
-## download
+## Simple Download
 
-either download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest
+You can download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest
 
-## Install and Run
+## Install and Run from Source
 
-To install and run the application, follow these steps:
+To install and run from source, follow these steps:
 
 1. Clone the repository and navigate to the project folder:
 
@@ -53,8 +65,6 @@ To install and run the application, follow these steps:
 
 then log into your google account (either will do, both rely on google login)
 ![image](https://github.com/smol-ai/menubar/assets/6764957/dce5b127-e8c2-4be2-97d3-e2fa3042ef24)
-
-dont worry i dont track anything. inspect and build from source if you wish.
 
 ## usage
 
@@ -109,7 +119,7 @@ If you really want to build from source, you will need to clone the repo and ope
 
 ## windows builds
 
-by default we're mac only - i only have a mac sorry.
+by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"!)
 
 i think you can run
 
@@ -121,7 +131,7 @@ and it might work? let us know and i'd happily take a PR to include it in the de
 
 ## debugging
 
-have the devtools up all the time by uncommenting this line. it's enabled by default when running `npm start`
+I have the menubar devtools up all the time while in development. You can disable them by commenting this line. 
 
 ```js
 window.webContents.openDevTools();
@@ -141,7 +151,3 @@ these folks aren't neutral, but its clear of course that Bard will be better for
 
 then anthropic dropped 100k context, and at that point i was convinced i need to be A/B testing all 3 to get the benefits/get an intuition of what they each are best at.
 
-## help needed
-
-- i need a new set of icons for the images
-- better styling for the window? maybe normalize the bard window to the openai dimensions?
