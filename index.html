@@ -276,29 +276,26 @@
 
 
     // fix double-pasting inside webviews
-    function handleInnerWebviewPaste(webview) {
+    function setupCustomPasteBehavior(webview) {
       webview.addEventListener('dom-ready', function () {
         webview.executeJavaScript(`
-      let lastPastedText = null;
-      let lastPasteTime = 0;
-      window.addEventListener('paste', function(event) {
-        const currentTime = Date.now();
-        const clipboardData = event.clipboardData || window.clipboardData;
-        const pastedText = clipboardData.getData('text');
-        if (lastPastedText === pastedText && currentTime - lastPasteTime < 300) {
-          event.preventDefault();
-        } else {
-          lastPastedText = pastedText;
-          lastPasteTime = currentTime;
-        }
+    document.addEventListener('paste', (event) => {
+              event.preventDefault();
+      let text = event.clipboardData.getData('text');
+      let activeElement = document.activeElement;
+      let start = activeElement.selectionStart;
+      let end = activeElement.selectionEnd;
+      activeElement.value = activeElement.value.slice(0, start) + text + activeElement.value.slice(end);
+      activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
       });
     `);
       });
     }
 
-    handleInnerWebviewPaste(webviewOAI);
-    handleInnerWebviewPaste(webviewBARD);
-    handleInnerWebviewPaste(webviewCLAUDE);
+    setupCustomPasteBehavior(webviewOAI);
+    setupCustomPasteBehavior(webviewBARD);
+    setupCustomPasteBehavior(webviewCLAUDE);
+
 
   </script>
 </body>
