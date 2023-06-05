@@ -18,11 +18,38 @@ so for example you can use chatgpt plugins despite there not being an api for th
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 
-## install
+## download
 
 either download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest
 
-or build from source to get a build optimized for your system (see below)
+## Install and Run
+
+To install and run the application, follow these steps:
+
+1. Clone the repository and navigate to the project folder:
+
+   ```bash
+   git clone https://github.com/smol-ai/menubar.git
+   cd menubar
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the application and generate the platform-specific desktop file:
+
+   ```bash
+   npm run start
+   ```
+
+   This command will launch the application and automatically generate the appropriate desktop file or shortcut for your operating system (Linux, macOS, or Windows).
+
+4. After the initial setup, you can simply use the generated desktop file to start the application in the future.
+
+   **Note:** If you ever need to update the application, you can do so by simply pulling the latest changes from the repository.
 
 then log into your google account (either will do, both rely on google login)
 ![image](https://github.com/smol-ai/menubar/assets/6764957/dce5b127-e8c2-4be2-97d3-e2fa3042ef24)
@@ -46,34 +73,37 @@ Login for Anthropic via Google SSO is broken right now - it requires a popup whi
 
 ## build from source
 
-To build from source, you will need to clone the repo and open the project folder:
+If you really want to build from source, you will need to clone the repo and open the project folder:
 
-```bash
-git clone https://github.com/smol-ai/menubar.git
-cd menubar
-```
+1. Clone the repository and navigate to the project folder:
 
-Then install dependencies:
+   ```bash
+   git clone https://github.com/smol-ai/menubar.git
+   cd menubar
+   ```
 
-```bash
-npm install
-```
+2. Install dependencies:
 
-On Windows, you'll also need Squirrel.
+   ```bash
+   npm install
+   ```
 
-```bash
-npm install electron-squirrel-startup
- ```
+3. On Windows, you'll also need Squirrel:
 
-To generate binaries:
+   ```bash
+   npm install electron-squirrel-startup
+   ```
 
-```bash
-# if publishing, bump versions
-# npm version patch
-npm run make # or npm run build
-```
+4. Generate binaries:
 
-Outputs go to `/out/make`. Run `smol-menubar.exe` to fire up the app. Note that it may start minimized to your taskbar, in which case you'll have to click the icon to use it:
+   ```bash
+   # If publishing, bump versions
+   # npm version patch
+   npm run make # or npm run build
+   ```
+
+   The outputs will be located in the `/out/make` directory. Run `smol-menubar.exe` to launch the application. Note that it may start minimized in your taskbar; you'll need to click the icon to use it:
+
 
 ![image](images/minimized.jpg)
 
