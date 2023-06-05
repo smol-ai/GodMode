@@ -1,7 +1,7 @@
 {
   "name": "smol-menubar",
   "productName": "smol-menubar",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "smol-ai",
   "description": "smol menubar app for Bard, ChatGPT, Claude",
   "main": "index.js",

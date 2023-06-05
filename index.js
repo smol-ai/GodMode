@@ -37,6 +37,7 @@ app.on("ready", () => {
         webviewTag: true,
         nodeIntegration: true,
         contextIsolation: false,
+        enableWebView: true  // from chatgpt
         // nativeWindowOpen: true,
       },
       width: 1200,
@@ -206,7 +207,7 @@ app.on("ready", () => {
         const { control, meta, key } = input;
         if (!control && !meta) return;
         if (key === "c") contents.copy();
-        if (key === "v") contents.paste();
+        // if (key === "v") contents.paste(); // we will handle this manually
         if (key === "a") contents.selectAll();
         if (key === "z") contents.undo();
         if (key === "y") contents.redo();

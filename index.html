@@ -25,8 +25,8 @@
   </div>
   <form id="form" class="">
     <textarea rows="4" id="prompt" name="prompt" autofocus
-      placeholder="Enter a superprompt here (Cmd/Ctrl+Enter to Submit or Cmd+1/2/3/A to resize windows)"></textarea>
-    <button id="btn" type="submit">Cmd/Ctrl+Enter to Submit</button>
+      placeholder="Enter a superprompt here (Cmd/Ctrl+Enter to Submit, Cmd+1/2/3/A/-/+ to resize windows, Cmd+R for new chat)"></textarea>
+    <button id="btn" type="submit">Cmd+Enter to Submit</button>
   </form>
   <script>
     const Store = require('electron-store');
@@ -34,12 +34,20 @@
     const webviewOAI = document.getElementById('webviewOAI');
     const webviewBARD = document.getElementById('webviewBARD');
     const webviewCLAUDE = document.getElementById('webviewCLAUDE');
+
     // add event listener for btn
     const promptEl = document.getElementById('prompt');
     // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
+    const SuperPromptEnterKey = store.get('SuperPromptEnterKey', true);
     promptEl.addEventListener("keydown", function (event) {
-      if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
-        document.getElementById('btn').click();
+      if (SuperPromptEnterKey) {
+        if (event.keyCode === 13) {
+          document.getElementById('btn').click();
+        } else {
+          if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
+            document.getElementById('btn').click();
+          }
+        }
       }
     });
     promptEl.addEventListener('input', function (event) {
@@ -254,30 +262,40 @@
 
         updateSplitSizes();
         event.preventDefault();
+      } else if ((event.metaKey || event.ctrlKey) && event.key === '+' || event.key === '=') {
+        webviewOAI.setZoomLevel(webviewOAI.getZoomLevel() + 1);
+        webviewBARD.setZoomLevel(webviewBARD.getZoomLevel() + 1);
+        webviewCLAUDE.setZoomLevel(webviewCLAUDE.getZoomLevel() + 1);
+      } else if ((event.metaKey || event.ctrlKey) && event.key === '-') {
+        webviewOAI.setZoomLevel(webviewOAI.getZoomLevel() - 1);
+        webviewBARD.setZoomLevel(webviewBARD.getZoomLevel() - 1);
+        webviewCLAUDE.setZoomLevel(webviewCLAUDE.getZoomLevel() - 1);
       }
+
     });
 
 
     // fix double-pasting inside webviews
-    function handleInnerWebviewPaste(webview) {
+    function setupCustomPasteBehavior(webview) {
       webview.addEventListener('dom-ready', function () {
         webview.executeJavaScript(`
-      let pasted = false;
-      window.addEventListener('paste', function(event) {
-          if (pasted) {
+    document.addEventListener('paste', (event) => {
               event.preventDefault();
-              pasted = false;
-          } else {
-              pasted = true;
-          }
+      let text = event.clipboardData.getData('text');
+      let activeElement = document.activeElement;
+      let start = activeElement.selectionStart;
+      let end = activeElement.selectionEnd;
+      activeElement.value = activeElement.value.slice(0, start) + text + activeElement.value.slice(end);
+      activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
       });
     `);
       });
     }
 
-    handleInnerWebviewPaste(webviewOAI);
-    handleInnerWebviewPaste(webviewBARD);
-    handleInnerWebviewPaste(webviewCLAUDE);
+    setupCustomPasteBehavior(webviewOAI);
+    setupCustomPasteBehavior(webviewBARD);
+    setupCustomPasteBehavior(webviewCLAUDE);
+
 
   </script>
 </body>
