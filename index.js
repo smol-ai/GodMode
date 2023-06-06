@@ -13,6 +13,7 @@ const {
   globalShortcut,
   shell,
 } = require("electron");
+const { version } = require('./package.json');
 
 const Store = require('electron-store');
 const store = new Store();
@@ -77,7 +78,7 @@ app.on("ready", () => {
         },
       },
       {
-        label: "Quick Open",
+        label: "Quick Open (use this!)",
         accelerator: "CommandorControl+Shift+G",
         click: () => {
           window.reload();
@@ -138,7 +139,13 @@ app.on("ready", () => {
         click: () => {
           shell.openExternal("https://github.com/smol-ai/menubar");
         },
-      }
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "Version " + version,
+      },
     ];
 
     tray.on("right-click", () => {
