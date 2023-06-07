@@ -38,7 +38,7 @@
     // add event listener for btn
     const promptEl = document.getElementById('prompt');
     // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
-    const SuperPromptEnterKey = store.get('SuperPromptEnterKey', true);
+    const SuperPromptEnterKey = store.get('SuperPromptEnterKey', false);
     promptEl.addEventListener("keydown", function (event) {
       if (SuperPromptEnterKey) {
         if (event.keyCode === 13) {

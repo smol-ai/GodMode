@@ -4,7 +4,7 @@ const store = new Store();
 document.getElementById('webviewOAIEnabled').checked = store.get('webviewOAIEnabled', true);
 document.getElementById('webviewBARDEnabled').checked = store.get('webviewBARDEnabled', true);
 document.getElementById('webviewCLAUDEEnabled').checked = store.get('webviewCLAUDEEnabled', true);
-document.getElementById('SuperPromptEnterKey').checked = store.get('SuperPromptEnterKey', true);
+document.getElementById('SuperPromptEnterKey').checked = store.get('SuperPromptEnterKey', false);
 
 document.getElementById('webviewOAIEnabled').addEventListener('change', (event) => {
     store.set('webviewOAIEnabled', event.target.checked);
