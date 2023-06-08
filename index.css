@@ -110,3 +110,7 @@ webview {
 .split .split-bar:hover {
   background: linear-gradient(to right, #4c6fff, #9f59ff);
 }
+
+.hidden {
+  display: none;
+}
