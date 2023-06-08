@@ -19,7 +19,7 @@
       </webview>
     </div>
     <div id="three" class="split page darwin">
-      <webview id="webviewCLAUDE" src="https://console.anthropic.com/chat/new" autosize="on">
+      <webview id="webviewCLAUDE" src="http://localhost:8080" autosize="on">
       </webview>
     </div>
   </div>
@@ -80,7 +80,7 @@
       simulateUserInput(inputElement, "${sanitizedInput}");
       `)
       webviewCLAUDE.executeJavaScript(`
-      var inputElement = document.querySelector('div.ProseMirror')
+      var inputElement = document.querySelector('div.input-holder textarea')
       inputElement.innerHTML = "${sanitizedInput}"`)
     })
     promptEl.addEventListener("keydown", function (event) {
@@ -116,9 +116,11 @@
       btn.disabled = false;
       btn.click()`)
       webviewCLAUDE.executeJavaScript(`
-      var btn = document.querySelector('div.group.flex.p-3 button:has(svg)'); // YES we are using the has selector!!!!
-      btn.disabled = false;
-      btn.click()`)
+      var btn = document.querySelector('.input-holder .send'); // YES we are using the has selector!!!!
+      console.log({btn})
+      btn.click()
+      
+      `)
     })
 
     // fix the styling of each chat
