@@ -234,6 +234,8 @@ class Claude extends Provider {
 const promptEl = document.getElementById('prompt');
 // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
 const SuperPromptEnterKey = store.get('SuperPromptEnterKey', false);
+
+
 promptEl.addEventListener('keydown', function (event) {
 	if (SuperPromptEnterKey) {
 		if (event.keyCode === 13) {
@@ -245,8 +247,9 @@ promptEl.addEventListener('keydown', function (event) {
 		}
 	}
 });
+
+/** Sanitize input and send to all providers */
 promptEl.addEventListener('input', function (event) {
-	// get prompt from input
 	const sanitizedInput = promptEl.value
 		.replace(/"/g, '\\"')
 		.replace(/\n/g, '\\n');
@@ -255,6 +258,8 @@ promptEl.addEventListener('input', function (event) {
 	OpenAi.handleInput(sanitizedInput);
 	Claude.handleInput(Claude.webview, sanitizedInput);
 });
+
+
 promptEl.addEventListener('keydown', function (event) {
 	const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 	if (isCmdOrCtrl && event.key === 'Enter') {
@@ -262,6 +267,7 @@ promptEl.addEventListener('keydown', function (event) {
 		form.dispatchEvent(new Event('submit'));
 	}
 });
+
 const form = document.getElementById('form');
 form.addEventListener('submit', function (event) {
 	const sanitizedInput = promptEl.value
