@@ -1,8 +1,5 @@
 const Store = require('electron-store');
 const store = new Store();
-// const webviewOAI = document.getElementById('webviewOAI');
-// const webviewBARD = document.getElementById('webviewBARD');
-// const webviewCLAUDE = document.getElementById('webviewCLAUDE');
 
 /* ========================================================================== */
 /* Provider-Specific Handlers                                                 */
@@ -11,9 +8,11 @@ const store = new Store();
 /* Shared Handlers ---------------------------------------------------------- */
 
 class Provider {
-  static setupCustomPasteBehavior() {
-		this.webview.addEventListener('dom-ready', function () {
-			this.webview.executeJavaScript(`
+	static setupCustomPasteBehavior() {
+		this.webview.addEventListener(
+			'dom-ready',
+			function () {
+				this.webview.executeJavaScript(`
 			document.addEventListener('paste', (event) => {
 				event.preventDefault();
 				let text = event.clipboardData.getData('text');
@@ -24,14 +23,22 @@ class Provider {
 				activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
 				});
 			`);
-		}.bind(this));
+			}.bind(this)
+		);
+	}
+
+	static isEnabled() {
+		throw new Error(`Provider ${this.name} must implement isEnabled()`);
 	}
 }
 
 /* OpenAI ChatGPT ----------------------------------------------------------- */
 
 class OpenAi extends Provider {
+	static webviewId = 'webviewOAI';
 	static webview = document.getElementById('webviewOAI');
+
+	static url = "https://chat.openai.com/chat";
 
 	static handleInput(input) {
 		this.webview.executeJavaScript(`
@@ -92,12 +99,19 @@ class OpenAi extends Provider {
 			}.bind(this)
 		);
 	}
+
+	static isEnabled() {
+		return store.get('webviewOAIEnabled', true);
+	}
 }
 
 /* Google Bard -------------------------------------------------------------- */
 
 class Bard extends Provider {
+	static webviewId = 'webviewBARD';
 	static webview = document.getElementById('webviewBARD');
+
+	static url = 'https://bard.google.com';
 
 	static handleInput(input) {
 		this.webview.executeJavaScript(`
@@ -179,12 +193,19 @@ class Bard extends Provider {
 			}.bind(this)
 		);
 	}
+
+	static isEnabled() {
+		return store.get('webviewBARDEnabled', true);
+	}
 }
 
 /* Anthropic Claude --------------------------------------------------------- */
 
 class Claude extends Provider {
+	static webviewId = 'webviewCLAUDE';
 	static webview = document.getElementById('webviewCLAUDE');
+
+	static url = 'https://console.anthropic.com/chat/new';
 
 	static handleInput(input) {
 		this.webview.executeJavaScript(`
@@ -224,31 +245,81 @@ class Claude extends Provider {
 			}.bind(this)
 		);
 	}
+
+	static isEnabled() {
+		return store.get('webviewCLAUDEEnabled', true);
+	}
 }
 
-/* ========================================================================== */
-/* End of Provider-Specific Handlers                                          */
-/* ========================================================================== */
+/* END Providers ------------------------------------------------------------ */
+
+// Maps a provider to each pane.
+// Future: will be configurable by the user
+let paneProviderMapping = {
+  "left": Bard,
+  "middle": OpenAi,
+  "right": Claude
+};
+
+// Create the panes based on the mapping
+Object.keys(paneProviderMapping).forEach(position => {
+  const provider = paneProviderMapping[position];
+
+  const pane = document.createElement("div");
+  pane.id = `${position}Pane`;
+  pane.className = `split page darwin`;
+
+  const webview = document.createElement("webview");
+  webview.id = provider.webviewId;
+  webview.src = provider.url;
+  webview.autosize = "on";
+
+  pane.appendChild(webview);
+
+  document.querySelector(".flex").appendChild(pane);
+});
 
 // add event listener for btn
 const promptEl = document.getElementById('prompt');
+
 // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
 const SuperPromptEnterKey = store.get('SuperPromptEnterKey', false);
 
-
+// Submit the prompt by preccing Ctrl+Enter or Enter
 promptEl.addEventListener('keydown', function (event) {
-	if (SuperPromptEnterKey) {
-		if (event.keyCode === 13) {
-			document.getElementById('btn').click();
-		} else {
-			if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
-				document.getElementById('btn').click();
-			}
-		}
+	const isCmdOrCtrl = event.metaKey || event.ctrlKey;
+	const isEnter = event.key === 'Enter';
+
+	if ((SuperPromptEnterKey && isEnter) || (isCmdOrCtrl && isEnter)) {
+		event.preventDefault();
+		document.getElementById('btn').click();
 	}
 });
 
-/** Sanitize input and send to all providers */
+// Consolidated this code into the above event listener
+// Retaining it here in case there's a reason to revert
+//
+// promptEl.addEventListener('keydown', function (event) {
+// 	if (SuperPromptEnterKey) {
+// 		if (event.keyCode === 13) {
+// 			document.getElementById('btn').click();
+// 		} else {
+// 			if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
+// 				document.getElementById('btn').click();
+// 			}
+// 		}
+// 	}
+// });
+
+// promptEl.addEventListener('keydown', function (event) {
+// 	const isCmdOrCtrl = event.metaKey || event.ctrlKey;
+// 	if (isCmdOrCtrl && event.key === 'Enter') {
+// 		event.preventDefault();
+// 		form.dispatchEvent(new Event('submit'));
+// 	}
+// });
+
+// Sanitize input and send to all providers
 promptEl.addEventListener('input', function (event) {
 	const sanitizedInput = promptEl.value
 		.replace(/"/g, '\\"')
@@ -259,16 +330,9 @@ promptEl.addEventListener('input', function (event) {
 	Claude.handleInput(Claude.webview, sanitizedInput);
 });
 
-
-promptEl.addEventListener('keydown', function (event) {
-	const isCmdOrCtrl = event.metaKey || event.ctrlKey;
-	if (isCmdOrCtrl && event.key === 'Enter') {
-		event.preventDefault();
-		form.dispatchEvent(new Event('submit'));
-	}
-});
-
 const form = document.getElementById('form');
+
+// Submit prompt to all providers
 form.addEventListener('submit', function (event) {
 	const sanitizedInput = promptEl.value
 		.replace(/"/g, '\\"')
@@ -280,10 +344,39 @@ form.addEventListener('submit', function (event) {
 	Claude.handleSubmit(sanitizedInput);
 });
 
-// fix the styling of each chat
+// Adjust styling for enabled providers
 Bard.handleCss();
 OpenAi.handleCss();
 Claude.handleCss(Claude.webview);
+
+// fix double-pasting inside webviews
+OpenAi.setupCustomPasteBehavior();
+Bard.setupCustomPasteBehavior();
+Claude.setupCustomPasteBehavior();
+
+
+/* ========================================================================== */
+/* Window Panes and Provider Mapping                                          */
+/* ========================================================================== */
+
+
+// Create the panes dynamically based on the pane-provider mapping.
+Object.keys(paneProviderMapping).forEach(position => {
+  const provider = paneProviderMapping[position];
+
+  const pane = document.createElement("div");
+  pane.id = `${position}Pane`;
+  pane.className = `split page darwin`;
+
+  const webview = document.createElement("webview");
+  webview.id = `webview${provider.name}`;
+  webview.src = provider.url;
+  webview.autosize = "on";
+
+  pane.appendChild(webview);
+
+  document.querySelector(".flex").appendChild(pane);
+});
 
 const splitInstance = Split(['#one', '#two', '#three'], {
 	direction: 'horizontal',
@@ -295,14 +388,10 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateSplitSizes() {
-	const webviewOAIEnabled = store.get('webviewOAIEnabled', true);
-	const webviewBARDEnabled = store.get('webviewBARDEnabled', true);
-	const webviewCLAUDEEnabled = store.get('webviewCLAUDEEnabled', true);
-
 	const sizes = [
-		webviewOAIEnabled ? 33.33 : 0,
-		webviewBARDEnabled ? 33.33 : 0,
-		webviewCLAUDEEnabled ? 33.33 : 0,
+		OpenAi.isEnabled ? 33.33 : 0,
+		Bard.isEnabled ? 33.33 : 0,
+		Claude.isEnabled ? 33.33 : 0,
 	];
 
 	const total = sizes.reduce((a, b) => a + b, 0);
@@ -340,8 +429,3 @@ document.addEventListener('keydown', event => {
 		webviewCLAUDE.setZoomLevel(webviewCLAUDE.getZoomLevel() - 1);
 	}
 });
-
-// fix double-pasting inside webviews
-OpenAi.setupCustomPasteBehavior();
-Bard.setupCustomPasteBehavior();
-Claude.setupCustomPasteBehavior();
