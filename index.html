@@ -10,7 +10,18 @@
 
 <body class="myarrow">
   <div class="flex">
-    <!-- Provider Panes Go Here -->
+    <div id="openaiPane" class="split page darwin hidden">
+      <webview id="webviewOAI" src="https://chat.openai.com/chat" autosize="on">
+      </webview>
+    </div>
+    <div id="bardPane" class="split page darwin hidden">
+      <webview id="webviewBARD" src="https://bard.google.com" autosize="on">
+      </webview>
+    </div>
+    <div id="claudePane" class="split page darwin hidden">
+      <webview id="webviewCLAUDE" src="https://console.anthropic.com/chat/new" autosize="on">
+      </webview>
+    </div>
   </div>
   <form id="form" class="">
     <textarea rows="4" id="prompt" name="prompt" autofocus
