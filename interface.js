@@ -1,3 +1,4 @@
+console.log('interface.js loaded');
 const Store = require('electron-store');
 const store = new Store();
 
@@ -27,6 +28,18 @@ class Provider {
 		);
 	}
 
+	static handleInput(input) {
+		throw new Error(`Provider ${this.name} must implement handleInput()`);
+	}
+
+	static handleSubmit(input) {
+		throw new Error(`Provider ${this.name} must implement handleSubmit()`);
+	}
+
+	static handleCss() {
+		throw new Error(`Provider ${this.name} must implement handleCss()`);
+	}
+
 	static isEnabled() {
 		throw new Error(`Provider ${this.name} must implement isEnabled()`);
 	}
@@ -38,7 +51,7 @@ class OpenAi extends Provider {
 	static webviewId = 'webviewOAI';
 	static webview = document.getElementById('webviewOAI');
 
-	static url = "https://chat.openai.com/chat";
+	static url = 'https://chat.openai.com/chat';
 
 	static handleInput(input) {
 		this.webview.executeJavaScript(`
@@ -220,7 +233,7 @@ class Claude extends Provider {
     btn.click()`);
 	}
 
-	static handleCss(webview) {
+	static handleCss() {
 		this.webview.addEventListener(
 			'dom-ready',
 			function () {
@@ -251,32 +264,24 @@ class Claude extends Provider {
 	}
 }
 
+console.log('Loading providers...');
+
 /* END Providers ------------------------------------------------------------ */
+
+/* ========================================================================== */
+/* Create Panes                                                               */
+/* ========================================================================== */
 
 // Maps a provider to each pane.
 // Future: will be configurable by the user
-let paneProviderMapping = {
-  "left": Bard,
-  "middle": OpenAi,
-  "right": Claude
-};
+let paneProviders = [Bard, OpenAi, Claude];
 
 // Create the panes based on the mapping
-Object.keys(paneProviderMapping).forEach(position => {
-  const provider = paneProviderMapping[position];
+paneProviders.forEach(provider => {
 
-  const pane = document.createElement("div");
-  pane.id = `${position}Pane`;
-  pane.className = `split page darwin`;
+	const providerPane = document.getElementById(`${provider.name.toLowerCase()}Pane`);
+	providerPane.classList.remove('hidden');
 
-  const webview = document.createElement("webview");
-  webview.id = provider.webviewId;
-  webview.src = provider.url;
-  webview.autosize = "on";
-
-  pane.appendChild(webview);
-
-  document.querySelector(".flex").appendChild(pane);
 });
 
 // add event listener for btn
@@ -378,7 +383,7 @@ Object.keys(paneProviderMapping).forEach(position => {
   document.querySelector(".flex").appendChild(pane);
 });
 
-const splitInstance = Split(['#one', '#two', '#three'], {
+const splitInstance = Split(['#openaiPane', '#bardPane', '#claudePane'], {
 	direction: 'horizontal',
 	minSize: 0,
 });
