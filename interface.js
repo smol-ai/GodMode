@@ -331,6 +331,7 @@ OpenAi.setupCustomPasteBehavior();
 Bard.setupCustomPasteBehavior();
 Claude.setupCustomPasteBehavior();
 
+/* END Create Panes --------------------------------------------------------- */
 
 /* ========================================================================== */
 /* Window Panes and Provider Mapping                                          */
