@@ -304,7 +304,7 @@ promptEl.addEventListener('input', function (event) {
 
 	Bard.handleInput(sanitizedInput);
 	OpenAi.handleInput(sanitizedInput);
-	Claude.handleInput(Claude.webview, sanitizedInput);
+	Claude.handleInput(sanitizedInput);
 });
 
 const form = document.getElementById('form');
@@ -324,7 +324,7 @@ form.addEventListener('submit', function (event) {
 // Adjust styling for enabled providers
 Bard.handleCss();
 OpenAi.handleCss();
-Claude.handleCss(Claude.webview);
+Claude.handleCss();
 
 // fix double-pasting inside webviews
 OpenAi.setupCustomPasteBehavior();
