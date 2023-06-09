@@ -10,21 +10,19 @@ const store = new Store();
 
 class Provider {
 	static setupCustomPasteBehavior() {
-		this.webview.addEventListener(
-			'dom-ready',
-			function () {
+		this.webview.addEventListener('dom-ready', () => {
 				this.webview.executeJavaScript(`
-			document.addEventListener('paste', (event) => {
-				event.preventDefault();
-				let text = event.clipboardData.getData('text');
-				let activeElement = document.activeElement;
-				let start = activeElement.selectionStart;
-				let end = activeElement.selectionEnd;
-				activeElement.value = activeElement.value.slice(0, start) + text + activeElement.value.slice(end);
-				activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
-				});
+					document.addEventListener('paste', (event) => {
+					event.preventDefault();
+					let text = event.clipboardData.getData('text');
+					let activeElement = document.activeElement;
+					let start = activeElement.selectionStart;
+					let end = activeElement.selectionEnd;
+					activeElement.value = activeElement.value.slice(0, start) + text + activeElement.value.slice(end);
+					activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
+					});
 			`);
-			}.bind(this)
+			}
 		);
 	}
 
@@ -76,8 +74,7 @@ class OpenAi extends Provider {
 
 	static handleCss() {
 		this.webview.addEventListener(
-			'dom-ready',
-			function () {
+			'dom-ready', () => {
 				// hide message below text input, sidebar, suggestions on new chat
 				this.webview.insertCSS(`
           .text-xs.text-center {
@@ -109,7 +106,7 @@ class OpenAi extends Provider {
           }
 
         `);
-			}.bind(this)
+			}
 		);
 	}
 
@@ -167,8 +164,7 @@ class Bard extends Provider {
 
 	static handleCss() {
 		this.webview.addEventListener(
-			'dom-ready',
-			function () {
+			'dom-ready', () => {
 				// hide message below text input, sidebar, suggestions on new chat
 				this.webview.insertCSS(`
           .chat-history, .conversation-container, .input-area, .mdc-text-area {
@@ -203,7 +199,7 @@ class Bard extends Provider {
             display: none !important;
           }
         `);
-			}.bind(this)
+			}
 		);
 	}
 
@@ -235,8 +231,7 @@ class Claude extends Provider {
 
 	static handleCss() {
 		this.webview.addEventListener(
-			'dom-ready',
-			function () {
+			'dom-ready', () => {
 				// hide message below text input, sidebar, suggestions on new chat
 				setTimeout(() => {
 					this.webview.insertCSS(`
@@ -255,7 +250,7 @@ class Claude extends Provider {
         }
         `);
 				}, 1000);
-			}.bind(this)
+			}
 		);
 	}
 
@@ -300,29 +295,6 @@ promptEl.addEventListener('keydown', function (event) {
 		document.getElementById('btn').click();
 	}
 });
-
-// Consolidated this code into the above event listener
-// Retaining it here in case there's a reason to revert
-//
-// promptEl.addEventListener('keydown', function (event) {
-// 	if (SuperPromptEnterKey) {
-// 		if (event.keyCode === 13) {
-// 			document.getElementById('btn').click();
-// 		} else {
-// 			if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
-// 				document.getElementById('btn').click();
-// 			}
-// 		}
-// 	}
-// });
-
-// promptEl.addEventListener('keydown', function (event) {
-// 	const isCmdOrCtrl = event.metaKey || event.ctrlKey;
-// 	if (isCmdOrCtrl && event.key === 'Enter') {
-// 		event.preventDefault();
-// 		form.dispatchEvent(new Event('submit'));
-// 	}
-// });
 
 // Sanitize input and send to all providers
 promptEl.addEventListener('input', function (event) {
