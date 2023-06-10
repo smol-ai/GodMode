@@ -88,7 +88,7 @@ class Bard extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get('webviewBARDEnabled', true);
+		return store.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

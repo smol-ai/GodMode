@@ -46,7 +46,7 @@ class Claude extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get('webviewCLAUDEEnabled', false);
+		return store.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

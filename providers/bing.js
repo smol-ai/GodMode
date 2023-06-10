@@ -85,7 +85,7 @@ class Bing extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get('webviewBINGEnabled', true);
+		return store.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

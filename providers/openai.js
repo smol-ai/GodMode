@@ -67,7 +67,7 @@ class OpenAi extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get('webviewOAIEnabled', true);
+		return store.get(`${this.webviewId}Enabled`, true);
 	}
 }
 
