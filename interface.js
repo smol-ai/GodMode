@@ -267,19 +267,29 @@ console.log('Loading providers...');
 /* Create Panes                                                               */
 /* ========================================================================== */
 
-// Maps a provider to each pane.
-// Future: will be configurable by the user
+/**
+ * Create an array of chat providers.
+ *
+ * Currently this is just an array of the three classes, but the goal is to
+ * make the providers configurable and read the enabled providers from the
+ * electron-store.
+ *
+ * TODO: Read enabled providers from electron-store
+ */
 let paneProviders = [Bard, OpenAi, Claude];
 
-// Create the panes based on the mapping
+/**
+ * Reveal the panes for the enabled providers.
+ */
 paneProviders.forEach(provider => {
-
 	const providerPane = document.getElementById(`${provider.name.toLowerCase()}Pane`);
 	providerPane.classList.remove('hidden');
 
 });
 
-// add event listener for btn
+/**
+ * Grab promptEl, the textarea input element, to handle input events.
+ */
 const promptEl = document.getElementById('prompt');
 
 // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
