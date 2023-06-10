@@ -47,7 +47,7 @@ enabledProviders.forEach(provider => {
 	provider.setupCustomPasteBehavior();
 });
 
-// Submit the prompt by preccing Ctrl+Enter or Enter
+// Submit the prompt by pressing Ctrl+Enter or Enter
 promptEl.addEventListener('keydown', function (event) {
 	const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 	const isEnter = event.key === 'Enter';
