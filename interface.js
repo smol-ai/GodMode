@@ -142,6 +142,8 @@ const paneStates = {
 	a: [true, true, true],
 };
 
+
+// TODO: Adjust to be dynamic
 document.addEventListener('keydown', event => {
 	if ((event.metaKey || event.ctrlKey) && event.key in paneStates) {
 		store.set('webviewOAIEnabled', paneStates[event.key][0]);
