@@ -19,7 +19,7 @@ const Bing = require('./providers/bing');
  *
  * TODO: Read enabled providers from electron-store
  */
-const allProviders = [Bard, OpenAi, Claude, Bing];
+const allProviders = [Bard, OpenAi, Bing];
 const enabledProviders = allProviders.filter(provider => provider.isEnabled());
 
 /**
@@ -89,26 +89,9 @@ form.addEventListener('submit', function (event) {
 /* ========================================================================== */
 
 
-Object.keys(paneProviderMapping).forEach(position => {
-	const provider = paneProviderMapping[position];
-
-	const pane = document.createElement('div');
-	pane.id = `${position}Pane`;
-	pane.className = `split page darwin`;
-
-	const webview = document.createElement('webview');
-	webview.id = `webview${provider.name}`;
-	webview.src = provider.url;
-	webview.autosize = 'on';
-
-	pane.appendChild(webview);
-
-	document.querySelector('.flex').appendChild(pane);
-});
-
 // TODO: Rewrite this to be dynamic based on the paneProviderMapping
 const splitInstance = Split(
-	['#openaiPane', '#bardPane', '#claudePane', '#bingPane'],
+	['#openaiPane', '#bardPane', '#bingPane'],
 	{
 		direction: 'horizontal',
 		minSize: 0,
