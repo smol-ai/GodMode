@@ -23,16 +23,6 @@ const allProviders = [Bard, OpenAi, Bing];
 const enabledProviders = allProviders.filter(provider => provider.isEnabled());
 
 /**
- * Reveal the panes for the enabled providers.
- */
-enabledProviders.forEach(provider => {
-	const providerPane = document.getElementById(
-		`${provider.name.toLowerCase()}Pane`
-	);
-	providerPane.classList.remove('hidden');
-});
-
-/**
  * Grab promptEl, the textarea input element, to handle input events.
  */
 const promptEl = document.getElementById('prompt');
