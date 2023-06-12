@@ -19,14 +19,18 @@ class Bing extends Provider {
 				element.dispatchEvent(inputEvent);
 			}
 
-			// Access SERP Shadow DOM
+			// SERP Shadow DOM
 			var serpDOM = document.querySelector('.cib-serp-main');
 
-			// Inner Input Shadow DOM
+			// Action Bar Shadow DOM
 			var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
 
+			// Text Input Shadow DOM
+			var textInputDOM = inputDOM.shadowRoot.querySelector('cib-text-input');
+
 			// Input Element
-			var inputElement = inputDOM.shadowRoot.querySelector('#searchbox');
+			var inputElement = textInputDOM.shadowRoot.querySelector('#searchbox');
+
 			simulateUserInput(inputElement, "${input}");
 		`);
 	}
@@ -57,31 +61,28 @@ class Bing extends Provider {
 	 */
 	static handleCss() {
     // this.webview.executeJavaScript(`
-    // setTimeout(function() {
 		// 		// Hide Header Bar
 		// 		var headerBar = document.querySelector('header');
-		// 		headerBar.setAttribute('style', 'display: none !important');
-		// 		console.log('headerBar', headerBar);
+		// 		headerBar.remove();
 
-    //     // Access SERP Shadow DOM
-    //     var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
+    //     // // Access SERP Shadow DOM
+    //     // var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
 
-    //     // Conversation Shadow DOM
-    //     var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
+    //     // // Conversation Shadow DOM
+    //     // var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
 
-    //     // Welcome Container Shadow DOM
-    //     var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
-		// 		console.log('welcomeDOM', welcomeDOM);
+    //     // // Welcome Container Shadow DOM
+    //     // var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
+		// 		// console.log('welcomeDOM', welcomeDOM);
 
-    //     // Hide all welcome container items except tone selector
-    //     welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
-    //     welcomeDOM.querySelector('div.container-title').setAttribute('style', 'display: none !important');
-    //     welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
-    //     welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
-    //     welcomeDOM.querySelector('div.learn-tog-item').setAttribute('style', 'display: none !important');
-    //     welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
-    // }, 10000); // 10000 milliseconds = 10 seconds (after elements have definitely loaded)
-    // `);
+    //     // // Hide all welcome container items except tone selector
+    //     // welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
+    //     // welcomeDOM.querySelector('div.container-title').setAttribute('style', 'display: none !important');
+    //     // welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
+    //     // welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
+    //     // welcomeDOM.querySelector('div.learn-tog-item').setAttribute('style', 'display: none !important');
+    //     // welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
+    // }`);
 	}
 
 	static isEnabled() {
