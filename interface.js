@@ -1,25 +1,20 @@
 const Store = require('electron-store');
 const store = new Store();
 
-const OpenAi = require('./providers/openai');
-const Bard = require('./providers/bard');
-const Claude = require('./providers/claude');
-const Bing = require('./providers/bing');
+const providers = {
+  Bard: require('./providers/bard'),
+  OpenAi: require('./providers/openai'),
+  Bing: require('./providers/bing'),
+};
 
 /* ========================================================================== */
 /* Create Panes                                                               */
 /* ========================================================================== */
 
 /**
- * Create an array of chat providers.
- *
- * Currently this is just an array of the three classes, but the goal is to
- * make the providers configurable and read the enabled providers from the
- * electron-store.
- *
- * TODO: Read enabled providers from electron-store
+ * Create an array of chat enabled providers.
  */
-const allProviders = [Bard, OpenAi, Bing];
+const allProviders = Object.values(providers);
 const enabledProviders = allProviders.filter(provider => provider.isEnabled());
 
 /**
@@ -29,6 +24,8 @@ const promptEl = document.getElementById('prompt');
 
 // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
 const SuperPromptEnterKey = store.get('SuperPromptEnterKey', false);
+
+
 
 // Adjust styling for enabled providers
 // fix double-pasting inside webviews
@@ -92,27 +89,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	updateSplitSizes();
 });
 
-/**
- * Updates the sizes of the panes in the split view based on the isEnabled
- * state of their providers.
- *
- * This function calculates the size of each pane as an equal fraction
- * of the total number of panes.
- *
- * If a pane's provider is disabled, its size is set to 0.
- * The sizes are then normalized to sum up to 100.
- *
- * TODO: Fix this comment.
- * If all providers are disabled, all panes are shown equally.
- *
- * After calculating the sizes, it updates the split instance with the new sizes.
- *
- * @see {@link paneProviders} - An array of objects, each with an `isEnabled`
- * method that returns a boolean indicating whether the provider is enabled.
- *
- * @see {@link splitInstance} - An object with a `setSizes` method that
- * takes an array of sizes and applies them to the split view.
- */
 function updateSplitSizes() {
 
 	const paneSize = 1 / enabledProviders.length;
