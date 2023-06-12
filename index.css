@@ -88,9 +88,13 @@ webview {
 }
 
 .gutter {
-  background-color: #eee;
+  background-color: #A9A9A9;
   background-repeat: no-repeat;
   background-position: 50%;
+}
+
+.gutter:hover {
+  background-color: #929292;
 }
 
 .gutter.gutter-horizontal {
