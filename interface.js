@@ -1,9 +1,11 @@
+const log = require('electron-log');
+
 const Store = require('electron-store');
 const store = new Store();
 
 const providers = {
-  Bard: require('./providers/bard'),
   OpenAi: require('./providers/openai'),
+  Bard: require('./providers/bard'),
   Bing: require('./providers/bing'),
 };
 
@@ -77,8 +79,16 @@ form.addEventListener('submit', function (event) {
 
 
 // TODO: Rewrite this to be dynamic based on the paneProviderMapping
+const panes = [];
+
+for (const provider of enabledProviders) {
+	panes.push(provider.paneId());
+}
+log.info('panes', panes);
+
+
 const splitInstance = Split(
-	['#openaiPane', '#bardPane', '#bingPane'],
+	panes,
 	{
 		direction: 'horizontal',
 		minSize: 0,
@@ -86,19 +96,18 @@ const splitInstance = Split(
 );
 
 window.addEventListener('DOMContentLoaded', () => {
+	log.info('DOM Content Loaded');
 	updateSplitSizes();
+	log.info('Split sizes updated');
 });
 
+/**
+ * Update the split pane sizes based on the number of enabled providers.
+ */
 function updateSplitSizes() {
-
-	const paneSize = 1 / enabledProviders.length;
-	const sizes = enabledProviders.forEach(() => paneSize);
-
-	const total = sizes.reduce((a, b) => a + b, 0);
-	const normalizedSizes = sizes.map(size =>
-		total === 0 ? 33.33 : (size / total) * 100
-	); // if all disabled, show all
-	splitInstance.setSizes(normalizedSizes);
+	const paneSize = (1 / enabledProviders.length) * 100;
+	const sizes = new Array(enabledProviders.length).fill(paneSize);
+	splitInstance.setSizes(sizes);
 }
 
 const paneStates = {
