@@ -18,10 +18,6 @@
       <webview id="webviewBARD" src="https://bard.google.com" autosize="on">
       </webview>
     </div>
-    <!-- <div id="claudePane" class="page darwin">
-      <webview id="webviewCLAUDE" src="https://console.anthropic.com/chat/new" autosize="on">
-      </webview>
-    </div> -->
     <div id="bingPane" class="page darwin">
       <webview
         id="webviewBING"
@@ -33,8 +29,12 @@
     </div>
   </div>
   <form id="form" class="">
-    <textarea rows="4" id="prompt" name="prompt" autofocus
-      placeholder="Enter a superprompt here (Cmd/Ctrl+Enter to Submit, Cmd+1/2/3/A/-/+ to resize windows, Cmd+R for new chat)"></textarea>
+    <textarea rows="5" id="prompt" name="prompt" autofocus
+      placeholder="Enter a superprompt here.
+- Submit: Cmd/Ctrl+Enter
+- Resize windows: Cmd+1/2/3/A/-/+
+- New chat: Cmd+R
+      "></textarea>
     <button id="btn" type="submit">Cmd+Enter to Submit</button>
   </form>
   <script src="interface.js"></script>
