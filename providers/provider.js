@@ -2,6 +2,11 @@ const Store = require('electron-store');
 const store = new Store();
 
 class Provider {
+
+	static paneId() {
+		return `#${this.name.toLowerCase()}Pane`;
+	}
+
 	static setupCustomPasteBehavior() {
 		this.webview.addEventListener('dom-ready', () => {
 			this.webview.executeJavaScript(`
