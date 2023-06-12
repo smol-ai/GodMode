@@ -5,28 +5,27 @@ const Provider = require('./provider');
 
 class Claude extends Provider {
 	static webviewId = 'webviewCLAUDE';
-	static webview = document.getElementById('webviewCLAUDE');
 
 	static url = 'https://console.anthropic.com/chat/new';
 
 	static handleInput(input) {
-		this.webview.executeJavaScript(`
+		this.getWebview().executeJavaScript(`
     var inputElement = document.querySelector('div.ProseMirror')
     inputElement.innerHTML = "${input}"`);
 	}
 
 	static handleSubmit(input) {
-		this.webview.executeJavaScript(`
+		this.getWebview().executeJavaScript(`
     var btn = document.querySelector('div.group.flex.p-3 button:has(svg)'); // YES we are using the has selector!!!!
     btn.disabled = false;
     btn.click()`);
 	}
 
 	static handleCss() {
-		this.webview.addEventListener('dom-ready', () => {
+		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
-				this.webview.insertCSS(`
+				this.getWebview().insertCSS(`
         header, .container {
           background-color: white;
           /* single line dark mode ftw */

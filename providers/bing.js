@@ -5,12 +5,11 @@ const Provider = require('./provider');
 
 class Bing extends Provider {
 	static webviewId = 'webviewBING';
-	static webview = document.getElementById('webviewBING');
 
 	static url = 'https://bing.com/chat';
 
 	static handleInput(input) {
-		this.webview.executeJavaScript(`
+		this.getWebview().executeJavaScript(`
 			// Simulate user input
 			function simulateUserInput(element, text) {
 				const inputEvent = new Event('input', { bubbles: true });
@@ -28,15 +27,15 @@ class Bing extends Provider {
 			// Text Input Shadow DOM
 			var textInputDOM = inputDOM.shadowRoot.querySelector('cib-text-input');
 
-			// Input Element
-			var inputElement = textInputDOM.shadowRoot.querySelector('#searchbox');
+			// This inner cib-text-input Shadow DOM is not always present
+			var inputElement = textInputDOM ? textInputDOM.shadowRoot.querySelector('#searchbox') : inputDOM.shadowRoot.querySelector('#searchbox');
 
 			simulateUserInput(inputElement, "${input}");
 		`);
 	}
 
 	static handleSubmit(input) {
-		this.webview.executeJavaScript(`
+		this.getWebview().executeJavaScript(`
 		// Access SERP Shadow DOM
 		var serpDOM = document.querySelector('.cib-serp-main');
 
@@ -47,6 +46,10 @@ class Bing extends Provider {
 		var submitButton = inputDOM.shadowRoot.querySelector('div.submit button.primary');
 		submitButton.click();
 		`);
+	}
+
+	static getUserAgent() {
+		return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.37'
 	}
 
 	/**

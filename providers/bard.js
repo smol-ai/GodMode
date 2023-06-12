@@ -5,12 +5,11 @@ const Provider = require('./provider');
 
 class Bard extends Provider {
 	static webviewId = 'webviewBARD';
-	static webview = document.getElementById('webviewBARD');
 
 	static url = 'https://bard.google.com';
 
 	static handleInput(input) {
-		this.webview.executeJavaScript(`
+		this.getWebview().executeJavaScript(`
       var inputElement = document.querySelector("#mat-input-0");
 
       // try to send keyboard event to trigger the re-enable of the disabled button
@@ -29,7 +28,7 @@ class Bard extends Provider {
 	}
 
 	static handleSubmit(input) {
-		this.webview.executeJavaScript(`
+		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector("#mat-input-0");
 
         // try to send keyboard event to trigger the re-enable of the disabled button
@@ -49,9 +48,9 @@ class Bard extends Provider {
 	}
 
 	static handleCss() {
-		this.webview.addEventListener('dom-ready', () => {
+		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
-			this.webview.insertCSS(`
+			this.getWebview().insertCSS(`
           .chat-history, .conversation-container, .input-area, .mdc-text-area {
             margin: 0 !important;
           }

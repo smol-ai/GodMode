@@ -1,15 +1,21 @@
 const Store = require('electron-store');
 const store = new Store();
+const log = require('electron-log');
 
 class Provider {
 
+	static webviewId = '';
+
+	static getWebview() {
+		return document.getElementById(this.webviewId);
+	}
 	static paneId() {
-		return `#${this.name.toLowerCase()}Pane`;
+		return `${this.name.toLowerCase()}Pane`;
 	}
 
 	static setupCustomPasteBehavior() {
-		this.webview.addEventListener('dom-ready', () => {
-			this.webview.executeJavaScript(`
+		this.getWebview().addEventListener('dom-ready', () => {
+			this.getWebview().executeJavaScript(`
 					document.addEventListener('paste', (event) => {
 					event.preventDefault();
 					let text = event.clipboardData.getData('text');
@@ -35,9 +41,18 @@ class Provider {
 		throw new Error(`Provider ${this.name} must implement handleCss()`);
 	}
 
-	static isEnabled() {
-		throw new Error(`Provider ${this.name} must implement isEnabled()`);
+	static getUserAgent() {
+		return false;
 	}
+
+	static isEnabled() {
+		return store.get(`${this.webviewId}Enabled`);
+	}
+
+	static setEnabled(state) {
+		store.set(`${this.webviewId}Enabled`, state);
+	}
+
 }
 
 
