@@ -9,27 +9,11 @@
 </head>
 
 <body class="myarrow">
-  <div class="flex split">
-    <div id="openaiPane" class="page darwin">
-      <webview id="webviewOAI" src="https://chat.openai.com/chat" autosize="on">
-      </webview>
-    </div>
-    <div id="bardPane" class="page darwin">
-      <webview id="webviewBARD" src="https://bard.google.com" autosize="on">
-      </webview>
-    </div>
-    <div id="bingPane" class="page darwin">
-      <webview
-        id="webviewBING"
-        src="https://bing.com/chat"
-        useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.37"
-        autosize="on"
-      >
-      </webview>
-    </div>
+  <div id="webviewContainer" class="flex split">
+    <!-- Panes Go Here -->
   </div>
   <form id="form" class="">
-    <textarea rows="5" id="prompt" name="prompt" autofocus
+    <textarea rows="4" id="prompt" name="prompt" autofocus
       placeholder="Enter a superprompt here.
 - Submit: Cmd/Ctrl+Enter
 - Resize windows: Cmd+1/2/3/A/-/+
