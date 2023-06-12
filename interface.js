@@ -4,37 +4,79 @@ const Store = require('electron-store');
 const store = new Store();
 
 const providers = {
-  OpenAi: require('./providers/openai'),
-  Bard: require('./providers/bard'),
-  Bing: require('./providers/bing'),
+	OpenAi: require('./providers/openai'),
+	Bard: require('./providers/bard'),
+	Bing: require('./providers/bing'),
+	Claude: require('./providers/claude'),
 };
 
 /* ========================================================================== */
 /* Create Panes                                                               */
 /* ========================================================================== */
 
-/**
- * Create an array of chat enabled providers.
- */
 const allProviders = Object.values(providers);
 const enabledProviders = allProviders.filter(provider => provider.isEnabled());
 
-/**
- * Grab promptEl, the textarea input element, to handle input events.
- */
+const container = document.getElementById('webviewContainer');
+
+enabledProviders.forEach(provider => {
+	const div = document.createElement('div');
+	div.className = 'page darwin';
+	div.id = provider.paneId();
+
+	const webview = document.createElement('webview');
+	webview.id = provider.webviewId;
+	webview.src = provider.url;
+	webview.autosize = 'on';
+
+	// Currently only used by Bing
+	if (provider.getUserAgent) {
+		webview.useragent = provider.getUserAgent();
+	}
+
+	div.appendChild(webview);
+	container.appendChild(div);
+
+	provider.handleCss();
+	provider.setupCustomPasteBehavior();
+});
+
+/* ========================================================================== */
+/* Split Panes                                                                */
+/* ========================================================================== */
+
+// Create array of pane IDs from webview panes created above
+const panes = enabledProviders.map(provider => `#${provider.paneId()}`);
+log.info('panes', panes);
+
+// Create Split.js instance
+const splitInstance = Split(panes, {
+	direction: 'horizontal',
+	minSize: 0,
+});
+
+// Distribute panes evenly when a pane is enabled or disabled
+function updateSplitSizes() {
+	const enabledProviders = allProviders.filter(provider => provider.isEnabled());
+	const paneSize = (1 / enabledProviders.length) * 100;
+	const sizes = new Array(enabledProviders.length).fill(paneSize);
+	splitInstance.setSizes(sizes);
+}
+
+// Update split sizes once the Electron app DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+	updateSplitSizes();
+});
+
+/* ========================================================================== */
+/* Prompt Input Listeners                                                     */
+/* ========================================================================== */
+
+// Get the textarea input
 const promptEl = document.getElementById('prompt');
 
 // Submit prompt when the user presses Enter or Ctrl+Enter in the textarea input
 const SuperPromptEnterKey = store.get('SuperPromptEnterKey', false);
-
-
-
-// Adjust styling for enabled providers
-// fix double-pasting inside webviews
-enabledProviders.forEach(provider => {
-	provider.handleCss();
-	provider.setupCustomPasteBehavior();
-});
 
 // Submit the prompt by pressing Ctrl+Enter or Enter
 promptEl.addEventListener('keydown', function (event) {
@@ -47,9 +89,7 @@ promptEl.addEventListener('keydown', function (event) {
 	}
 });
 
-/**
- * Sanitize input and pass it to all providers.
- */
+// Update all providers when the user types in the textarea input
 promptEl.addEventListener('input', function (event) {
 	const sanitizedInput = promptEl.value
 		.replace(/"/g, '\\"')
@@ -60,7 +100,7 @@ promptEl.addEventListener('input', function (event) {
 
 const form = document.getElementById('form');
 
-// Submit prompt to all providers
+// Submit prompt to all providers when the user clicks the submit button
 form.addEventListener('submit', function (event) {
 	const sanitizedInput = promptEl.value
 		.replace(/"/g, '\\"')
@@ -71,72 +111,37 @@ form.addEventListener('submit', function (event) {
 	enabledProviders.forEach(provider => provider.handleSubmit(sanitizedInput));
 });
 
-/* END Create Panes --------------------------------------------------------- */
-
 /* ========================================================================== */
-/* Window Panes and Provider Mapping                                          */
+/* Pane Adjust Keyboard Shortcuts                                             */
 /* ========================================================================== */
 
-
-// TODO: Rewrite this to be dynamic based on the paneProviderMapping
-const panes = [];
-
-for (const provider of enabledProviders) {
-	panes.push(provider.paneId());
-}
-log.info('panes', panes);
-
-
-const splitInstance = Split(
-	panes,
-	{
-		direction: 'horizontal',
-		minSize: 0,
-	}
-);
-
-window.addEventListener('DOMContentLoaded', () => {
-	log.info('DOM Content Loaded');
-	updateSplitSizes();
-	log.info('Split sizes updated');
+// Generate pane states for single provider shortcuts
+const paneStates = {};
+enabledProviders.forEach((provider, index) => {
+	paneStates[index + 1] = enabledProviders.map((_, i) => i === index);
 });
+paneStates['a'] = enabledProviders.map(() => true);
 
-/**
- * Update the split pane sizes based on the number of enabled providers.
- */
-function updateSplitSizes() {
-	const paneSize = (1 / enabledProviders.length) * 100;
-	const sizes = new Array(enabledProviders.length).fill(paneSize);
-	splitInstance.setSizes(sizes);
-}
-
-const paneStates = {
-	1: [true, false, false],
-	2: [false, true, false],
-	3: [false, false, true],
-	a: [true, true, true],
-};
-
-
-// TODO: Adjust to be dynamic
 document.addEventListener('keydown', event => {
 	if ((event.metaKey || event.ctrlKey) && event.key in paneStates) {
-		store.set('webviewOAIEnabled', paneStates[event.key][0]);
-		store.set('webviewBARDEnabled', paneStates[event.key][1]);
-		store.set('webviewCLAUDEEnabled', paneStates[event.key][2]);
-
+		paneStates[event.key].forEach((state, index) => {
+			if (enabledProviders[index]) {
+				// check if webview pane exists for this index
+				enabledProviders[index].setEnabled(state);
+			}
+		});
 		updateSplitSizes();
 		event.preventDefault();
 	} else if (
 		((event.metaKey || event.ctrlKey) && event.key === '+') ||
 		event.key === '='
 	) {
-		webviewOAI.setZoomLevel(webviewOAI.getZoomLevel() + 1);
-		webviewBARD.setZoomLevel(webviewBARD.getZoomLevel() + 1);
-		webviewCLAUDE.setZoomLevel(webviewCLAUDE.getZoomLevel() + 1);
+		enabledProviders.forEach((provider) => {
+			provider.getWebview().setZoomLevel(provider.getWebview().getZoomLevel() + 1);
+		});
 	} else if ((event.metaKey || event.ctrlKey) && event.key === '-') {
-		webviewOAI.setZoomLevel(webviewOAI.getZoomLevel() - 1);
-		webviewBARD.setZoomLevel(webviewBARD.getZoomLevel() - 1);
-		webviewCLAUDE.setZoomLevel(webviewCLAUDE.getZoomLevel() - 1);
+		enabledProviders.forEach((provider) => {
+			provider.getWebview().setZoomLevel(provider.getWebview().getZoomLevel() - 1);
+		});
 	}
 });
