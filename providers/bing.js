@@ -5,6 +5,7 @@ const Provider = require('./provider');
 
 class Bing extends Provider {
 	static webviewId = 'webviewBING';
+	static fullName = 'Microsoft Bing';
 
 	static url = 'https://bing.com/chat';
 
