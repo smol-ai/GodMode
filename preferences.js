@@ -1,12 +1,14 @@
 const Store = require('electron-store');
 const store = new Store();
 
-const OpenAi = require('./providers/openai');
-const Bard = require('./providers/bard');
-const Claude = require('./providers/claude');
-const Bing = require('./providers/bing');
+const providers = {
+	OpenAi: require('./providers/openai'),
+	Bard: require('./providers/bard'),
+	Bing: require('./providers/bing'),
+	Claude: require('./providers/claude'),
+};
 
-const allProviders = [Bard, OpenAi, Claude, Bing];
+const allProviders = Object.values(providers);
 
 for (const provider of allProviders) {
 	document.getElementById(`${provider.webviewId}Enabled`).checked = store.get(
