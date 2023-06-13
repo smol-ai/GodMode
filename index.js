@@ -1,10 +1,16 @@
 // require("update-electron-app")(); // uncomment this line to enable auto-updates.
 // we commented out because of https://github.com/smol-ai/menubar/issues/17
 
+// Logging library
 const log = require('electron-log');
+
+// Menubar library to create electron applications that reside in the system's menubar
 const { menubar } = require('menubar');
 
+// Path module for handling and transforming file paths
 const path = require('path');
+
+// Importing necessary modules from electron
 const {
 	app,
 	BrowserWindow,
@@ -14,8 +20,11 @@ const {
 	globalShortcut,
 	shell,
 } = require('electron');
+
+// Getting the application's version from package.json
 const { version } = require('./package.json');
 
+// Providers for different services
 const providers = {
 	OpenAi: require('./providers/openai'),
 	Bard: require('./providers/bard'),
@@ -23,18 +32,23 @@ const providers = {
 	Claude: require('./providers/claude'),
 };
 
+// Getting all the providers in an array
 const allProviders = Object.values(providers);
 
+// Electron-store used for persistent data storage
 const Store = require('electron-store');
 const store = new Store();
-log.info('store', store);
+log.info('store', store); // Logging the store
 
+// Context menu for electron apps
 const contextMenu = require('electron-context-menu');
 
+// Creating an icon image
 const image = nativeImage.createFromPath(
 	path.join(__dirname, `images/newiconTemplate.png`)
 );
 
+// Once the app is ready, the following code will execute
 app.on('ready', () => {
 
 	const tray = new Tray(image);
@@ -61,6 +75,7 @@ app.on('ready', () => {
 		icon: image,
 	});
 
+  // On menubar ready, the following code will execute
 	mb.on('ready', () => {
 		const { window } = mb;
 
@@ -70,6 +85,8 @@ app.on('ready', () => {
 			app.dock.hide();
 		}
 
+    // The createContextMenuTemplate function creates the context menu template
+		// It contains the header, providers' toggles, links, and footer of the menu
     const createContextMenuTemplate = () => {
       const menuHeader = [
         {
@@ -179,7 +196,7 @@ app.on('ready', () => {
         }
       ]
 
-
+      // Return the complete context menu template
       return [
         ...menuHeader,
         separator,
@@ -193,11 +210,13 @@ app.on('ready', () => {
       ]
     };
 
+    // Create the context menu when right-clicking the tray icon
 		tray.on('right-click', () => {
       const contextMenuTemplate = createContextMenuTemplate();
 			mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
 		});
 
+    // Create the context menu when clicking the tray icon with control or meta key
 		tray.on('click', e => {
 			//check if ctrl or meta key is pressed while clicking
 			if (e.ctrlKey || e.metaKey) {
