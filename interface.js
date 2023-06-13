@@ -17,29 +17,35 @@ const providers = {
 const allProviders = Object.values(providers);
 const enabledProviders = allProviders.filter(provider => provider.isEnabled());
 
-const container = document.getElementById('webviewContainer');
 
-enabledProviders.forEach(provider => {
-	const div = document.createElement('div');
-	div.className = 'page darwin';
-	div.id = provider.paneId();
+function drawPanes(providers) {
+	const container = document.getElementById('webviewContainer');
+	container.innerHTML = '';
 
-	const webview = document.createElement('webview');
-	webview.id = provider.webviewId;
-	webview.src = provider.url;
-	webview.autosize = 'on';
+	providers.forEach(provider => {
+		const div = document.createElement('div');
+		div.className = 'page darwin';
+		div.id = provider.paneId();
 
-	// Currently only used by Bing
-	if (provider.getUserAgent) {
-		webview.useragent = provider.getUserAgent();
-	}
+		const webview = document.createElement('webview');
+		webview.id = provider.webviewId;
+		webview.src = provider.url;
+		webview.autosize = 'on';
 
-	div.appendChild(webview);
-	container.appendChild(div);
+		// Currently only used by Bing
+		if (provider.getUserAgent) {
+			webview.useragent = provider.getUserAgent();
+		}
 
-	provider.handleCss();
-	provider.setupCustomPasteBehavior();
-});
+		div.appendChild(webview);
+		container.appendChild(div);
+
+		provider.handleCss();
+		provider.setupCustomPasteBehavior();
+	});
+}
+
+drawPanes(enabledProviders);
 
 /* ========================================================================== */
 /* Split Panes                                                                */
@@ -124,12 +130,14 @@ paneStates['a'] = enabledProviders.map(() => true);
 
 document.addEventListener('keydown', event => {
 	if ((event.metaKey || event.ctrlKey) && event.key in paneStates) {
+		log.info('event.key', event.key);
 		paneStates[event.key].forEach((state, index) => {
 			if (enabledProviders[index]) {
 				// check if webview pane exists for this index
 				enabledProviders[index].setEnabled(state);
 			}
 		});
+		drawPanes(enabledProviders);
 		updateSplitSizes();
 		event.preventDefault();
 	} else if (
@@ -138,10 +146,12 @@ document.addEventListener('keydown', event => {
 	) {
 		enabledProviders.forEach((provider) => {
 			provider.getWebview().setZoomLevel(provider.getWebview().getZoomLevel() + 1);
+			log.info('zoom level', provider.getWebview().getZoomLevel());
 		});
 	} else if ((event.metaKey || event.ctrlKey) && event.key === '-') {
 		enabledProviders.forEach((provider) => {
 			provider.getWebview().setZoomLevel(provider.getWebview().getZoomLevel() - 1);
+			log.info(provider.name, 'zoom level', provider.getWebview().getZoomLevel());
 		});
 	}
 });
