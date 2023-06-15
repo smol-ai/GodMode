@@ -1,41 +1,55 @@
 const Store = require('electron-store');
 const store = new Store();
 
-document.getElementById('webviewOAIEnabled').checked = store.get('webviewOAIEnabled', true);
-document.getElementById('webviewBARDEnabled').checked = store.get('webviewBARDEnabled', true);
-document.getElementById('webviewCLAUDEEnabled').checked = store.get('webviewCLAUDEEnabled', true);
-document.getElementById('SuperPromptEnterKey').checked = store.get('SuperPromptEnterKey', false);
+const providers = {
+	OpenAi: require('./providers/openai'),
+	Bard: require('./providers/bard'),
+	Bing: require('./providers/bing'),
+	Claude: require('./providers/claude'),
+};
 
-document.getElementById('webviewOAIEnabled').addEventListener('change', (event) => {
-    store.set('webviewOAIEnabled', event.target.checked);
-});
+const allProviders = Object.values(providers);
 
-document.getElementById('webviewBARDEnabled').addEventListener('change', (event) => {
-    store.set('webviewBARDEnabled', event.target.checked);
-});
+for (const provider of allProviders) {
+	document.getElementById(`${provider.webviewId}Enabled`).checked = store.get(
+		`${provider.webviewId}Enabled`,
+		true
+	);
 
-document.getElementById('webviewCLAUDEEnabled').addEventListener('change', (event) => {
-    store.set('webviewCLAUDEEnabled', event.target.checked);
-});
+	document
+		.getElementById(`${provider.webviewId}Enabled`)
+		.addEventListener('change', event => {
+			store.set(`${provider.webviewId}Enabled`, event.target.checked);
+		});
+}
 
-document.getElementById('SuperPromptEnterKey').addEventListener('change', (event) => {
-    store.set('SuperPromptEnterKey', event.target.checked);
-});
+document.getElementById('SuperPromptEnterKey').checked = store.get(
+	'SuperPromptEnterKey',
+	false
+);
+
+document
+	.getElementById('SuperPromptEnterKey')
+	.addEventListener('change', event => {
+		store.set('SuperPromptEnterKey', event.target.checked);
+	});
 
 document.getElementById('save').addEventListener('click', () => {
+	console.log('save clicked');
 
-    console.log('save clicked');
+	// Save the user's preferences
+	for (const provider of allProviders) {
+		const isEnabled = document.getElementById(
+			`${provider.webviewId}Enabled`
+		).checked;
+		store.set(`${provider.webviewId}Enabled`, isEnabled);
+	}
 
-    // Save the user's preferences
-    const webviewOAIEnabled = document.getElementById('webviewOAIEnabled').checked;
-    const webviewBARDEnabled = document.getElementById('webviewBARDEnabled').checked;
-    const webviewCLAUDEEnabled = document.getElementById('webviewCLAUDEEnabled').checked;
-    const SuperPromptEnterKey = document.getElementById('SuperPromptEnterKey').checked;
-    store.set('webviewOAIEnabled', webviewOAIEnabled);
-    store.set('webviewBARDEnabled', webviewBARDEnabled);
-    store.set('webviewCLAUDEEnabled', webviewCLAUDEEnabled);
-    store.set('SuperPromptEnterKey', SuperPromptEnterKey);
+	const SuperPromptEnterKey = document.getElementById(
+		'SuperPromptEnterKey'
+	).checked;
+	store.set('SuperPromptEnterKey', SuperPromptEnterKey);
 
-    // Close the preferences window
-    window.close();
+	// Close the preferences window
+	window.close();
 });
