@@ -114,32 +114,33 @@ app.on('ready', () => {
 
       const separator = { type: 'separator' };
 
-      const providersToggles = allProviders.map(provider => {
-        return {
-          label: store.get(`${provider.webviewId}Enabled`, true)
-            ? `Disable ${provider.fullName}`
-            : `Enable ${provider.fullName}`,
-          type: 'checkbox',
-          checked: store.get(`${provider.webviewId}Enabled`, true), // default to true if not set
-          click: () => {
-            store.set(
-              `${provider.webviewId}Enabled`,
-              !store.get(`${provider.webviewId}Enabled`, true)
-            );
-            window.reload();
-          },
-        };
-      });
+			const providersToggles = allProviders.map(provider => {
+				return {
+					label: provider.fullName,
+					type: 'checkbox',
+					checked: store.get(`${provider.webviewId}Enabled`, true), // default to true if not set
+					click: () => {
+						store.set(
+							`${provider.webviewId}Enabled`,
+							!store.get(`${provider.webviewId}Enabled`, true)
+						);
+						window.reload();
+					},
+				};
+			});
 
-      const superPromptEnterKey = {
-        label: 'Enable Super Prompt "Enter" key',
-        type: 'checkbox',
-        checked: store.get('SuperPromptEnterKey', false),
-        click: () => {
-          store.set('SuperPromptEnterKey', !store.get('SuperPromptEnterKey', false));
-          window.reload();
-        },
-      };
+			const superPromptEnterKey = {
+				label: 'Super Prompt "Enter" Key',
+				type: 'checkbox',
+				checked: store.get('SuperPromptEnterKey', false),
+				click: () => {
+					store.set(
+						'SuperPromptEnterKey',
+						!store.get('SuperPromptEnterKey', false)
+					);
+					window.reload();
+				},
+			};
 
       const providerLinks = allProviders.map(provider => {
         return {
