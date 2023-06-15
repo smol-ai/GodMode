@@ -118,7 +118,7 @@ app.on('ready', () => {
 				return {
 					label: provider.fullName,
 					type: 'checkbox',
-					checked: store.get(`${provider.webviewId}Enabled`, true), // default to true if not set
+					checked: store.get(`${provider.webviewId}Enabled`, false),
 					click: () => {
 						store.set(
 							`${provider.webviewId}Enabled`,
