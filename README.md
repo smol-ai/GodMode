@@ -1,17 +1,13 @@
 # smol menubar
 
-This is a smol menubar app that helps you quickly access ChatGPT, Bard, and Anthropic with a single keyboard shortcut.
+This is a smol menubar app that helps you quickly access ChatGPT, Bard, Bing and Anthropic with a single keyboard shortcut.
 
-[![image](https://github.com/smol-ai/menubar/assets/6764957/753c6128-d978-4bb4-8642-588d42121ff5)](https://youtu.be/ThfFFgG-AzE)
+![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
-whatever is typed at the bottom is entered into all 3 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://youtu.be/ThfFFgG-AzE).
-
-so for example you can use chatgpt plugins despite there not being an api for them. or you can use bard/anthropic without needing api access.
+whatever is typed at the bottom is entered into all 4 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://youtu.be/ThfFFgG-AzE).
 
 > **Note**
-> I understand not everybody has access to Anthropic yet. I am working on providing an alternative - will have to require a login.
-> 
-> For now, you can hide individual webviews from the preferences modal. 
+> Many people don't have Anthropic. Thanks to @seanoliver in #32, you can disable one or more of them in the preferences! We are working on making it fully pluggable to whatever chat app you wish, please feel free to PR if you want to attempt it.
 
 ## seeking contributors!
 
@@ -24,15 +20,14 @@ please see https://github.com/smol-ai/menubar/blob/main/CONTRIBUTING.md
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 
-## Simple Download
+## Download and Setup
 
-You can download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest
+You can download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest (sometimes Apple marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it. Or run it from source (instructions below)
 
-4. After the initial setup, you can simply use the generated desktop file to start the application in the future.
+The first run creates a desktop shortcut. After the initial setup, you can simply use the generated desktop file to start the application in the future.
 
-   **Note:** If you ever need to update the application, you can do so by simply pulling the latest changes from the repository.
+When you first run the app, log into your google and/or microsoft account (once you log into your google account for chatgpt, you'l also be logged in to Bard). For Bing, after you log in to your Microsoft account, you'll need to refresh to get into the Bing Chat screen. It's a little finnicky at first try but it works.
 
-then log into your google account (either will do, both rely on google login)
 ![image](https://github.com/smol-ai/menubar/assets/6764957/dce5b127-e8c2-4be2-97d3-e2fa3042ef24)
 
 ## usage
@@ -47,8 +42,7 @@ To start a new conversation, cmd+R (simple window refresh, nothing special)
 
 You can modify these keyboard shortcuts if you build it from source.
 
-Login for Anthropic via Google SSO is broken right now - it requires a popup which is blocked at least in my testing. Would welcome a PR to fix that, but otherwise regular email + login token works fine.
-
+Login for Anthropic via Google SSO is broken right now - it requires a popup which is blocked at least in my testing. Would welcome a PR to fix that, but for now just use regular email + login token works fine.
 
 ## build from source
 
