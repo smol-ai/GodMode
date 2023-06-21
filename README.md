@@ -4,6 +4,8 @@ This is a smol menubar app that helps you quickly access ChatGPT, Bard, Bing and
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
+([click for video demo](https://twitter.com/swyx/status/1671431126030888963?s=20))
+
 whatever is typed at the bottom is entered into all 4 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://youtu.be/ThfFFgG-AzE).
 
 > **Note**
