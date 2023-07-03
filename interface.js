@@ -66,6 +66,7 @@ promptEl.addEventListener('keydown', function (event) {
 
 let isComposing = false;
 
+// for Chinese https://github.com/smol-ai/menubar/pull/46
 promptEl.addEventListener('compositionstart', function() {
   isComposing = true;
 });
