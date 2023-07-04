@@ -15,7 +15,7 @@
     "lint": "echo \"No linting configured\""
   },
   "config": {
-    "forge": "./electron-forge.config.js"
+    "forge": "./forge.config.js"
   },
   "keywords": [
     "chatgpt",
