@@ -66,3 +66,27 @@ smolmenubar.app: accepted
 source=Notarized Developer ID
 origin=Developer ID Application: Shawn Wang (7SVH735GV7)
 ```
+
+## publishing to app store
+
+the below from https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds is something like what we want
+
+```bash
+xcrun altool --validate-app -f smolmenubar.app -t macos -u shawnthe1@gmail.com
+```
+
+
+but doesnt work
+
+```bash
+xcrun altool --validate-app -f smolmenubar.app --type macos -u shawnthe1@gmail.com
+shawnthe1@gmail.com's password:
+
+2023-07-04 00:09:32.533 *** Error: Validation failed for 'smolmenubar.app'.
+2023-07-04 00:09:32.534 *** Error: Unable to determine app platform for 'Undefined' software type. App Store operation failed. (1194)
+ {
+    NSLocalizedDescription = "Unable to determine app platform for 'Undefined' software type.";
+    NSLocalizedFailureReason = "App Store operation failed.";
+    NSLocalizedRecoverySuggestion = "Unable to determine app platform for 'Undefined' software type.";
+}
+```
