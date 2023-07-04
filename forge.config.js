@@ -1,4 +1,5 @@
 const { parsed } = require("dotenv").config();
+
 module.exports = {
   packagerConfig: {
     name: "smolmenubar",
@@ -9,9 +10,15 @@ module.exports = {
       LSUIElement: "true",
     },
     osxSign: {
-      hardenedRuntime: false,
+      hardenedRuntime: true,
       gatekeeperAssess: false,
-      identity: "Developer ID Application: Smol AI Company (ABC123)",
+      identity: "Developer ID Application: Shawn Wang (7SVH735GV7)",
+    },
+    osxNotarize: {
+      tool: 'notarytool',
+      appleId: process.env.APPLE_ID,
+      appleIdPassword: process.env.APPLE_PASSWORD,
+      teamId: process.env.APPLE_TEAM_ID
     }
   },
   publishers: [

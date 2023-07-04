@@ -44,3 +44,9 @@ I have the menubar devtools up all the time while in development. You can disabl
 ```js
 window.webContents.openDevTools();
 ```
+
+## building and notarizing
+
+Apple is a piece of sht.
+
+copy `.env.example` to `.env` and follow https://www.electronforge.io/guides/code-signing/code-signing-macos (option 1)
