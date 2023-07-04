@@ -64,32 +64,13 @@ promptEl.addEventListener('keydown', function (event) {
 /* Input Event Listener                                                       */
 /* ========================================================================== */
 
-let isComposing = false;
+promptEl.addEventListener('input', function (event) {
+	const sanitizedInput = promptEl.value
+		.replace(/"/g, '\\"')
+		.replace(/\n/g, '\\n');
 
-// for Chinese https://github.com/smol-ai/menubar/pull/46
-promptEl.addEventListener('compositionstart', function() {
-  isComposing = true;
+	enabledProviders.forEach(provider => provider.handleInput(sanitizedInput));
 });
-
-promptEl.addEventListener('compositionend', function() {
-  isComposing = false;
-  // The composition has ended, now we can safely handle the input:
-  const sanitizedInput = promptEl.value
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n');
-  enabledProviders.forEach(provider => provider.handleInput(sanitizedInput));
-});
-
-promptEl.addEventListener('input', function() {
-  // Skip handling the input event if we're in the middle of a composition:
-  if (!isComposing) {
-    const sanitizedInput = promptEl.value
-      .replace(/"/g, '\\"')
-      .replace(/\n/g, '\\n');
-    enabledProviders.forEach(provider => provider.handleInput(sanitizedInput));
-  }
-});
-
 
 /* ========================================================================== */
 /* Submit Event Listener                                                      */
