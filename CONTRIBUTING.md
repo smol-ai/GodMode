@@ -49,7 +49,7 @@ window.webContents.openDevTools();
 
 Apple is a piece of sht.
 
-copy `.env.example` to `.env` and follow https://www.electronforge.io/guides/code-signing/code-signing-macos (option 1)
+copy `.env.example` to `.env` and follow https://www.electronforge.io/guides/code-signing/code-signing-macos (we tried option 1, but eventually ended up with option 2 as you see below)
 
 then you have to generate a bunch of shit
 https://medium.com/ascentic-technology/getting-an-electron-app-ready-for-macos-distribution-2941fce27450
@@ -61,7 +61,7 @@ he sucks at documenting but at least we got it notarized
 bitch
 
 ```bash
-spctl -a -vvv -t install smolmenubar.app
+$ spctl -a -vvv -t install smolmenubar.app
 smolmenubar.app: accepted
 source=Notarized Developer ID
 origin=Developer ID Application: Shawn Wang (7SVH735GV7)

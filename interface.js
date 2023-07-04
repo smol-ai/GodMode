@@ -64,32 +64,12 @@ promptEl.addEventListener('keydown', function (event) {
 /* Input Event Listener                                                       */
 /* ========================================================================== */
 
-let isComposing = false;
-
-// for Chinese https://github.com/smol-ai/menubar/pull/46
-promptEl.addEventListener('compositionstart', function() {
-  isComposing = true;
-});
-
-promptEl.addEventListener('compositionend', function() {
-  isComposing = false;
-  // The composition has ended, now we can safely handle the input:
-  const sanitizedInput = promptEl.value
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n');
-  enabledProviders.forEach(provider => provider.handleInput(sanitizedInput));
-});
-
-promptEl.addEventListener('input', function() {
-  // Skip handling the input event if we're in the middle of a composition:
-  if (!isComposing) {
-    const sanitizedInput = promptEl.value
-      .replace(/"/g, '\\"')
-      .replace(/\n/g, '\\n');
-    enabledProviders.forEach(provider => provider.handleInput(sanitizedInput));
-  }
-});
-
+promptEl.addEventListener('input', function (event) {
+	const sanitizedInput = promptEl.value
+		.replace(/"/g, '\\"')
+		.replace(/\n/g, '\\n');
+	enabledProviders.forEach(provider => provider.handleInput(sanitizedInput));
+})
 
 /* ========================================================================== */
 /* Submit Event Listener                                                      */
@@ -121,7 +101,7 @@ paneStates['A'] = null;
 document.addEventListener('keydown', event => {
 	if ((event.metaKey || event.ctrlKey) && event.key in paneStates) {
 		updateSplitSizes(panes, splitInstance, paneStates[event.key]);
-		event.preventDefault();
+		// event.preventDefault();
 	} else if (
 		((event.metaKey || event.ctrlKey) && event.key === '+') ||
 		((event.metaKey || event.ctrlKey) && event.key === '=')
