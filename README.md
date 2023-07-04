@@ -1,6 +1,6 @@
 # smol menubar
 
-This is a smol menubar app that helps you quickly access ChatGPT, Bard, Bing and Anthropic with a single keyboard shortcut.
+This is a smol menubar app that helps you quickly access ChatGPT, Bard, Bing and Anthropic with a single keyboard shortcut (Cmd+Shift+G).
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
@@ -106,4 +106,8 @@ People have bad first impressions on Bard, but in May 2023 it has been receiving
 these folks aren't neutral, but its clear of course that Bard will be better for some things than others, and we might as well lower the barrier for trying them out.
 
 then anthropic dropped 100k context, and at that point i was convinced i need to be A/B testing all 3 to get the benefits/get an intuition of what they each are best at.
+
+## Related project
+
+I only later heard about https://github.com/sunner/ChatALL which is cool but I think defaulting to a menbuar/webview experience is better.
 
