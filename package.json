@@ -11,6 +11,7 @@
     "package": "electron-forge package --arch arm64,x64",
     "make": "electron-forge make --arch arm64,x64",
     "build": "npm run make",
+    "buildAndSign": "NODE_ENV=sign npm run make",
     "publish": "electron-forge publish --arch arm64,x64",
     "lint": "echo \"No linting configured\""
   },

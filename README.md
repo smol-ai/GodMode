@@ -61,12 +61,8 @@ If you really want to build from source, you will need to clone the repo and ope
 
    ```bash
    npm install
-   ```
-
-3. On Windows, you'll also need Squirrel:
-
-   ```bash
-   npm install electron-squirrel-startup
+   # On Windows, you may also need Squirrel:
+   # npm install electron-squirrel-startup
    ```
 
 4. Generate binaries:
@@ -74,10 +70,10 @@ If you really want to build from source, you will need to clone the repo and ope
    ```bash
    # If publishing, bump versions
    # npm version patch
-   npm run make # or npm run build
+   npm run make # or npm run build. # npm run buildAndSign is for swyx to publish the official codesigned and notarized releases
    ```
 
-   The outputs will be located in the `/out/make` directory. Run `smol-menubar.exe` to launch the application. Note that it may start minimized in your taskbar; you'll need to click the icon to use it:
+   The outputs will be located in the `/out/make` directory. Note that it will start minimized in your taskbar; you'll need to click the icon to use it:
 
 ![image](images/minimized.jpg)
 
