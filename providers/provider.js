@@ -18,10 +18,26 @@ class Provider {
 			this.getWebview().executeJavaScript(`
 					document.addEventListener('paste', (event) => {
 					event.preventDefault();
-					let text = event.clipboardData.getData('text');
-					let activeElement = document.activeElement;
-					let start = activeElement.selectionStart;
-					let end = activeElement.selectionEnd;
+					var text = event.clipboardData.getData('text');
+					var activeElement = document.activeElement;
+					
+					// sometimes the active element needs a "wake up" before paste (swyx: not entirely sure this works...)
+					// Create a KeyboardEvent
+					var event = new KeyboardEvent('keydown', {
+						key: ' ',
+						code: 'Space',
+						which: 32,
+						keyCode: 32,
+						bubbles: true
+					});
+					
+					// Dispatch the event to the active element
+					activeElement.dispatchEvent(event);
+
+
+					
+					var start = activeElement.selectionStart;
+					var end = activeElement.selectionEnd;
 					activeElement.value = activeElement.value.slice(0, start) + text + activeElement.value.slice(end);
 					activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
 					});
