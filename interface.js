@@ -9,6 +9,7 @@ const providers = {
 	Bard: require('./providers/bard'),
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
+	Smol: require('./providers/smol'),
 };
 
 const {

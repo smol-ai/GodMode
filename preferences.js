@@ -6,6 +6,7 @@ const providers = {
 	Bard: require('./providers/bard'),
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
+	Smol: require('./providers/smol'),
 };
 
 const allProviders = Object.values(providers);
@@ -13,7 +14,7 @@ const allProviders = Object.values(providers);
 for (const provider of allProviders) {
 	document.getElementById(`${provider.webviewId}Enabled`).checked = store.get(
 		`${provider.webviewId}Enabled`,
-		true
+		provider.webviewId !== 'webviewCLAUDE' // all on except CLAUDE
 	);
 
 	document
