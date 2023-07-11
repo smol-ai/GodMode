@@ -15,7 +15,7 @@ const allProviders = Object.values(providers);
 for (const provider of allProviders) {
 	document.getElementById(`${provider.webviewId}Enabled`).checked = store.get(
 		`${provider.webviewId}Enabled`,
-		!['webviewCLAUDE', 'webviewSMOL', 'webviewBARD'].includes(provider.webviewId) // exclude them
+		provider.isEnabled
 	);
 
 	document
