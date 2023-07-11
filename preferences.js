@@ -6,10 +6,7 @@ const providers = {
 	Bard: require('./providers/bard'),
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
-<<<<<<< HEAD
 	Claude2: require('./providers/claude2'),
-=======
->>>>>>> main
 	Smol: require('./providers/smol'),
 };
 
