@@ -6,6 +6,7 @@ const providers = {
 	Bard: require('./providers/bard'),
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
+	Claude2: require('./providers/claude2'),
 };
 
 const allProviders = Object.values(providers);

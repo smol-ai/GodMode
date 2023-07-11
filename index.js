@@ -30,6 +30,7 @@ const providers = {
 	Bard: require('./providers/bard'),
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
+	Claude2: require('./providers/claude2'),
 };
 
 // Getting all the providers in an array
@@ -242,9 +243,9 @@ app.on('ready', () => {
 		Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 		// open devtools if in dev mode
-		if (process.env.NODE_ENV === 'development') {
+		// if (process.env.NODE_ENV === 'development') {
 			window.webContents.openDevTools();
-		}
+		// }
 
 		console.log('Menubar app is ready.');
 	});
