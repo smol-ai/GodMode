@@ -1,12 +1,12 @@
 # smol menubar
 
-This is a smol menubar app that helps you quickly access ChatGPT (defaults to 4), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G).
+This is a smol menubar app that helps you quickly access ChatGPT (defaults to 4), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G). (we also support Bard and Claude 1, but hide by default)
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
 ([click for video demo](https://twitter.com/swyx/status/1671431126030888963?s=20))
 
-whatever is typed at the bottom is entered into all 4 windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://youtu.be/ThfFFgG-AzE).
+whatever is typed at the bottom is entered into all windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://youtu.be/ThfFFgG-AzE).
 
 > **Note**
 > Many people don't have Anthropic. Thanks to @seanoliver in #32, you can disable one or more of them in the preferences! We are working on making it fully pluggable to whatever chat app you wish, please feel free to PR if you want to attempt it.
