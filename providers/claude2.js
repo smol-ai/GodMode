@@ -18,7 +18,7 @@ class Claude2 extends Provider {
 
 	static handleSubmit(input) {
 		this.getWebview().executeJavaScript(`
-    var btn = document.querySelector('div.group.grid.p-3 button:has(svg)'); // YES we are using the has selector!!!!
+    var btn = document.querySelector('button:has(div > svg)'); // YES we are using the has selector!!!!
     btn.disabled = false;
     btn.click()`);
 	}
