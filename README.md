@@ -6,21 +6,11 @@ This is a smol menubar app that helps you quickly access ChatGPT (defaults to GP
 
 ([click for video demo](https://twitter.com/swyx/status/1678944036135260160))
 
-whatever is typed at the bottom is entered into all windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://www.youtube.com/watch?v=wCGe3_L5a30)([old](https://youtu.be/ThfFFgG-AzE)).
-
-> **Note**
-> Many people don't have Anthropic. Thanks to @seanoliver in #32, you can disable one or more of them in the preferences! We are working on making it fully pluggable to whatever chat app you wish, please feel free to PR if you want to attempt it.
+whatever is typed at the bottom is entered into all windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://www.youtube.com/watch?v=wCGe3_L5a30)
 
 ## seeking contributors!
 
 please see https://github.com/smol-ai/menubar/blob/main/CONTRIBUTING.md
-
-## video demo
-
-- original version https://youtu.be/jrlxT1K4LEU
-- Jun 1 version https://youtu.be/ThfFFgG-AzE
-- https://twitter.com/swyx/status/1658403625717338112
-- https://twitter.com/swyx/status/1663290955804360728?s=20
 
 ## Download and Setup
 
@@ -34,42 +24,40 @@ When you first run the app, log into your google and/or microsoft account (once 
 
 ## usage
 
-I usually just always press Cmd+Shift+G -> quick open to use it and Cmd+Enter to submit.
-
-You can resize the overall window with a click n drag. Cmd+1/2/3/A/+/- or drag to resize the internal webviews as you wish.
-
-You can also disable models from the preferences modal and your choice is persisted.
-
-To start a new conversation, cmd+R (simple window refresh, nothing special)
+- I usually just always press Cmd+Shift+G -> quick open to use it and Cmd+Enter to submit.
+- You can resize the overall window with a click n drag. Cmd+1/2/3/A/+/- or drag to resize the internal webviews as you wish.
+- You can also enable/disable models from the preferences modal and your choice is persisted. We support ChatGPT, Bing, Bard, Claude 1/2.
+- To start a new conversation, cmd+R (simple window refresh, nothing special)
 
 You can modify these keyboard shortcuts if you build it from source.
 
-Login for Anthropic via Google SSO is broken right now - it requires a popup which is blocked at least in my testing. Would welcome a PR to fix that, but for now just use regular email + login token works fine.
+**Login for Anthropic via Google SSO is broken right now** - it requires a popup which is blocked at least in my testing. Would welcome a PR to fix that, but for now just use regular email + login token, it works fine (dont include the extra space at the end from their email!).
+
+## video demo
+
+- original version https://youtu.be/jrlxT1K4LEU
+- Jun 1 version https://youtu.be/ThfFFgG-AzE
+- https://twitter.com/swyx/status/1658403625717338112
+- https://twitter.com/swyx/status/1663290955804360728?s=20
+- July 11 version https://twitter.com/swyx/status/1678944036135260160
 
 ## build from source
 
-If you really want to build from source, you will need to clone the repo and open the project folder:
+If you want to build from source, you will need to clone the repo and open the project folder:
 
 1. Clone the repository and navigate to the project folder:
 
    ```bash
    git clone https://github.com/smol-ai/menubar.git
    cd menubar
-   ```
-
-2. Install dependencies:
-
-   ```bash
    npm install
    # On Windows, you may also need Squirrel:
    # npm install electron-squirrel-startup
    ```
 
-4. Generate binaries:
+2. Generate binaries:
 
    ```bash
-   # If publishing, bump versions
-   # npm version patch
    npm run make # or npm run build. # npm run buildAndSign is for swyx to publish the official codesigned and notarized releases
    ```
 
@@ -77,9 +65,9 @@ If you really want to build from source, you will need to clone the repo and ope
 
 ![image](images/minimized.jpg)
 
-## windows builds
+## windows/linux builds
 
-by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"!)
+by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"! and someone to help make this work on Arch Linux)
 
 i think you can run
 
@@ -105,5 +93,5 @@ then anthropic dropped 100k context, and at that point i was convinced i need to
 
 ## Related project
 
-I only later heard about https://github.com/sunner/ChatALL which is cool but I think defaulting to a menbuar/webview experience is better.
+I only later heard about https://github.com/sunner/ChatALL which is cool but I think defaulting to a menbuar/webview experience is better - you get to use full features like Code Interpreter and Claude 2 file upload when they come out, without waiting for API
 
