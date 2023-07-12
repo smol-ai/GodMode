@@ -44,6 +44,7 @@ class Bard extends Provider {
         inputElement.value = "${input}"
         var btn = document.querySelector("button[aria-label*='Send message']");
         btn.setAttribute("aria-disabled", "false"); // doesnt work alone
+        btn.focus();
         btn.click()
       `);
 	}

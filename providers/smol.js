@@ -42,6 +42,7 @@ class SmolTalk extends Provider {
 
     var btn = document.querySelector('#smol-submitbtn');
 
+    btn.focus();
     btn.setAttribute("aria-disabled", "false"); // doesnt work alone
     btn.disabled = false;
     btn.click()`);

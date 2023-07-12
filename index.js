@@ -250,9 +250,9 @@ app.on('ready', () => {
 		Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 		// open devtools if in dev mode
-		if (process.env.NODE_ENV === 'development') {
-			window.webContents.openDevTools();
-		}
+		// if (process.env.NODE_ENV === 'development') {
+		// 	window.webContents.openDevTools();
+		// }
 
 		console.log('Menubar app is ready.');
 	});

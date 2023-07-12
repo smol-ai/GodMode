@@ -25,6 +25,7 @@ class OpenAi extends Provider {
 	static handleSubmit(input) {
 		this.getWebview().executeJavaScript(`
         var btn = document.querySelector("textarea[placeholder*='Send a message']+button");
+        btn.focus();
         btn.disabled = false;
         btn.click();
       `);
