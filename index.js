@@ -40,7 +40,11 @@ const allProviders = Object.values(providers);
 // Electron-store used for persistent data storage
 const Store = require('electron-store');
 const store = new Store();
-log.info('store', store); // Logging the store
+console.log('if process.env.NODE_ENV is development, reset the store', process.env.NODE_ENV )
+if (process.env.NODE_ENV === 'development') {
+	store.clear() // reset to defaults when in dev
+}
+log.info('store reset', store); // Logging the store
 
 // Context menu for electron apps
 const contextMenu = require('electron-context-menu');
@@ -116,12 +120,6 @@ app.on('ready', () => {
 
       const separator = { type: 'separator' };
 
-
-			console.log('process.env.NODE_ENV ', process.env.NODE_ENV )
-			if (process.env.NODE_ENV === 'development') {
-				store.clear() // reset to defaults when in dev
-			}
-
 			const providersToggles = allProviders.map(provider => {
 				return {
 					label: provider.fullName,
@@ -130,9 +128,11 @@ app.on('ready', () => {
 					click: () => {
 						store.set(
 							`${provider.webviewId}Enabled`,
-							!store.get(`${provider.webviewId}Enabled`, true)
+							!provider.isEnabled()
 						);
-						window.reload();
+						setTimeout(() => {
+							window.reload();
+						}, 100)
 					},
 				};
 			});
