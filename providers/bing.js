@@ -46,6 +46,9 @@ class Bing extends Provider {
 		// Submit Button
 		var submitButton = inputDOM.shadowRoot.querySelector('div.submit button.primary');
 		submitButton.click();
+		setTimeout(() => {
+			submitButton.click();
+		}, 100)
 		`);
 	}
 

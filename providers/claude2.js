@@ -8,7 +8,7 @@ class Claude2 extends Provider {
   static fullName = 'Anthropic Claude 2';
 
 
-	static url = 'https://claude.ai/chat/';
+	static url = 'https://claude.ai/chats/';
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
@@ -18,7 +18,9 @@ class Claude2 extends Provider {
 
 	static handleSubmit(input) {
 		this.getWebview().executeJavaScript(`
-    var btn = document.querySelector('button:has(div > svg)'); // YES we are using the has selector!!!!
+		var btn = document.querySelector("button[aria-label*='Send Message']"); // subsequent screens use this
+    if (!btn) var btn = document.querySelector('button:has(div svg)'); // new chats use this
+    if (!btn) var btn = document.querySelector('button:has(svg)'); // last ditch attempt
     btn.disabled = false;
     btn.click()`);
 	}

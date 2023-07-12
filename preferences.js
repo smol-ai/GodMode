@@ -12,10 +12,12 @@ const providers = {
 
 const allProviders = Object.values(providers);
 
+
+
 for (const provider of allProviders) {
 	document.getElementById(`${provider.webviewId}Enabled`).checked = store.get(
 		`${provider.webviewId}Enabled`,
-		provider.isEnabled
+		provider.isEnabled()
 	);
 
 	document

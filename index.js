@@ -116,11 +116,17 @@ app.on('ready', () => {
 
       const separator = { type: 'separator' };
 
+
+			console.log('process.env.NODE_ENV ', process.env.NODE_ENV )
+			if (process.env.NODE_ENV === 'development') {
+				store.clear() // reset to defaults when in dev
+			}
+
 			const providersToggles = allProviders.map(provider => {
 				return {
 					label: provider.fullName,
 					type: 'checkbox',
-					checked: store.get(`${provider.webviewId}Enabled`, false),
+					checked: store.get(`${provider.webviewId}Enabled`, provider.isEnabled()),
 					click: () => {
 						store.set(
 							`${provider.webviewId}Enabled`,
@@ -243,10 +249,10 @@ app.on('ready', () => {
 
 		Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
-		// // open devtools if in dev mode
-		// if (process.env.NODE_ENV === 'development') {
-		// 	window.webContents.openDevTools();
-		// }
+		// open devtools if in dev mode
+		if (process.env.NODE_ENV === 'development') {
+			window.webContents.openDevTools();
+		}
 
 		console.log('Menubar app is ready.');
 	});
