@@ -1,6 +1,8 @@
 // Import necessary modules
 const log = require('electron-log');
 const Store = require('electron-store');
+
+const { shell } = require('electron');
 const store = new Store();
 
 /* ========================================================================== */
@@ -35,6 +37,20 @@ function drawPanes(providers) {
 		webview.addEventListener('dom-ready', () => {
 			webview.setZoomLevel(0); // Set initial zoom level here
 		});
+
+	webview.addEventListener('new-window', (event) => {
+		const win = new BrowserWindow({
+			webPreferences: {
+				nodeIntegration: false,
+				contextIsolation: true
+			}
+		})
+
+		shell.openExternal(event.url);
+
+		// win.loadURL(event.url)
+		event.preventDefault()
+	})
 
 		// If the provider has a getUserAgent function, set the webview's useragent
 		if (provider.getUserAgent) {
