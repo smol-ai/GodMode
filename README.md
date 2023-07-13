@@ -1,6 +1,6 @@
 # 👼 smol menubar
 
-This is a smol menubar app that helps you quickly access ChatGPT (defaults to GPT4), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G). (we also support Bard and Claude 1, but hide by default)
+This is a smol menubar app that helps you quickly access ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G). (we also support Bard and Claude 1, but hide by default)
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
