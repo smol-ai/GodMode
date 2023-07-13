@@ -39,7 +39,10 @@ class OpenAi extends Provider {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			this.getWebview().insertCSS(`
-          .text-xs.text-center {
+        body {
+          scrollbar-width: none;
+        }
+        .text-xs.text-center {
             opacity: 0;
             height: 0;
             margin-bottom: -10px;
