@@ -105,7 +105,7 @@ class Claude2 extends Provider {
 				}
 				div[role="listbox"] div[cmdk-item]:hover {
 					background-color: #444;
-				}˝
+				}
         `);
 			}, 1000);
 		});
