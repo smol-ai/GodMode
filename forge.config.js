@@ -6,7 +6,8 @@ module.exports = {
   packagerConfig: {
     name: "smolmenubar",
     executableName: "smolmenubar",
-    icon: "images/icon",
+    // icon: "images/icon",
+    icon: "images/smol_chicken.svg",
     appBundleId: "com.smol.menubar",
     extendInfo: {
       LSUIElement: "true",

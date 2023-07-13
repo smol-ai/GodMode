@@ -52,6 +52,7 @@ const contextMenu = require('electron-context-menu');
 // Creating an icon image
 const image = nativeImage.createFromPath(
 	path.join(__dirname, `images/newiconTemplate.png`)
+	// path.join(__dirname, `images/cutechickenicon.png`)
 );
 
 // Once the app is ready, the following code will execute
@@ -62,7 +63,7 @@ app.on('ready', () => {
 	const mb = menubar({
 		browserWindow: {
 			icon: image,
-			transparent: path.join(__dirname, `images/iconApp.png`),
+			transparent: path.join(__dirname, `images/icon@2x.png`),
 			autoHideMenuBar: false,
 			webPreferences: {
 				webviewTag: true,
