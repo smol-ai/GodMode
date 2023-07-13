@@ -16,7 +16,7 @@ class Claude2 extends Provider {
     inputElement.innerHTML = "${input}"`);
 	}
 
-	static handleSubmit(input) {
+	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
 		var btn = document.querySelector("button[aria-label*='Send Message']"); // subsequent screens use this
     if (!btn) var btn = document.querySelector('button:has(div svg)'); // new chats use this

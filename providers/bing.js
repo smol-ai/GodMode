@@ -35,7 +35,7 @@ class Bing extends Provider {
 		`);
 	}
 
-	static handleSubmit(input) {
+	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
 		// Access SERP Shadow DOM
 		var serpDOM = document.querySelector('.cib-serp-main');

@@ -28,20 +28,8 @@ class Bard extends Provider {
       inputElement.value = "${input}"`);
 	}
 
-	static handleSubmit(input) {
+	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
-        var inputElement = document.querySelector("#mat-input-0");
-
-        // try to send keyboard event to trigger the re-enable of the disabled button
-        // thanks chatgpt!
-        var event = new Event('input', { bubbles: true });
-        event.simulated = true;
-        var tracker = inputElement._valueTracker;
-        if (tracker) {
-          tracker.setValue("${input}");
-        }
-        inputElement.dispatchEvent(event);
-        inputElement.value = "${input}"
         var btn = document.querySelector("button[aria-label*='Send message']");
         btn.setAttribute("aria-disabled", "false"); // doesnt work alone
         btn.focus();
