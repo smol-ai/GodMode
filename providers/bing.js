@@ -54,20 +54,11 @@ class Bing extends Provider {
 		`);
 	}
 
+	/** Bing requires MS Edge user agent. */
 	static getUserAgent() {
 		return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.37'
 	}
 
-	/**
-	 * Bing has a lot of nested shadow DOMs, so we have to use JS to access the
-	 * elements we want to hide / style.
-	 *
-	 * FIXME: Still can't seem to get this working yet. There might be some funny
-	 * scripts running in the background that are resetting styles.
-	 *
-	 * Thankfully, the event listeners are still working for input and submit, so
-	 * we can still send prompts to the chatbot.
-	 */
 	static handleCss() {
     // this.webview.executeJavaScript(`
 		// 		// Hide Header Bar
@@ -113,6 +104,21 @@ class Bing extends Provider {
 				}
         `);
 			}, 1000);
+			setTimeout(() => {
+				this.getWebview().insertJavaScript(`
+					// Access SERP Shadow DOM
+					var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
+
+					// Conversation Shadow DOM
+					var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
+
+					// Welcome Container Shadow DOM
+					var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
+					console.log('🔴 welcomeDOM', welcomeDOM);
+					welcomeDOM.querySelector('div.preview-container').setAttribute('style', 'display: none !important');
+
+				`);
+			}, 2000);
 		});
 	}
 
