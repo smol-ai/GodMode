@@ -96,8 +96,20 @@ class Bing extends Provider {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
 				this.getWebview().insertCSS(`
+				html, body {
+					overflow: hidden;
+				}
 				#b_sydBgCover {
 					background: black !important;
+				}
+				header {
+					display: none !important;
+				}
+				#b_sydWelcomeTemplate {
+					display: none !important;
+				}
+				.preview-container {
+					display: none !important;
 				}
         `);
 			}, 1000);
