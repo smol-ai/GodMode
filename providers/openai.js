@@ -7,7 +7,7 @@ class OpenAi extends Provider {
 	static webviewId = 'webviewOAI';
 	static fullName = 'OpenAI ChatGPT';
 
-	static url = 'https://chat.openai.com/?model=gpt-4'; // TODO - let people switch
+	static url = 'https://chat.openai.com/?model=gpt-4-code-interpreter'; // TODO - let people switch
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
