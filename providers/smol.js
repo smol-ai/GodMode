@@ -22,7 +22,7 @@ class SmolTalk extends Provider {
     simulateUserInput(inputElement, "${input}");
 	`)}
 
-	static handleSubmit(input) {
+	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
 
     var inputElement = document.querySelector('#smol-inputbox')

@@ -16,7 +16,7 @@ class Claude extends Provider {
     inputElement.innerHTML = "${input}"`);
 	}
 
-	static handleSubmit(input) {
+	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
     var btn = document.querySelector('div.group.grid.p-3 button:has(svg)'); // YES we are using the has selector!!!!
     btn.focus();

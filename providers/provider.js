@@ -20,7 +20,7 @@ class Provider {
 					event.preventDefault();
 					var text = event.clipboardData.getData('text');
 					var activeElement = document.activeElement;
-					
+
 					// sometimes the active element needs a "wake up" before paste (swyx: not entirely sure this works...)
 					// Create a KeyboardEvent
 					var event = new KeyboardEvent('keydown', {
@@ -30,12 +30,12 @@ class Provider {
 						keyCode: 32,
 						bubbles: true
 					});
-					
+
 					// Dispatch the event to the active element
 					activeElement.dispatchEvent(event);
 
 
-					
+
 					var start = activeElement.selectionStart;
 					var end = activeElement.selectionEnd;
 					activeElement.value = activeElement.value.slice(0, start) + text + activeElement.value.slice(end);
@@ -49,7 +49,7 @@ class Provider {
 		throw new Error(`Provider ${this.name} must implement handleInput()`);
 	}
 
-	static handleSubmit(input) {
+	static handleSubmit() {
 		throw new Error(`Provider ${this.name} must implement handleSubmit()`);
 	}
 
