@@ -60,35 +60,13 @@ class Bing extends Provider {
 	}
 
 	static handleCss() {
-    // this.webview.executeJavaScript(`
-		// 		// Hide Header Bar
-		// 		var headerBar = document.querySelector('header');
-		// 		headerBar.remove();
-
-    //     // // Access SERP Shadow DOM
-    //     // var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
-
-    //     // // Conversation Shadow DOM
-    //     // var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
-
-    //     // // Welcome Container Shadow DOM
-    //     // var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
-		// 		// console.log('welcomeDOM', welcomeDOM);
-
-    //     // // Hide all welcome container items except tone selector
-    //     // welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.container-title').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.learn-tog-item').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
-    // }`);
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
 				this.getWebview().insertCSS(`
 				html, body {
 					overflow: hidden;
+					scrollbar-width: none;
 				}
 				#b_sydBgCover {
 					background: black !important;
@@ -105,7 +83,7 @@ class Bing extends Provider {
         `);
 			}, 1000);
 			setTimeout(() => {
-				this.getWebview().insertJavaScript(`
+				this.getWebview().executeJavaScript(`
 					// Access SERP Shadow DOM
 					var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
 
@@ -114,8 +92,17 @@ class Bing extends Provider {
 
 					// Welcome Container Shadow DOM
 					var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
-					console.log('🔴 welcomeDOM', welcomeDOM);
-					welcomeDOM.querySelector('div.preview-container').setAttribute('style', 'display: none !important');
+
+					// Hide all welcome container items except tone selector
+					// welcomeDOM.querySelector('div.preview-container').setAttribute('style', 'display: none !important;');
+
+					// Hide all welcome container items except tone selector
+					welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.container-title').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.learn-tag-item').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
 
 				`);
 			}, 2000);
