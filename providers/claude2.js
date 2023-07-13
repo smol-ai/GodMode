@@ -43,7 +43,7 @@ class Claude2 extends Provider {
 				div[cmdk-group-items] {
 					color: black !important;
 				}
-				
+
 				/* messages */
 				.text-stone-900.bg-white {
 					background-color: #1d1d1d !important;
@@ -63,6 +63,49 @@ class Claude2 extends Provider {
         .mx-4.md\:mx-12.mb-2.md\:mb-4.mt-2.w-auto {
           margin: 0 !important;
         }
+
+				body {
+					background-color: #1e1e1e;
+					color: #fff;
+				}
+
+				/* Dark input field */
+				fieldset {
+					background-color: #222 !important;
+					color: white !important;
+					border-radius: 0px;
+				}
+				/* Placeholder text */
+				.ProseMirror[data-placeholder]:before {
+					color: #6c757d !important;
+				}
+
+				/* Input text */
+				.ProseMirror {
+					color: white !important;
+				}
+
+				/* Attachment button */
+				label {
+					background-color: #1d1d1d !important;
+				}
+				label]:hover {
+					background-color: #444 !important;
+				}
+
+				/* Simplify and set to dark mode the chat history on initial prompt */
+				div[role="listbox"] div[cmdk-item] {
+					background-color: #222;
+					color:white;
+					border: 0px;
+					border-radius: 0px;
+				}
+				.shadow-element {
+					box-shadow: none !important;
+				}
+				div[role="listbox"] div[cmdk-item]:hover {
+					background-color: #444;
+				}˝
         `);
 			}, 1000);
 		});
