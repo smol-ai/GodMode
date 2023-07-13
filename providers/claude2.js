@@ -31,6 +31,25 @@ class Claude2 extends Provider {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
 				this.getWebview().insertCSS(`
+				/* black background */
+				body {
+					background-color: #1d1d1d !important;
+					color: #d7d7d7 !important;
+				}
+				/* reset text colors for user input and history displays */
+				fieldset {
+					color: black !important;
+				}
+				div[cmdk-group-items] {
+					color: black !important;
+				}
+				
+				/* messages */
+				.text-stone-900.bg-white {
+					background-color: #1d1d1d !important;
+					color: #d7d7d7 !important;
+				}
+
         header, .container {
           background-color: white;
           /* single line dark mode ftw */

@@ -92,6 +92,16 @@ class Bing extends Provider {
     //     // welcomeDOM.querySelector('div.learn-tog-item').setAttribute('style', 'display: none !important');
     //     // welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
     // }`);
+		this.getWebview().addEventListener('dom-ready', () => {
+			// hide message below text input, sidebar, suggestions on new chat
+			setTimeout(() => {
+				this.getWebview().insertCSS(`
+				#b_sydBgCover {
+					background: black !important;
+				}
+        `);
+			}, 1000);
+		});
 	}
 
 	static isEnabled() {

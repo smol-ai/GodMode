@@ -24,15 +24,15 @@ class OpenAi extends Provider {
 
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
-          var btn1 = document.querySelector("textarea[placeholder*='Send a message']+button");
-          var btn2 = document.querySelector("textarea+button");
-          console.log('btn1', btn1);
-          console.log('btn2', btn2);
-          var btn = btn1 || btn2;
-          btn.focus();
-          btn.disabled = false;
-          btn.click();
-        `);
+        // var btn = document.querySelector("textarea[placeholder*='Send a message']+button"); // this one broke recently .. note that they add another div (for the file upload) in code interpreter mode
+        var btn = document.querySelector("textarea[placeholder*='Send a message']").parentElement
+        // console.log('btn', btn)
+        var btn = [...btn.querySelectorAll("button")].slice(-1)[0];
+        // console.log('btn', btn)
+        btn.focus();
+        btn.disabled = false;
+        btn.click();
+      `);
 	}
 
 	static handleCss() {
@@ -43,12 +43,6 @@ class OpenAi extends Provider {
             opacity: 0;
             height: 0;
             margin-bottom: -10px;
-          }
-
-          .sticky,
-          .pointer-events-auto.flex.border-orange-500,
-          [class*="shared__Capabilities"] {
-            display: none !important;
           }
 
           [class*="shared__Wrapper"] {
@@ -63,9 +57,6 @@ class OpenAi extends Provider {
             font-size: 20px;
           }
 
-          .flex-shrink-0.flex.flex-col.relative.items-end {
-            display: none !important;
-          }
 
         `);
 		});
