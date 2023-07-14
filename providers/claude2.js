@@ -108,6 +108,12 @@ class Claude2 extends Provider {
 				}
         `);
 			}, 1000);
+			setTimeout(() => {
+				this.getWebview().executeJavaScript(`
+				// hide welcome back title
+				document.querySelector('h2').style.display = 'none';
+				`);
+			}, 1000);
 		});
 	}
 
