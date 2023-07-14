@@ -5,7 +5,7 @@ const Provider = require('./provider');
 
 class SmolTalk extends Provider {
 	static webviewId = 'webviewSMOL';
-  static fullName = 'Smol Talk';
+  static fullName = 'Smol Talk (WIP)';
 
 
 	static url = 'https://smoltalk.vercel.app/';
