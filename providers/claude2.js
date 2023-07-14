@@ -44,7 +44,14 @@ class Claude2 extends Provider {
         .mx-4.md\:mx-12.mb-2.md\:mb-4.mt-2.w-auto {
           margin: 0 !important;
         }
+
         `);
+			}, 1000);
+			setTimeout(() => {
+				this.getWebview().executeJavaScript(`
+				// hide welcome back title
+				document.querySelector('h2').style.display = 'none';
+				`);
 			}, 1000);
 		});
 	}

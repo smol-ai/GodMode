@@ -54,53 +54,80 @@ class Bing extends Provider {
 		`);
 	}
 
+	/** Bing requires MS Edge user agent. */
 	static getUserAgent() {
 		return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.37'
 	}
 
-	/**
-	 * Bing has a lot of nested shadow DOMs, so we have to use JS to access the
-	 * elements we want to hide / style.
-	 *
-	 * FIXME: Still can't seem to get this working yet. There might be some funny
-	 * scripts running in the background that are resetting styles.
-	 *
-	 * Thankfully, the event listeners are still working for input and submit, so
-	 * we can still send prompts to the chatbot.
-	 */
 	static handleCss() {
-    // this.webview.executeJavaScript(`
-		// 		// Hide Header Bar
-		// 		var headerBar = document.querySelector('header');
-		// 		headerBar.remove();
-
-    //     // // Access SERP Shadow DOM
-    //     // var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
-
-    //     // // Conversation Shadow DOM
-    //     // var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
-
-    //     // // Welcome Container Shadow DOM
-    //     // var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
-		// 		// console.log('welcomeDOM', welcomeDOM);
-
-    //     // // Hide all welcome container items except tone selector
-    //     // welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.container-title').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.learn-tog-item').setAttribute('style', 'display: none !important');
-    //     // welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
-    // }`);
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
 				// .b_sydConvMode::after {
 				this.getWebview().insertCSS(`
+				html, body {
+					overflow: hidden;
+					scrollbar-width: none;
+				}
+				body {
+					background-color: #1d1d1d !important;
+					color: #d7d7d7 !important;
+				}
 				#b_sydBgCover {
 					background: black !important;
 				}
+				header {
+					display: none !important;
+				}
+				#b_sydWelcomeTemplate {
+					display: none !important;
+				}
+				.preview-container {
+					display: none !important;
+				}
         `);
+			}, 1000);
+			setTimeout(() => {
+				this.getWebview().executeJavaScript(`
+					// Access SERP Shadow DOM
+					var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
+
+					// Conversation Shadow DOM
+					var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
+
+					// Action Bar Shadow DOM
+					var actionBarDOM = serpDOM.querySelector('#cib-action-bar-main').shadowRoot;
+
+					// Text Input Shadow DOM
+					var textInputDOM = actionBarDOM.querySelector('cib-text-input').shadowRoot;
+
+					// Welcome Container Shadow DOM
+					var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
+
+					// Hide all welcome container items except tone selector
+					// welcomeDOM.querySelector('div.preview-container').setAttribute('style', 'display: none !important;');
+
+					// Hide all welcome container items except tone selector
+					welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.container-title').setAttribute('style', 'color: white !important');
+					welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.learn-tag-item').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
+
+					// Remove feedback widget
+					serpDOM.querySelector('cib-serp-feedback').setAttribute('style', 'display: none !important');
+
+					// Remove background gradients
+					serpDOM.querySelector('cib-background').remove();
+					conversationDOM.querySelector('.fade.top').remove();
+					conversationDOM.querySelector('.fade.bottom').remove();
+
+					// Recolor text input
+					textInputDOM.querySelector('textarea').setAttribute('style', 'background-color: #1d1d1d !important; color: #d7d7d7 !important;');
+					actionBarDOM.querySelector('.main-container.body-2').setAttribute('style', 'background-color: #1d1d1d !important; color: #d7d7d7 !important;');
+
+				`);
 			}, 1000);
 		});
 	}
