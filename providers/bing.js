@@ -95,6 +95,7 @@ class Bing extends Provider {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
+				// .b_sydConvMode::after {
 				this.getWebview().insertCSS(`
 				#b_sydBgCover {
 					background: black !important;
