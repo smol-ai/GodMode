@@ -34,25 +34,6 @@ class Claude2 extends Provider {
 				/* black background */
 				body {
 					background-color: #1d1d1d !important;
-					color: #d7d7d7 !important;
-				}
-				/* reset text colors for user input and history displays */
-				fieldset {
-					color: black !important;
-				}
-				div[cmdk-group-items] {
-					color: black !important;
-				}
-
-				/* messages */
-				.text-stone-900.bg-white {
-					background-color: #1d1d1d !important;
-					color: #d7d7d7 !important;
-				}
-
-        header, .container {
-          background-color: white;
-          /* single line dark mode ftw */
           filter: invert(100%) hue-rotate(180deg);
         }
         /* hide the claude avatar in response */
@@ -64,48 +45,6 @@ class Claude2 extends Provider {
           margin: 0 !important;
         }
 
-				body {
-					background-color: #1e1e1e;
-					color: #fff;
-				}
-
-				/* Dark input field */
-				fieldset {
-					background-color: #222 !important;
-					color: white !important;
-					border-radius: 0px;
-				}
-				/* Placeholder text */
-				.ProseMirror[data-placeholder]:before {
-					color: #6c757d !important;
-				}
-
-				/* Input text */
-				.ProseMirror {
-					color: white !important;
-				}
-
-				/* Attachment button */
-				label {
-					background-color: #1d1d1d !important;
-				}
-				label]:hover {
-					background-color: #444 !important;
-				}
-
-				/* Simplify and set to dark mode the chat history on initial prompt */
-				div[role="listbox"] div[cmdk-item] {
-					background-color: #222;
-					color:white;
-					border: 0px;
-					border-radius: 0px;
-				}
-				.shadow-element {
-					box-shadow: none !important;
-				}
-				div[role="listbox"] div[cmdk-item]:hover {
-					background-color: #444;
-				}
         `);
 			}, 1000);
 			setTimeout(() => {

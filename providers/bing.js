@@ -108,7 +108,7 @@ class Bing extends Provider {
 
 					// Hide all welcome container items except tone selector
 					welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
-					welcomeDOM.querySelector('div.container-title').setAttribute('style', 'display: none !important');
+					welcomeDOM.querySelector('div.container-title').setAttribute('style', 'color: white !important');
 					welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
 					welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
 					welcomeDOM.querySelector('div.learn-tag-item').setAttribute('style', 'display: none !important');
