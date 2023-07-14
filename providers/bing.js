@@ -104,8 +104,9 @@ class Bing extends Provider {
 					welcomeDOM.querySelector('div.learn-tag-item').setAttribute('style', 'display: none !important');
 					welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
 
+					serpDOM.querySelector('cib-serp-feedback').setAttribute('style', 'display: none !important');
 				`);
-			}, 2000);
+			}, 1000);
 		});
 	}
 
