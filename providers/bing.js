@@ -68,6 +68,10 @@ class Bing extends Provider {
 					overflow: hidden;
 					scrollbar-width: none;
 				}
+				body {
+					background-color: #1d1d1d !important;
+					color: #d7d7d7 !important;
+				}
 				#b_sydBgCover {
 					background: black !important;
 				}
@@ -90,6 +94,12 @@ class Bing extends Provider {
 					// Conversation Shadow DOM
 					var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
 
+					// Action Bar Shadow DOM
+					var actionBarDOM = serpDOM.querySelector('#cib-action-bar-main').shadowRoot;
+
+					// Text Input Shadow DOM
+					var textInputDOM = actionBarDOM.querySelector('cib-text-input').shadowRoot;
+
 					// Welcome Container Shadow DOM
 					var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
 
@@ -104,7 +114,18 @@ class Bing extends Provider {
 					welcomeDOM.querySelector('div.learn-tag-item').setAttribute('style', 'display: none !important');
 					welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
 
+					// Remove feedback widget
 					serpDOM.querySelector('cib-serp-feedback').setAttribute('style', 'display: none !important');
+
+					// Remove background gradients
+					serpDOM.querySelector('cib-background').remove();
+					conversationDOM.querySelector('.fade.top').remove();
+					conversationDOM.querySelector('.fade.bottom').remove();
+
+					// Recolor text input
+					textInputDOM.querySelector('textarea').setAttribute('style', 'background-color: #1d1d1d !important; color: #d7d7d7 !important;');
+					actionBarDOM.querySelector('.main-container.body-2').setAttribute('style', 'background-color: #1d1d1d !important; color: #d7d7d7 !important;');
+
 				`);
 			}, 1000);
 		});
