@@ -25,7 +25,7 @@ Yes and no:
    - You can modify these keyboard shortcuts if you build it from source.
 - **Resize**: You can resize the overall window with a click n drag. Cmd+1/2/3/A/+/- or drag to resize the internal webviews as you wish.
 - **Toggle Models**: You can also enable/disable models from the preferences modal and your choice is persisted. We support ChatGPT, Bing, Bard, Claude 1/2.
-  - NEW: We have added initial support for https://github.com/oobabooga/text-generation-webui. You'll have to go thru their process, including downloading their models ([I use LLaMa-13B-GGML](https://huggingface.co/TheBloke/LLaMa-13B-GGML/blob/main/llama-13b.ggmlv3.q4_0.bin)) and get it running for yourself on http://127.0.0.1:7860/, before you can run it inside of smol menubar (since we just embed the UI). However currently the app crashes when a click is simulated.
+  - NEW: We have added initial support for https://github.com/oobabooga/text-generation-webui. You'll have to go thru their process, including downloading their models ([I use LLaMa-13B-GGML](https://huggingface.co/TheBloke/LLaMa-13B-GGML/blob/main/llama-13b.ggmlv3.q4_0.bin)) and get it running for yourself on http://127.0.0.1:7860/, before you can run it inside of smol menubar (since we just embed the UI). It only allows one kind of prompt template now, and **would take a PR** if you can figure out how to make the templating customizable (see the Oobabooga.js provider)
 - **New Chats**: To start a new conversation, cmd+R (simple window refresh, nothing special)
 
 ## video demo
@@ -76,6 +76,11 @@ If you want to build from source, you will need to clone the repo and open the p
    ```
 
    The outputs will be located in the `/out/make` directory. Note that it will start minimized in your taskbar; you'll need to click the icon to use it:
+
+
+
+![image](https://github.com/smol-ai/menubar/assets/6764957/76c1f545-d32b-4a0b-a89c-1d68fc45fc72)
+
 
 ![image](images/minimized.jpg)
 
