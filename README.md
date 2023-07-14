@@ -1,6 +1,6 @@
 # 👼 smol menubar
 
-This is a smol menubar app that helps you quickly access ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G). 
+This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G). 
 
 > we also support Bard, Claude 1, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
 
@@ -8,7 +8,16 @@ This is a smol menubar app that helps you quickly access ChatGPT (defaults to "[
 
 ([click for video demo](https://twitter.com/swyx/status/1678944036135260160))
 
-whatever is typed at the bottom is entered into all windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://www.youtube.com/watch?v=wCGe3_L5a30)
+Whatever is typed at the bottom is entered into all **web apps** simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://www.youtube.com/watch?v=wCGe3_L5a30)
+
+## Oh so this is like nat.dev?
+
+Yes and no:
+
+1. SOTA functionality is often released without API (eg: ChatGPT Code Interpreter, Bing Image Creator, Bard Multimodal Input, Claude Multifile Upload). **We insist on using webapps** so that you have full access to all functionality on launch day.
+2. This is a menubar app that can be invoked with a keyboard shortcut (Cmd+Shift+G). Feels a LOT faster than having it live in a browser window somewhere and is easy to pull up/dismiss during long generations.
+3. Supports local models like LLaMa and Vicuna via [OobaBooga](https://github.com/oobabooga/text-generation-webui).
+4. No paywall, build from source.
 
 ## Features and Usage
 
