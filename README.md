@@ -1,8 +1,8 @@
 # 👼 smol menubar
 
-This is a smol menubar app that helps you quickly access ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G). (we also support Bard and Claude 1, but hide by default bc they aren't as good)
+This is a smol menubar app that helps you quickly access ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G). 
 
-> Claude 2 support is very new and honestly a little buggy right now (specifically the submit btn is not reliable). Would appreciate patience and/or help! 
+> we also support Bard, Claude 1, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
@@ -10,30 +10,14 @@ This is a smol menubar app that helps you quickly access ChatGPT (defaults to "[
 
 whatever is typed at the bottom is entered into all windows simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://www.youtube.com/watch?v=wCGe3_L5a30)
 
-## seeking contributors!
+## Features and Usage
 
-please see https://github.com/smol-ai/menubar/blob/main/CONTRIBUTING.md
-
-## Download and Setup
-
-You can download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest (sometimes Apple marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it. Or run it from source (instructions below)
-
-The first run creates a desktop shortcut. After the initial setup, you can simply use the generated desktop file to start the application in the future.
-
-When you first run the app, log into your google and/or microsoft account (once you log into your google account for chatgpt, you'l also be logged in to Bard). For Bing, after you log in to your Microsoft account, you'll need to refresh to get into the Bing Chat screen. It's a little finnicky at first try but it works.
-
-![image](https://github.com/smol-ai/menubar/assets/6764957/dce5b127-e8c2-4be2-97d3-e2fa3042ef24)
-
-## usage
-
-- I usually just always press Cmd+Shift+G -> quick open to use it and Cmd+Enter to submit.
-- You can resize the overall window with a click n drag. Cmd+1/2/3/A/+/- or drag to resize the internal webviews as you wish.
-- You can also enable/disable models from the preferences modal and your choice is persisted. We support ChatGPT, Bing, Bard, Claude 1/2.
-- To start a new conversation, cmd+R (simple window refresh, nothing special)
-
-You can modify these keyboard shortcuts if you build it from source.
-
-**Login for Anthropic via Google SSO is broken right now** - it requires a popup which is blocked at least in my testing. Would welcome a PR to fix that, but for now just use regular email + login token, it works fine (dont include the extra space at the end from their email!).
+- **Keyboard Shortcut**: I usually just always press Cmd+Shift+G -> quick open to use it and Cmd+Enter to submit. 
+   - You can modify these keyboard shortcuts if you build it from source.
+- **Resize**: You can resize the overall window with a click n drag. Cmd+1/2/3/A/+/- or drag to resize the internal webviews as you wish.
+- **Toggle Models**: You can also enable/disable models from the preferences modal and your choice is persisted. We support ChatGPT, Bing, Bard, Claude 1/2.
+  - NEW: We have added initial support for https://github.com/oobabooga/text-generation-webui. You'll have to go thru their process, including downloading their models ([I use LLaMa-13B-GGML](https://huggingface.co/TheBloke/LLaMa-13B-GGML/blob/main/llama-13b.ggmlv3.q4_0.bin)) and get it running for yourself on http://127.0.0.1:7860/, before you can run it inside of smol menubar (since we just embed the UI). However currently the app crashes when a click is simulated.
+- **New Chats**: To start a new conversation, cmd+R (simple window refresh, nothing special)
 
 ## video demo
 
@@ -42,6 +26,25 @@ You can modify these keyboard shortcuts if you build it from source.
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 - July 11 version https://twitter.com/swyx/status/1678944036135260160
+
+
+## Download and Setup
+
+You can download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest (sometimes Apple marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it. Or run it from source (instructions below)
+
+The first run creates a desktop shortcut. After the initial setup, you can simply use the generated desktop file to start the application in the future.
+
+When you first run the app: 
+
+1. log into your Google account (once you log into your google account for chatgpt, you'l also be logged in to Bard). 
+2. For Bing, after you log in to your Microsoft account, you'll need to refresh to get into the Bing Chat screen. It's a little finnicky at first try but it works.
+3. Login for Anthropic via Google SSO is broken right now - it requires a popup which is blocked at least in my testing. For now just use manual email + login token, it works fine (dont include the extra space at the end from their email!!). If you are familiar with Electron and Webviews, would welcome a PR to fix, we can't figure it out so far.
+
+![image](https://github.com/smol-ai/menubar/assets/6764957/dce5b127-e8c2-4be2-97d3-e2fa3042ef24)
+
+## seeking contributors!
+
+please see https://github.com/smol-ai/menubar/blob/main/CONTRIBUTING.md
 
 ## build from source
 
