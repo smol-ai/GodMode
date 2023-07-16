@@ -10,6 +10,7 @@ const providers = {
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
 	Claude2: require('./providers/claude2'),
+	Together: require('./providers/together'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 };
