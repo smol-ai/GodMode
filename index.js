@@ -13,12 +13,12 @@ const path = require('path');
 // Importing necessary modules from electron
 const {
 	app,
-	BrowserWindow,
 	nativeImage,
 	Tray,
 	Menu,
 	globalShortcut,
 	shell,
+	screen,
 } = require('electron');
 
 // Getting the application's version from package.json
@@ -47,6 +47,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 log.info('store reset', store); // Logging the store
 
+// Initialize fullscreen toggle
+store.set('isFullscreen', false);
+
 // Context menu for electron apps
 const contextMenu = require('electron-context-menu');
 
@@ -60,6 +63,8 @@ app.on('ready', () => {
 
 	const tray = new Tray(image);
 
+	let { width } = screen.getPrimaryDisplay().workAreaSize;
+
 	const mb = menubar({
 		browserWindow: {
 			icon: image,
@@ -72,7 +77,7 @@ app.on('ready', () => {
 				enableWebView: true, // from chatgpt
 				// nativeWindowOpen: true,
 			},
-			width: 1200,
+			width: store.get('isFullscreen', false) ? width : 1200,
 			height: 750,
 		},
 		tray,
@@ -116,7 +121,21 @@ app.on('ready', () => {
           click: () => {
             window.reload();
           },
-        }
+        }, {
+					label: 'Toggle Fullscreen',
+					accelerator: 'CommandorControl+Shift+F',
+					type: 'checkbox',
+					checked: store.get('isFullscreen', false),
+					click: () => {
+						const fullscreen = !store.get('isFullscreen', false);
+						store.set('isFullscreen', fullscreen);
+						if (fullscreen) {
+							window.setBounds({x: 0, width: width, height: window.getSize()[1]});
+						} else {
+							window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
+						}
+					},
+				}
       ];
 
       const separator = { type: 'separator' };
@@ -245,6 +264,19 @@ app.on('ready', () => {
 					mb.app.show();
 				}
 				mb.app.focus();
+			}
+
+		});
+
+		// Fullscreen menu shortcut
+		globalShortcut.register('CommandOrControl+Shift+F', () => {
+			const fullscreen = !store.get('isFullscreen', false);
+			store.set('isFullscreen', fullscreen);
+			const { window } = mb;
+			if (fullscreen) {
+				window.setBounds({x: 0, width: width, height: window.getSize()[1]});
+			} else {
+				window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
 			}
 		});
 
