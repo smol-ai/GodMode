@@ -99,6 +99,7 @@ webview {
 
 .gutter.gutter-horizontal {
   background-image: url("images/vertical-grip.png");
+  background-size: 1px auto; /* width height */
   cursor: col-resize;
 }
 

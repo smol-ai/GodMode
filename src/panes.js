@@ -10,7 +10,19 @@ const store = new Store();
 // Function to get the enabled providers from the providers object
 function getEnabledProviders(providers) {
 	const allProviders = Object.values(providers);
-	return allProviders.filter(provider => provider.isEnabled());
+	const customPane0 = store.get(`customPane0`, false);
+	const customPane1 = store.get(`customPane1`, false);
+	const customPane2 = store.get(`customPane2`, false);
+	return [...allProviders.filter(provider => provider.isEnabled()),
+	...[customPane0,customPane1,customPane2]
+		.map((providerName, i) => {
+			if (!providerName) return null;
+			provider = allProviders.find(provider => provider.fullName === providerName)
+			provider.customPaneId = `customPane${i}`;
+			return provider
+		})
+		.filter(Boolean)
+	];
 }
 
 // Function to create and render webview panes for each provider

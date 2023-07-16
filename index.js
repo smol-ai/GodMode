@@ -3,6 +3,7 @@
 
 // Logging library
 const log = require('electron-log');
+const { dialog } = require('electron') 
 
 // Menubar library to create electron applications that reside in the system's menubar
 const { menubar } = require('menubar');
@@ -139,7 +140,7 @@ app.on('ready', () => {
 			});
 
 			const superPromptEnterKey = {
-				label: 'Super Prompt "Enter" Key',
+				label: '"Enter" Key also submits chat (vs Cmd+Enter)',
 				type: 'checkbox',
 				checked: store.get('SuperPromptEnterKey', false),
 				click: () => {
@@ -161,37 +162,6 @@ app.on('ready', () => {
       });
 
       const menuFooter = [
-        // Removing the preferences window for now because all settings are now
-        // in the menubar context menu dropdown. (Seemed like a better UX)
-        // {
-        //   label: 'Preferences',
-        //   click: () => {
-        //     const preferencesWindow = new BrowserWindow({
-        //       parent: null,
-        //       modal: false,
-        //       alwaysOnTop: true,
-        //       show: false,
-        //       autoHideMenuBar: true,
-        //       width: 500,
-        //       height: 300,
-        //       webPreferences: {
-        //         nodeIntegration: true,
-        //         contextIsolation: false,
-        //       },
-        //     });
-        //     preferencesWindow.loadFile('preferences.html');
-        //     preferencesWindow.once('ready-to-show', () => {
-        //       mb.hideWindow();
-        //       preferencesWindow.show();
-        //     });
-
-        //     // When the preferences window is closed, show the main window again
-        //     preferencesWindow.on('close', () => {
-        //       mb.showWindow();
-        //       mb.window.reload(); // reload the main window to apply the new settings
-        //     });
-        //   },
-        // },
         {
           label: 'View on GitHub',
           click: () => {
@@ -211,6 +181,34 @@ app.on('ready', () => {
         ...menuHeader,
         separator,
         ...providersToggles,
+        {
+          label: 'Custom Pane 0',
+					type: 'checkbox',
+					checked: !!store.get(`customPane0`, false),
+          click: () => {
+            dialog.showMessageBox({
+              type: 'question',
+              buttons: allProviders.map(provider => provider.fullName),
+              title: 'Select a provider',
+              message: 'Which preset provider do you want to add?',
+            }).then(result => {
+							// find result.response in allProviders
+							const provider = allProviders[result.response]
+							store.set(`customPane0`, provider.fullName);
+							console.log('set ', provider)
+							setTimeout(() => {
+								window.reload();
+							}, 100)
+            }).catch(err => {
+              console.log(err)
+            })
+						// dialog.showOpenDialog(options).then(result => {
+						// 	// result.canceled will be true if user canceled
+						// 	// result.filePaths will have array of selected file paths 
+						// 	window.reload();
+						// })
+          },
+        },
         separator,
         superPromptEnterKey,
         separator,

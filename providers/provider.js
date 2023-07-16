@@ -9,8 +9,9 @@ class Provider {
 	static getWebview() {
 		return document.getElementById(this.webviewId);
 	}
+	static customPaneId = null // for when it is used as a custom pane
 	static paneId() {
-		return `${this.name.toLowerCase()}Pane`;
+		return this.customPaneId || `${this.name.toLowerCase()}Pane`;
 	}
 
 	static setupCustomPasteBehavior() {
