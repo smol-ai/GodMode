@@ -31,6 +31,7 @@ const providers = {
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
 	Claude2: require('./providers/claude2'),
+	Llama2: require('./providers/llama2'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 };
