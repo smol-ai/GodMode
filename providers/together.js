@@ -5,7 +5,7 @@ const Provider = require('./provider');
 
 class Together extends Provider {
 	static webviewId = 'webviewTOGETHER';
-  static fullName = 'Together (RedPajama, StarCoder, Falcon, etc)';
+  static fullName = 'Together (WIP - RedPajama, StarCoder, Falcon, etc)';
 
 
 	static url = 'https://api.together.xyz/playground/chat';
