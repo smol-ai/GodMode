@@ -19,6 +19,24 @@ Yes and no:
 3. Supports local models like LLaMa and Vicuna via [OobaBooga](https://github.com/oobabooga/text-generation-webui).
 4. No paywall, build from source.
 
+## Supported LLM Providers
+
+| Provider | Status | Notes |
+| -------- | ------ | ------------------ |
+| OpenAi | ☑️ | Defaults to GPT 4 Code Interpreter |
+| Bard | ☑️ |  |
+| Bing | ☑️ | |
+| Claude | ☑️ | Requires Beta Access |
+| Claude 2 | ☑️ | |
+| Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️ | Requires Local Setup |
+| HuggingChat | ☑️ |  |
+| Perplexity | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/35)! |
+| Phind | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/39)! |
+| OpenAssistant | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)! |
+| Quora Poe | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)! |
+| ... What's Else? | ☐ | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)! |
+
+
 ## Features and Usage
 
 - **Keyboard Shortcuts**:
