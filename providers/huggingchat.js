@@ -52,6 +52,26 @@ class HuggingChat extends Provider {
           if (targetElement) {
             targetElement.style.display = 'none';
           }
+
+          // Hide HuggingChat Logo
+          var elements = Array.from(document.querySelectorAll('div object'));
+
+          elements.forEach(element => {
+            if (element.parentElement.textContent.includes('HuggingChat')) {
+              element.parentElement.parentElement.style.display = 'none';
+            }
+          });
+
+          // Same loop for the other text.
+          var pElements = Array.from(document.querySelectorAll('p'));
+
+          pElements.forEach(element => {
+            if (element.textContent.includes('Examples')) {
+              element.parentElement.style.display = 'none';
+            }
+          });
+
+
           `);
         }, 100);
 		});
