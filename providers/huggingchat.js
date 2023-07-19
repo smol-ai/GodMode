@@ -33,16 +33,32 @@ class HuggingChat extends Provider {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			this.getWebview().insertCSS(`
-          div:contains("Examples") {
-            display: none !important;
-          }
-
+        .lg\:col-span-3.lg\:mt-12 {
+          display: none !important;
+        }
         `);
         setTimeout(() => {
           this.getWebview().executeJavaScript(`
+          // Add Dark Mode
           document.documentElement.classList.add('dark');
+
+          // Hide Examples Box
+          var elements = Array.from(document.querySelectorAll('div[class]'));
+          var targetElement;
+
+          for (var i = 0; i < elements.length; i++) {
+              var classes = elements[i].className.split(' ');
+              if (classes.includes('lg:col-span-3') && classes.includes('lg:mt-12') && elements[i].textContent.includes('Examples')) {
+                  targetElement = elements[i];
+                  break;
+              }
+          }
+
+          if (targetElement) {
+            targetElement.style.display = 'none';
+          }
           `);
-        }, 0);
+        }, 100);
 		});
 	}
 
