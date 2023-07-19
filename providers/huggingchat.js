@@ -32,11 +32,6 @@ class HuggingChat extends Provider {
 	static handleCss() {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
-			this.getWebview().insertCSS(`
-        .lg\:col-span-3.lg\:mt-12 {
-          display: none !important;
-        }
-        `);
         setTimeout(() => {
           this.getWebview().executeJavaScript(`
           // Add Dark Mode
