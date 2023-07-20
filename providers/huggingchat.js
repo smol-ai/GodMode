@@ -5,7 +5,7 @@ const Provider = require('./provider');
 
 class HuggingChat extends Provider {
 	static webviewId = 'webviewHuggingChat';
-	static fullName = 'HuggingChat';
+	static fullName = 'HuggingChat (Llama2, OpenAssistant)';
 
 	static url = 'https://huggingface.co/chat/';
 
