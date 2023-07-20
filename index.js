@@ -84,9 +84,12 @@ app.on('ready', () => {
 		tray,
 		showOnAllWorkspaces: true,
 		preloadWindow: true,
-		showDockIcon: false,
+		showDockIcon: false, // no longer seems to work
 		icon: image,
 	});
+	if (app.dock) { // check if dock is available (macOS)
+	    app.dock.hide()
+	}
 
   // On menubar ready, the following code will execute
 	mb.on('ready', () => {
