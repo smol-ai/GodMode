@@ -82,7 +82,7 @@ app.on('ready', () => {
 			height: 750,
 		},
 		tray,
-		showOnAllWorkspaces: true,
+		showOnAllWorkspaces: true, // no longer seems to work
 		preloadWindow: true,
 		showDockIcon: false,
 		icon: image,
@@ -264,7 +264,10 @@ app.on('ready', () => {
 				if (process.platform == 'darwin') {
 					mb.app.show();
 				}
+				# https://github.com/smol-ai/menubar/issues/67
+				mb.window.setVisibleOnAllWorkspaces(true); // put the window on all screens
 				mb.app.focus();
+				mb.window.setVisibleOnAllWorkspaces(false); // disable all screen behavior
 			}
 
 		});
