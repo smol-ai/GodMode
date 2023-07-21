@@ -17,15 +17,25 @@ class Perplexity extends Provider {
           element.value = text;
           element.dispatchEvent(inputEvent);
         }
-        var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
+        var inputElement = document.querySelector('textarea[placeholder*="Ask anything..."]');
         simulateUserInput(inputElement, "${input}");
       `);
 	}
 
 	static handleSubmit() {
+
 		this.getWebview().executeJavaScript(`
-        var btn = document.querySelector('button.bg-super.aspect-square');
-        btn.click();
+        var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
+        // var btn = document.querySelector('button.bg-super.aspect-square');
+        // btn.click();
+        // const event = new KeyboardEvent('keyup', {
+        //   key: 'Enter',
+        //   metaKey: true
+        // });
+        // inputElement.dispatchEvent(event);
+        const button = document.querySelector('button[type="submit"]');
+        button.click();
+
       `);
 	}
 
