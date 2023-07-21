@@ -27,7 +27,7 @@ Yes and no:
 | Bard | ☑️ |  |
 | Bing | ☑️ | |
 | Claude | ☑️ | Requires Beta Access |
-| Claude 2 | ☑️ | |
+| Claude 2 | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️ | Requires Local Setup |
 | HuggingChat | ☑️ |  |
 | Perplexity | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/35)! |
