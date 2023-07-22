@@ -27,7 +27,7 @@ Yes and no:
 | Bard | ☑️ |  |
 | Bing | ☑️ | |
 | Claude | ☑️ | Requires Beta Access |
-| Claude 2 | ☑️ | |
+| Claude 2 | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️ | Requires Local Setup |
 | HuggingChat | ☑️ |  |
 | Perplexity | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/35)! |
@@ -122,13 +122,13 @@ If you want to build from source, you will need to clone the repo and open the p
 
 by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"! and someone to help make this work on Arch Linux)
 
-i think you can run
+for Windows i think you can run
 
 ```bash
 electron-forge make --platform=win32 --arch=ia32,x64
 ```
 
-and it might work? let us know and i'd happily take a PR to include it in the default `make` process.
+and it might work? (Update: [confirmed](https://github.com/smol-ai/menubar/issues/79) works).
 
 ## why use/make this?
 
