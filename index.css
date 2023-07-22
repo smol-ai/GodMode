@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
@@ -62,7 +68,7 @@ body {
 }
 #form textarea {
   width: 100%;
-  height: 80px;
+  height: 100%;
   resize: none;
   overflow-y: auto; /* Adds a scrollbar when the content is too big */
   padding: 0 12px;
@@ -70,11 +76,20 @@ body {
   outline: none;
   background-color: bisque;
   flex-grow: 1;
+  border-radius: 5px;
+  border: 0;
+  transition: background-color 0.3s ease-in-out;
+}
+
+#form textarea:focus {
+  background-color: #fff;
 }
 
 #form button {
-  margin: 0 4px;
+  margin-left: 4px;
   padding: 0 12px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 webview {
