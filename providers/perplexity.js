@@ -11,15 +11,20 @@ class Perplexity extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
-        function simulateUserInput(element, text) {
-          const inputEvent = new Event('input', { bubbles: true });
-          element.focus();
-          element.value = text;
-          element.dispatchEvent(inputEvent);
-        }
+        // function simulateUserInput(element, text) {
+        //   const inputEvent = new Event('input', { bubbles: true });
+        //   element.focus();
+        //   element.value = text;
+        //   element.dispatchEvent(inputEvent);
+        // }
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
-        inputElement.focus(); inputElement.click();
-        simulateUserInput(inputElement, "${input}");
+        // inputElement.focus(); inputElement.click();
+        // simulateUserInput(inputElement, "${input}");
+        var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+        nativeTextAreaValueSetter.call(inputElement, "${input}");
+
+        var event = new Event('input', { bubbles: true});
+        inputElement.dispatchEvent(event);
       `);
 	}
 
@@ -34,10 +39,10 @@ class Perplexity extends Provider {
         //   metaKey: true
         // });
         // inputElement.dispatchEvent(event);
-        const buttons = Array.from(document.querySelectorAll('button'));
-        const buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
+        var buttons = Array.from(document.querySelectorAll('button'));
+        var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 
-        const button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
+        var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
 
         button.click();
 
