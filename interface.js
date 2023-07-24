@@ -13,6 +13,7 @@ const providers = {
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 	HuggingChat: require('./providers/huggingchat'),
+	Phind: require('./providers/phind'),
 };
 
 const {

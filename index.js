@@ -34,6 +34,7 @@ const providers = {
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 	HuggingChat: require('./providers/huggingchat'),
+	Phind: require('./providers/phind'),
 };
 
 // Getting all the providers in an array
