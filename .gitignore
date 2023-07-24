@@ -94,3 +94,9 @@ first-run.flag
 
 todo.md
 .env
+
+# SvelteKit
+/build
+/.svelte-kit
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

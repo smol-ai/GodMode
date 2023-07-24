@@ -19,6 +19,8 @@ const {
 	globalShortcut,
 	shell,
 	screen,
+  BrowserWindow,
+  ipcMain,
 } = require('electron');
 
 // Getting the application's version from package.json
@@ -58,6 +60,9 @@ const contextMenu = require('electron-context-menu');
 const image = nativeImage.createFromPath(
 	path.join(__dirname, `images/iconTemplate.png`)
 );
+
+// Default quick open shortcut
+const quickOpenDefaultShortcut = 'CommandOrControl+Shift+G';
 
 // Once the app is ready, the following code will execute
 app.on('ready', () => {
@@ -118,7 +123,7 @@ app.on('ready', () => {
         },
         {
           label: 'Quick Open (use this!)',
-          accelerator: 'CommandorControl+Shift+G',
+          accelerator: store.get('quickOpenShortcut', quickOpenDefaultShortcut),
           click: () => {
             window.reload();
           },
@@ -136,7 +141,40 @@ app.on('ready', () => {
 							window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
 						}
 					},
-				}
+				}, {
+          label: 'Settings',
+          accelerator: 'CommandorControl+,',
+          click: () => {
+            const preferencesWindow = new BrowserWindow({
+              parent: null,
+              modal: false,
+              alwaysOnTop: true,
+              show: false,
+              autoHideMenuBar: true,
+              width: 500,
+              height: 300,
+              webPreferences: {
+                preload: path.join(__dirname, 'src', 'settings-preload.js'),
+                nodeIntegration: false,
+                contextIsolation: true,
+              },
+            });
+            preferencesWindow.loadURL('http://localhost:5173/settings.html');
+            preferencesWindow.openDevTools({
+              mode: 'detach',
+            });
+            preferencesWindow.once('ready-to-show', () => {
+              mb.hideWindow();
+              preferencesWindow.show();
+            });
+
+            // When the preferences window is closed, show the main window again
+            preferencesWindow.on('close', () => {
+              mb.showWindow();
+              mb.window.reload(); // reload the main window to apply the new settings
+            });
+          },
+        },
       ];
 
       const separator = { type: 'separator' };
@@ -256,18 +294,29 @@ app.on('ready', () => {
 		});
 		const menu = new Menu();
 
-		globalShortcut.register('CommandOrControl+Shift+g', () => {
-			if (window.isVisible()) {
-				mb.hideWindow();
-			} else {
-				mb.showWindow();
-				if (process.platform == 'darwin') {
-					mb.app.show();
-				}
-				mb.app.focus();
-			}
+    function quickOpen() {
+      if (window.isVisible()) {
+        mb.hideWindow();
+      } else {
+        mb.showWindow();
+        if (process.platform == 'darwin') {
+          mb.app.show();
+        }
+        mb.app.focus();
+      }
+    }
 
-		});
+		globalShortcut.register(store.get('quickOpenShortcut', quickOpenDefaultShortcut), quickOpen);
+
+    store.onDidChange('quickOpenShortcut', (newValue, oldValue) => {
+      if (newValue === oldValue) return;
+      if (oldValue) {
+        globalShortcut.unregister(oldValue);
+      }
+      if (newValue) {
+        globalShortcut.register(newValue, quickOpen);
+      }
+    });
 
 		// Fullscreen menu shortcut
 		globalShortcut.register('CommandOrControl+Shift+F', () => {
@@ -376,4 +425,12 @@ app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
+});
+
+ipcMain.handle('getQuickOpenShortcut', () => {
+	return store.get('quickOpenShortcut', quickOpenDefaultShortcut)
+});
+
+ipcMain.handle('setQuickOpenShortcut', (event, value) => {
+  store.set('quickOpenShortcut', value);
 });
