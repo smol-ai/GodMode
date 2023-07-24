@@ -33,7 +33,11 @@ class Perplexity extends Provider {
         //   metaKey: true
         // });
         // inputElement.dispatchEvent(event);
-        const button = document.querySelector('button[type="submit"]');
+        const buttons = Array.from(document.querySelectorAll('button'));
+        const buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
+
+        const button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
+
         button.click();
 
       `);
