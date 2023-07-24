@@ -46,6 +46,7 @@
     "@electron-forge/maker-squirrel": "^6.1.1",
     "@electron-forge/maker-zip": "^6.1.1",
     "@electron-forge/publisher-github": "^6.0.4",
+    "@sveltejs/vite-plugin-svelte": "^2.4.3",
     "child_process": "^1.0.2",
     "dotenv": "^16.0.3",
     "electron": "^22.3.12",

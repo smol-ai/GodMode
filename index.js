@@ -145,7 +145,7 @@ app.on('ready', () => {
           label: 'Settings',
           accelerator: 'CommandorControl+,',
           click: () => {
-            const preferencesWindow = new BrowserWindow({
+            const settingsWindow = new BrowserWindow({
               parent: null,
               modal: false,
               alwaysOnTop: true,
@@ -159,19 +159,13 @@ app.on('ready', () => {
                 contextIsolation: true,
               },
             });
-            preferencesWindow.loadURL('http://localhost:5173/settings.html');
-            preferencesWindow.openDevTools({
+            settingsWindow.loadURL('http://localhost:5173/settings.html');
+            settingsWindow.openDevTools({
               mode: 'detach',
             });
-            preferencesWindow.once('ready-to-show', () => {
+            settingsWindow.once('ready-to-show', () => {
               mb.hideWindow();
-              preferencesWindow.show();
-            });
-
-            // When the preferences window is closed, show the main window again
-            preferencesWindow.on('close', () => {
-              mb.showWindow();
-              mb.window.reload(); // reload the main window to apply the new settings
+              settingsWindow.show();
             });
           },
         },
