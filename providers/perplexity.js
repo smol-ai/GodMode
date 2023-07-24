@@ -34,9 +34,11 @@ class Perplexity extends Provider {
         //   metaKey: true
         // });
         // inputElement.dispatchEvent(event);
-        var button = document.querySelector('textarea ~ div div ~ div button');
-        // var button = document.querySelector('button.bg-super.text-white.hover:opacity-80.font-sans.focus:outline-none.cursor-point.active:scale-95.aspect-square.h-8'); // this didnt work but is another approach?
-        console.log('button', button)
+        const buttons = Array.from(document.querySelectorAll('button'));
+        const buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
+
+        const button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
+
         button.click();
 
       `);
