@@ -24,12 +24,24 @@ class Phind extends Provider {
 
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
-        let event = new KeyboardEvent('keydown', {
-          key: 'Enter',
-          metaKey: true,
-        });
+      // focus the input element
+      var inputElement = document.querySelector('textarea[placeholder*="Describe your technical task"]');
+      inputElement.focus();
 
-      document.dispatchEvent(event);
+      // simulate keypress to trigger the submit button
+      var keyEvent = new KeyboardEvent('keydown', {key: ' ', bubbles: true});
+      inputElement.dispatchEvent(keyEvent);
+
+      // add a space to the input value
+      inputElement.value = inputElement.value + ' ';
+
+      // simulate keyup event
+      var keyupEvent = new KeyboardEvent('keyup', {key: ' ', bubbles: true});
+      inputElement.dispatchEvent(keyupEvent);
+
+      // click the submit button
+      var buttonElement = document.querySelector('button[type="submit"]');
+      buttonElement.click();
       `);
 	}
 
