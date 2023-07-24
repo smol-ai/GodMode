@@ -17,7 +17,8 @@ class Perplexity extends Provider {
           element.value = text;
           element.dispatchEvent(inputEvent);
         }
-        var inputElement = document.querySelector('textarea[placeholder*="Ask anything..."]');
+        var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
+        inputElement.focus(); inputElement.click();
         simulateUserInput(inputElement, "${input}");
       `);
 	}
@@ -33,7 +34,9 @@ class Perplexity extends Provider {
         //   metaKey: true
         // });
         // inputElement.dispatchEvent(event);
-        const button = document.querySelector('button[type="submit"]');
+        var button = document.querySelector('textarea ~ div div ~ div button');
+        // var button = document.querySelector('button.bg-super.text-white.hover:opacity-80.font-sans.focus:outline-none.cursor-point.active:scale-95.aspect-square.h-8'); // this didnt work but is another approach?
+        console.log('button', button)
         button.click();
 
       `);
