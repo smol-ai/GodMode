@@ -1,8 +1,6 @@
 <script lang="ts">
-  import CrossIcon from "../CrossIcon.svelte";
-  import Label from "../Label.svelte";
-  import AcceleratorToken from "./AcceleratorToken.svelte";
   import { createEventDispatcher, setContext } from "svelte";
+  import Tag from "./Tag.svelte";
 
   export let label = "";
   export let disabled = false;
@@ -68,7 +66,11 @@
     }
     if (interimShift && modifierKeys.has(key)) {
       modifierKeySet.add("Shift");
-      modifierKeySet.add(key);
+      if (key === "Meta") {
+        modifierKeySet.add(MetaKey);
+      } else {
+        modifierKeySet.add(key);
+      }
     } else if (modifierKeys.has(key)) {
       if (key === "Meta") {
         modifierKeySet.add(MetaKey);
@@ -109,13 +111,6 @@
     }
   }
 
-  function resetShortcut(): void {
-    shortcut = [];
-    interimShift = false;
-    isRecording = false;
-    modifierKeySet = new Set<string>();
-  }
-
   function toggleRecording(): void {
     isRecording = !isRecording;
   }
@@ -126,12 +121,6 @@
 </script>
 
 <div>
-  {#if label}
-    <Label {label}>
-      <slot name="label-prefix" slot="label-prefix" />
-      <slot name="label-suffix" slot="label-suffix" />
-    </Label>
-  {/if}
   {#if !shortcut || shortcut.length == 0}
     <button
       class="accelerator"
@@ -144,35 +133,27 @@
     >
   {:else}
     <div class="accelerator-wrapper">
-      <div class="accelerator" class:accelerator-disabled={disabled}>
+      <div class="accelerator">
         {#if !isRecording}
           {#each shortcut as token}
-            <AcceleratorToken>
-              {token}
-            </AcceleratorToken>
+            <Tag color="#f5f5f5" textColor="black">
+              <div class="accelerator-token">
+                {token}
+              </div>
+            </Tag>
           {/each}
-          {#if !disabled}
-            <button
-              on:click|preventDefault={resetShortcut}
-              class="accelerator-reset-button"
-            >
-              <CrossIcon />
-            </button>
-          {/if}
         {:else}
-          Recording shortcut...
+          <Tag color="#e0e7ff" textColor="#3730a3">Recording shortcut...</Tag>
         {/if}
       </div>
-      {#if !disabled}
-        <button
-          on:click={toggleRecording}
-          on:keydown={recordShortcut}
-          on:keyup={keyUp}
-          on:blur={turnRecordingOff}
-        >
-          {isRecording ? "Cancel recording" : "Click to record new shortcut"}
-        </button>
-      {/if}
+      <button
+        on:click={toggleRecording}
+        on:keydown={recordShortcut}
+        on:keyup={keyUp}
+        on:blur={turnRecordingOff}
+      >
+        {isRecording ? "Cancel recording" : "Click to record new shortcut"}
+      </button>
     </div>
   {/if}
 </div>
@@ -197,20 +178,7 @@
     align-items: center;
     padding: 8px;
     gap: 4px;
-  }
-
-  .accelerator-reset-button {
-    margin-left: auto;
-    padding: 0;
-    border: none;
-    background: transparent;
-    opacity: 0.5;
-    transition: var(--theme-transitions-primary);
-    color: var(--theme-colors-greys1);
-  }
-
-  .accelerator-reset-button:hover {
-    opacity: 1;
+    font-size: 12px;
   }
 
   .accelerator:hover {
@@ -233,40 +201,14 @@
     outline: none;
   }
 
-  .accelerator-disabled {
-    background: rgba(0, 0, 0, 0.1) !important;
-    cursor: not-allowed;
-  }
-  .accelerator-disabled :global(.tag) {
-    color: rgba(0, 0, 0, 1) !important;
-    background: rgba(0, 0, 0, 0.125) !important;
-  }
-  .accelerator-wrapper:hover .accelerator-disabled {
-    border-color: rgba(0, 0, 0, 0.1);
+  .accelerator-token {
+    display: flex;
+    align-items: center;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .accelerator {
-      border-color: rgba(225, 225, 225, 0.1);
-      color: rgba(225, 225, 225, 0.8) !important;
-    }
-    .accelerator:hover {
-      border-color: rgba(225, 225, 225, 0.5);
-    }
-    .accelerator-reset-button {
-      color: var(--theme-colors-white);
-    }
-    .accelerator :global(.tag),
-    .accelerator :global(select) {
-      color: rgba(225, 225, 225, 0.8) !important;
-      background: rgba(225, 225, 225, 0.1) !important;
-    }
-    .accelerator-disabled :global(.tag) {
-      color: rgba(225, 225, 225, 1) !important;
-      background: rgba(225, 225, 225, 0.25) !important;
-    }
-    .accelerator-wrapper:hover .accelerator-disabled {
-      border-color: rgba(225, 225, 225, 0.1);
-    }
+  button {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
 </style>

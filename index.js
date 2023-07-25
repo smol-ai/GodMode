@@ -63,6 +63,7 @@ const image = nativeImage.createFromPath(
 
 // Default quick open shortcut
 const quickOpenDefaultShortcut = 'CommandOrControl+Shift+G';
+let settingsWindow = null;
 
 // Once the app is ready, the following code will execute
 app.on('ready', () => {
@@ -127,7 +128,46 @@ app.on('ready', () => {
           click: () => {
             window.reload();
           },
-        }, {
+        },
+				{
+					label: 'Change Quick Open Shortcut',
+          click: () => {
+						if (settingsWindow && !settingsWindow.isDestroyed()) {
+							// If the settings window is already open, just focus it
+							settingsWindow.show();
+							settingsWindow.focus();
+							return;
+						}
+						settingsWindow = new BrowserWindow({
+							show: true,
+							width: 380,
+							height: 200,
+							titleBarStyle: 'hidden',
+							minimizable: false,
+							fullscreenable: false,
+							maximizable: false,
+              webPreferences: {
+                preload: path.join(__dirname, 'src', 'settings-preload.js'),
+                contextIsolation: true,
+              },
+            });
+						
+						if (process.env.NODE_ENV === 'development') {
+							settingsWindow.loadURL('http://localhost:5173/settings.html');
+							// open devtools if in dev mode
+							settingsWindow.openDevTools({
+								mode: 'detach',
+							});
+						} else {
+							settingsWindow.loadFile(path.join(__dirname, 'dist/settings.html'));
+						}
+						
+						settingsWindow.once('ready-to-show', () => {
+              mb.hideWindow();
+            });
+          },
+        },
+				{
 					label: 'Toggle Fullscreen',
 					accelerator: 'CommandorControl+Shift+F',
 					type: 'checkbox',
@@ -141,34 +181,7 @@ app.on('ready', () => {
 							window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
 						}
 					},
-				}, {
-          label: 'Settings',
-          accelerator: 'CommandorControl+,',
-          click: () => {
-            const settingsWindow = new BrowserWindow({
-              parent: null,
-              modal: false,
-              alwaysOnTop: true,
-              show: false,
-              autoHideMenuBar: true,
-              width: 500,
-              height: 300,
-              webPreferences: {
-                preload: path.join(__dirname, 'src', 'settings-preload.js'),
-                nodeIntegration: false,
-                contextIsolation: true,
-              },
-            });
-            settingsWindow.loadURL('http://localhost:5173/settings.html');
-            settingsWindow.openDevTools({
-              mode: 'detach',
-            });
-            settingsWindow.once('ready-to-show', () => {
-              mb.hideWindow();
-              settingsWindow.show();
-            });
-          },
-        },
+				},
       ];
 
       const separator = { type: 'separator' };
@@ -213,37 +226,6 @@ app.on('ready', () => {
       });
 
       const menuFooter = [
-        // Removing the preferences window for now because all settings are now
-        // in the menubar context menu dropdown. (Seemed like a better UX)
-        // {
-        //   label: 'Preferences',
-        //   click: () => {
-        //     const preferencesWindow = new BrowserWindow({
-        //       parent: null,
-        //       modal: false,
-        //       alwaysOnTop: true,
-        //       show: false,
-        //       autoHideMenuBar: true,
-        //       width: 500,
-        //       height: 300,
-        //       webPreferences: {
-        //         nodeIntegration: true,
-        //         contextIsolation: false,
-        //       },
-        //     });
-        //     preferencesWindow.loadFile('preferences.html');
-        //     preferencesWindow.once('ready-to-show', () => {
-        //       mb.hideWindow();
-        //       preferencesWindow.show();
-        //     });
-
-        //     // When the preferences window is closed, show the main window again
-        //     preferencesWindow.on('close', () => {
-        //       mb.showWindow();
-        //       mb.window.reload(); // reload the main window to apply the new settings
-        //     });
-        //   },
-        // },
         {
           label: 'View on GitHub',
           click: () => {
