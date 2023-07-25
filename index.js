@@ -19,8 +19,8 @@ const {
 	globalShortcut,
 	shell,
 	screen,
-  BrowserWindow,
-  ipcMain,
+	BrowserWindow,
+	ipcMain,
 } = require('electron');
 
 // Getting the application's version from package.json
@@ -131,7 +131,7 @@ app.on('ready', () => {
         },
 				{
 					label: 'Change Quick Open Shortcut',
-          click: () => {
+					click: () => {
 						if (settingsWindow && !settingsWindow.isDestroyed()) {
 							// If the settings window is already open, just focus it
 							settingsWindow.show();
@@ -146,11 +146,11 @@ app.on('ready', () => {
 							minimizable: false,
 							fullscreenable: false,
 							maximizable: false,
-              webPreferences: {
-                preload: path.join(__dirname, 'settings', 'settings-preload.js'),
-                contextIsolation: true,
-              },
-            });
+							webPreferences: {
+								preload: path.join(__dirname, 'settings', 'settings-preload.js'),
+								contextIsolation: true,
+							},
+						});
 						
 						settingsWindow.loadFile(path.join(__dirname, 'settings', 'settings.html'));
 						if (process.env.NODE_ENV === 'development') {
@@ -161,10 +161,10 @@ app.on('ready', () => {
 						}
 						
 						settingsWindow.once('ready-to-show', () => {
-              mb.hideWindow();
-            });
-          },
-        },
+							mb.hideWindow();
+						});
+					},
+				},
 				{
 					label: 'Toggle Fullscreen',
 					accelerator: 'CommandorControl+Shift+F',
@@ -252,48 +252,47 @@ app.on('ready', () => {
       ]
     };
 
-    // Create the context menu when right-clicking the tray icon
+		// Create the context menu when right-clicking the tray icon
 		tray.on('right-click', () => {
-      const contextMenuTemplate = createContextMenuTemplate();
+			const contextMenuTemplate = createContextMenuTemplate();
 			mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
 		});
 
-    // Create the context menu when clicking the tray icon with control or meta key
+		// Create the context menu when clicking the tray icon with control or meta key
 		tray.on('click', e => {
 			//check if ctrl or meta key is pressed while clicking
 			if (e.ctrlKey || e.metaKey) {
-        const contextMenuTemplate = createContextMenuTemplate();
-        mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
-      }
+				const contextMenuTemplate = createContextMenuTemplate();
+				mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
+			}
 		});
 		const menu = new Menu();
 
-    function quickOpen() {
-      if (window.isVisible()) {
-        mb.hideWindow();
-      } else {
-        mb.showWindow();
-        if (process.platform == 'darwin') {
-          mb.app.show();
-        }
-        mb.app.focus();
-      }
-    }
+		function quickOpen() {
+			if (window.isVisible()) {
+				mb.hideWindow();
+			} else {
+				mb.showWindow();
+				if (process.platform == 'darwin') {
+					mb.app.show();
+				}
+				mb.app.focus();
+			}
+		}
 
 		globalShortcut.register(store.get('quickOpenShortcut', quickOpenDefaultShortcut), quickOpen);
 
-    store.onDidChange('quickOpenShortcut', (newValue, oldValue) => {
-			console.log({ newValue, oldValue });
-      if (newValue === oldValue) return;
-      if (oldValue) {
-        globalShortcut.unregister(oldValue);
-      } else if (quickOpenDefaultShortcut) {
+		store.onDidChange('quickOpenShortcut', (newValue, oldValue) => {
+			if (newValue === oldValue) return;
+			if (oldValue) {
+				globalShortcut.unregister(oldValue);
+			} else if (quickOpenDefaultShortcut) {
 				globalShortcut.unregister(quickOpenDefaultShortcut);
 			}
-      if (newValue) {
-        globalShortcut.register(newValue, quickOpen);
-      }
-    });
+			if (newValue) {
+				globalShortcut.register(newValue, quickOpen);
+			}
+		});
 
 		// Fullscreen menu shortcut
 		globalShortcut.register('CommandOrControl+Shift+F', () => {
@@ -409,7 +408,7 @@ ipcMain.handle('getQuickOpenShortcut', () => {
 });
 
 ipcMain.handle('setQuickOpenShortcut', (event, value) => {
-  store.set('quickOpenShortcut', value);
+	store.set('quickOpenShortcut', value);
 });
 
 ipcMain.handle('getPlatform', () => {

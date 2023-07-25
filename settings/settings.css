@@ -5,9 +5,11 @@ html {
   height: 100%;
   width: 100%;
 }
+
 body {
   margin: 0;
 }
+
 .titlebar {
   height: 28px;
   -webkit-app-region: drag;
@@ -25,6 +27,7 @@ body {
 .container {
   padding: 20px;
 }
+
 .accelerator-wrapper {
   display: flex;
   flex-direction: column;
