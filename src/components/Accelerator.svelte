@@ -136,14 +136,16 @@
       <div class="accelerator">
         {#if !isRecording}
           {#each shortcut as token}
-            <Tag color="#f5f5f5" textColor="black">
+            <div class="tag" style:background="#f5f5f5" style:color="black">
               <div class="accelerator-token">
                 {token}
               </div>
-            </Tag>
+            </div>
           {/each}
         {:else}
-          <Tag color="#e0e7ff" textColor="#3730a3">Recording shortcut...</Tag>
+          <div class="tag" style:background="#e0e7ff" style:color="3730a3">
+            Recording shortcut...
+          </div>
         {/if}
       </div>
       <button
@@ -204,6 +206,13 @@
   .accelerator-token {
     display: flex;
     align-items: center;
+  }
+
+  .tag {
+    padding: 2px 4px;
+    border-radius: 2px;
+    width: fit-content;
+    font-size: 12px;
   }
 
   button {
