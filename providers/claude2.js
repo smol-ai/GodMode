@@ -5,8 +5,7 @@ const Provider = require('./provider');
 
 class Claude2 extends Provider {
 	static webviewId = 'webviewCLAUDE2';
-  static fullName = 'Anthropic Claude 2';
-
+	static fullName = 'Anthropic Claude 2';
 
 	static url = 'https://claude.ai/chats/';
 
@@ -57,7 +56,7 @@ class Claude2 extends Provider {
 	}
 
 	static getUserAgent() {
-		'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+		'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36';
 	}
 
 	static isEnabled() {
