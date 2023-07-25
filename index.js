@@ -19,6 +19,7 @@ const {
 	globalShortcut,
 	shell,
 	screen,
+	ipcMain,
 } = require('electron');
 
 // Getting the application's version from package.json
@@ -68,7 +69,6 @@ app.on('ready', () => {
 	const tray = new Tray(image);
 
 	let { width } = screen.getPrimaryDisplay().workAreaSize;
-
 	const mb = menubar({
 		browserWindow: {
 			icon: image,
@@ -132,21 +132,7 @@ app.on('ready', () => {
 					type: 'checkbox',
 					checked: store.get('isFullscreen', false),
 					click: () => {
-						const fullscreen = !store.get('isFullscreen', false);
-						store.set('isFullscreen', fullscreen);
-						if (fullscreen) {
-							window.setBounds({
-								x: 0,
-								width: width,
-								height: window.getSize()[1],
-							});
-						} else {
-							window.setBounds({
-								x: width - 1200,
-								width: 1200,
-								height: window.getSize()[1],
-							});
-						}
+						store.set('isFullscreen', !store.get('isFullscreen', false));
 					},
 				},
 			];
@@ -280,12 +266,9 @@ app.on('ready', () => {
 			}
 		});
 
-		// Fullscreen menu shortcut
-		globalShortcut.register('CommandOrControl+Shift+F', () => {
-			const fullscreen = !store.get('isFullscreen', false);
-			store.set('isFullscreen', fullscreen);
+		store.onDidChange('isFullscreen', (isFullscreen) => {
 			const { window } = mb;
-			if (fullscreen) {
+			if (isFullscreen) {
 				window.setBounds({ x: 0, width: width, height: window.getSize()[1] });
 			} else {
 				window.setBounds({
@@ -295,7 +278,6 @@ app.on('ready', () => {
 				});
 			}
 		});
-
 		Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 		// open devtools if in dev mode
@@ -391,4 +373,12 @@ app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
+});
+
+ipcMain.handle('getStoreValue', (event, key) => {
+	return store.get(key);
+});
+
+ipcMain.handle('setStoreValue', (event, key, value) => {
+	return store.set(key, value);
 });
