@@ -69,6 +69,7 @@ app.on('ready', () => {
 	const tray = new Tray(image);
 
 	let { width } = screen.getPrimaryDisplay().workAreaSize;
+
 	const mb = menubar({
 		browserWindow: {
 			icon: image,

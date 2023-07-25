@@ -1,4 +1,5 @@
 // Import necessary modules
+const { ipcRenderer } = require('electron');
 const log = require('electron-log');
 const Store = require('electron-store');
 const store = new Store();
@@ -21,7 +22,6 @@ const {
 	getEnabledProviders,
 	updateSplitSizes,
 } = require('./src/panes');
-const { ipcRenderer } = require('electron');
 
 /* ========================================================================== */
 /* Create Panes                                                               */
@@ -129,7 +129,7 @@ document.addEventListener('keydown', (event) => {
 	}
 });
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
 	if (event.shiftKey && event.metaKey && event.keyCode === 70) {
 		ipcRenderer.invoke('getStoreValue', 'isFullscreen').then((isFullscreen) => {
 			ipcRenderer.invoke('setStoreValue', 'isFullscreen', !isFullscreen);
