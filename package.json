@@ -13,6 +13,7 @@
     "build": "npm run make",
     "buildAndSign": "NODE_ENV=sign npm run make",
     "publish": "electron-forge publish --arch arm64,x64",
+    "format": "prettier '**/*.js' --write",
     "lint": "echo \"No linting configured\""
   },
   "config": {
@@ -48,6 +49,7 @@
     "electron": "^22.3.12",
     "electron-squirrel-startup": "^1.0.0",
     "fs": "^0.0.1-security",
+    "prettier": "^3.0.0",
     "windows-shortcuts": "^0.1.6"
   }
 }

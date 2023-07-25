@@ -62,8 +62,8 @@ class OpenAi extends Provider {
 
 
         `);
-        setTimeout(() => {
-          this.getWebview().executeJavaScript(`
+			setTimeout(() => {
+				this.getWebview().executeJavaScript(`
           // Get the root element
           const root = document.querySelector(':root');
 
@@ -74,7 +74,7 @@ class OpenAi extends Provider {
           document.body.classList.add('dark');
 
           `);
-        }, 0);
+			}, 0);
 		});
 	}
 

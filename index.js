@@ -42,9 +42,12 @@ const allProviders = Object.values(providers);
 // Electron-store used for persistent data storage
 const Store = require('electron-store');
 const store = new Store();
-console.log('if process.env.NODE_ENV is development, reset the store', process.env.NODE_ENV )
+console.log(
+	'if process.env.NODE_ENV is development, reset the store',
+	process.env.NODE_ENV,
+);
 if (process.env.NODE_ENV === 'development') {
-	store.clear() // reset to defaults when in dev
+	store.clear(); // reset to defaults when in dev
 }
 log.info('store reset', store); // Logging the store
 
@@ -56,12 +59,11 @@ const contextMenu = require('electron-context-menu');
 
 // Creating an icon image
 const image = nativeImage.createFromPath(
-	path.join(__dirname, `images/iconTemplate.png`)
+	path.join(__dirname, `images/iconTemplate.png`),
 );
 
 // Once the app is ready, the following code will execute
 app.on('ready', () => {
-
 	const tray = new Tray(image);
 
 	let { width } = screen.getPrimaryDisplay().workAreaSize;
@@ -88,7 +90,7 @@ app.on('ready', () => {
 		icon: image,
 	});
 
-  // On menubar ready, the following code will execute
+	// On menubar ready, the following code will execute
 	mb.on('ready', () => {
 		const { window } = mb;
 
@@ -98,31 +100,32 @@ app.on('ready', () => {
 			app.dock.hide();
 		}
 
-    // The createContextMenuTemplate function creates the context menu template
+		// The createContextMenuTemplate function creates the context menu template
 		// It contains the header, providers' toggles, links, and footer of the menu
-    const createContextMenuTemplate = () => {
-      const menuHeader = [
-        {
-          label: 'Quit',
-          accelerator: 'CommandorControl+Q',
-          click: () => {
-            app.quit();
-          },
-        },
-        {
-          label: 'Reload',
-          accelerator: 'CommandorControl+R',
-          click: () => {
-            window.reload();
-          },
-        },
-        {
-          label: 'Quick Open (use this!)',
-          accelerator: 'CommandorControl+Shift+G',
-          click: () => {
-            window.reload();
-          },
-        }, {
+		const createContextMenuTemplate = () => {
+			const menuHeader = [
+				{
+					label: 'Quit',
+					accelerator: 'CommandorControl+Q',
+					click: () => {
+						app.quit();
+					},
+				},
+				{
+					label: 'Reload',
+					accelerator: 'CommandorControl+R',
+					click: () => {
+						window.reload();
+					},
+				},
+				{
+					label: 'Quick Open (use this!)',
+					accelerator: 'CommandorControl+Shift+G',
+					click: () => {
+						window.reload();
+					},
+				},
+				{
 					label: 'Toggle Fullscreen',
 					accelerator: 'CommandorControl+Shift+F',
 					type: 'checkbox',
@@ -131,29 +134,37 @@ app.on('ready', () => {
 						const fullscreen = !store.get('isFullscreen', false);
 						store.set('isFullscreen', fullscreen);
 						if (fullscreen) {
-							window.setBounds({x: 0, width: width, height: window.getSize()[1]});
+							window.setBounds({
+								x: 0,
+								width: width,
+								height: window.getSize()[1],
+							});
 						} else {
-							window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
+							window.setBounds({
+								x: width - 1200,
+								width: 1200,
+								height: window.getSize()[1],
+							});
 						}
 					},
-				}
-      ];
+				},
+			];
 
-      const separator = { type: 'separator' };
+			const separator = { type: 'separator' };
 
-			const providersToggles = allProviders.map(provider => {
+			const providersToggles = allProviders.map((provider) => {
 				return {
 					label: provider.fullName,
 					type: 'checkbox',
-					checked: store.get(`${provider.webviewId}Enabled`, provider.isEnabled()),
+					checked: store.get(
+						`${provider.webviewId}Enabled`,
+						provider.isEnabled(),
+					),
 					click: () => {
-						store.set(
-							`${provider.webviewId}Enabled`,
-							!provider.isEnabled()
-						);
+						store.set(`${provider.webviewId}Enabled`, !provider.isEnabled());
 						setTimeout(() => {
 							window.reload();
-						}, 100)
+						}, 100);
 					},
 				};
 			});
@@ -165,94 +176,94 @@ app.on('ready', () => {
 				click: () => {
 					store.set(
 						'SuperPromptEnterKey',
-						!store.get('SuperPromptEnterKey', false)
+						!store.get('SuperPromptEnterKey', false),
 					);
 					window.reload();
 				},
 			};
 
-      const providerLinks = allProviders.map(provider => {
-        return {
-          label: `Visit ${provider.name} website`,
-          click: () => {
-            shell.openExternal(provider.url);
-          },
-        };
-      });
+			const providerLinks = allProviders.map((provider) => {
+				return {
+					label: `Visit ${provider.name} website`,
+					click: () => {
+						shell.openExternal(provider.url);
+					},
+				};
+			});
 
-      const menuFooter = [
-        // Removing the preferences window for now because all settings are now
-        // in the menubar context menu dropdown. (Seemed like a better UX)
-        // {
-        //   label: 'Preferences',
-        //   click: () => {
-        //     const preferencesWindow = new BrowserWindow({
-        //       parent: null,
-        //       modal: false,
-        //       alwaysOnTop: true,
-        //       show: false,
-        //       autoHideMenuBar: true,
-        //       width: 500,
-        //       height: 300,
-        //       webPreferences: {
-        //         nodeIntegration: true,
-        //         contextIsolation: false,
-        //       },
-        //     });
-        //     preferencesWindow.loadFile('preferences.html');
-        //     preferencesWindow.once('ready-to-show', () => {
-        //       mb.hideWindow();
-        //       preferencesWindow.show();
-        //     });
+			const menuFooter = [
+				// Removing the preferences window for now because all settings are now
+				// in the menubar context menu dropdown. (Seemed like a better UX)
+				// {
+				//   label: 'Preferences',
+				//   click: () => {
+				//     const preferencesWindow = new BrowserWindow({
+				//       parent: null,
+				//       modal: false,
+				//       alwaysOnTop: true,
+				//       show: false,
+				//       autoHideMenuBar: true,
+				//       width: 500,
+				//       height: 300,
+				//       webPreferences: {
+				//         nodeIntegration: true,
+				//         contextIsolation: false,
+				//       },
+				//     });
+				//     preferencesWindow.loadFile('preferences.html');
+				//     preferencesWindow.once('ready-to-show', () => {
+				//       mb.hideWindow();
+				//       preferencesWindow.show();
+				//     });
 
-        //     // When the preferences window is closed, show the main window again
-        //     preferencesWindow.on('close', () => {
-        //       mb.showWindow();
-        //       mb.window.reload(); // reload the main window to apply the new settings
-        //     });
-        //   },
-        // },
-        {
-          label: 'View on GitHub',
-          click: () => {
-            shell.openExternal('https://github.com/smol-ai/menubar');
-          },
-        },
-        {
-          type: 'separator',
-        },
-        {
-          label: 'Version ' + version,
-        }
-      ]
+				//     // When the preferences window is closed, show the main window again
+				//     preferencesWindow.on('close', () => {
+				//       mb.showWindow();
+				//       mb.window.reload(); // reload the main window to apply the new settings
+				//     });
+				//   },
+				// },
+				{
+					label: 'View on GitHub',
+					click: () => {
+						shell.openExternal('https://github.com/smol-ai/menubar');
+					},
+				},
+				{
+					type: 'separator',
+				},
+				{
+					label: 'Version ' + version,
+				},
+			];
 
-      // Return the complete context menu template
-      return [
-        ...menuHeader,
-        separator,
-        ...providersToggles,
-        separator,
-        superPromptEnterKey,
-        separator,
-        ...providerLinks,
-        separator,
-        ...menuFooter,
-      ]
-    };
+			// Return the complete context menu template
+			return [
+				...menuHeader,
+				separator,
+				...providersToggles,
+				separator,
+				superPromptEnterKey,
+				separator,
+				...providerLinks,
+				separator,
+				...menuFooter,
+			];
+		};
 
-    // Create the context menu when right-clicking the tray icon
+		// Create the context menu when right-clicking the tray icon
 		tray.on('right-click', () => {
-      const contextMenuTemplate = createContextMenuTemplate();
+			const contextMenuTemplate = createContextMenuTemplate();
 			mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
 		});
 
-    // Create the context menu when clicking the tray icon with control or meta key
-		tray.on('click', e => {
+		// Create the context menu when clicking the tray icon with control or meta key
+		tray.on('click', (e) => {
 			//check if ctrl or meta key is pressed while clicking
 			if (e.ctrlKey || e.metaKey) {
-        const contextMenuTemplate = createContextMenuTemplate();
-        mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
-      }
+				const contextMenuTemplate = createContextMenuTemplate();
+				mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
+			}
 		});
 		const menu = new Menu();
 
@@ -266,7 +277,6 @@ app.on('ready', () => {
 				}
 				mb.app.focus();
 			}
-
 		});
 
 		// Fullscreen menu shortcut
@@ -275,9 +285,13 @@ app.on('ready', () => {
 			store.set('isFullscreen', fullscreen);
 			const { window } = mb;
 			if (fullscreen) {
-				window.setBounds({x: 0, width: width, height: window.getSize()[1]});
+				window.setBounds({ x: 0, width: width, height: window.getSize()[1] });
 			} else {
-				window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
+				window.setBounds({
+					x: width - 1200,
+					width: 1200,
+					height: window.getSize()[1],
+				});
 			}
 		});
 
@@ -365,7 +379,7 @@ app.on('ready', () => {
 	// prevent background flickering
 	app.commandLine.appendSwitch(
 		'disable-backgrounding-occluded-windows',
-		'true'
+		'true',
 	);
 });
 

@@ -3,7 +3,6 @@ const store = new Store();
 const log = require('electron-log');
 
 class Provider {
-
 	static webviewId = '';
 
 	static getWebview() {
@@ -68,8 +67,6 @@ class Provider {
 	static setEnabled(state) {
 		store.set(`${this.webviewId}Enabled`, state);
 	}
-
 }
-
 
 module.exports = Provider;
