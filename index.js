@@ -147,19 +147,17 @@ app.on('ready', () => {
 							fullscreenable: false,
 							maximizable: false,
               webPreferences: {
-                preload: path.join(__dirname, 'src', 'settings-preload.js'),
+                preload: path.join(__dirname, 'settings', 'settings-preload.js'),
                 contextIsolation: true,
               },
             });
 						
+						settingsWindow.loadFile(path.join(__dirname, 'settings', 'settings.html'));
 						if (process.env.NODE_ENV === 'development') {
-							settingsWindow.loadURL('http://localhost:5173/settings.html');
 							// open devtools if in dev mode
 							settingsWindow.openDevTools({
 								mode: 'detach',
 							});
-						} else {
-							settingsWindow.loadFile(path.join(__dirname, 'dist/settings.html'));
 						}
 						
 						settingsWindow.once('ready-to-show', () => {
@@ -285,10 +283,13 @@ app.on('ready', () => {
 		globalShortcut.register(store.get('quickOpenShortcut', quickOpenDefaultShortcut), quickOpen);
 
     store.onDidChange('quickOpenShortcut', (newValue, oldValue) => {
+			console.log({ newValue, oldValue });
       if (newValue === oldValue) return;
       if (oldValue) {
         globalShortcut.unregister(oldValue);
-      }
+      } else if (quickOpenDefaultShortcut) {
+				globalShortcut.unregister(quickOpenDefaultShortcut);
+			}
       if (newValue) {
         globalShortcut.register(newValue, quickOpen);
       }
@@ -409,4 +410,8 @@ ipcMain.handle('getQuickOpenShortcut', () => {
 
 ipcMain.handle('setQuickOpenShortcut', (event, value) => {
   store.set('quickOpenShortcut', value);
+});
+
+ipcMain.handle('getPlatform', () => {
+	return process.platform;
 });

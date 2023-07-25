@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld("electron", {
+contextBridge.exposeInMainWorld("settings", {
   getQuickOpenShortcut: () => {
     return ipcRenderer.invoke("getQuickOpenShortcut");
   },
@@ -8,7 +8,9 @@ contextBridge.exposeInMainWorld("electron", {
    * @param {string} shortcut
    */
   setQuickOpenShortcut: (shortcut) => {
-    console.log({ shortcut });
     return ipcRenderer.invoke("setQuickOpenShortcut", shortcut);
   },
+  getPlatform: () => {
+    return ipcRenderer.invoke("getPlatform");
+  }
 });

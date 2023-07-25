@@ -10,13 +10,10 @@
     "start": "NODE_ENV=development node setup.js && NODE_ENV=development electron-forge start",
     "package": "electron-forge package --arch arm64,x64",
     "make": "electron-forge make --arch arm64,x64",
-    "build": "npm run vite:build && npm run make",
+    "build": "npm run make",
     "buildAndSign": "NODE_ENV=sign npm run make",
     "publish": "electron-forge publish --arch arm64,x64",
     "lint": "echo \"No linting configured\"",
-    "vite:dev": "vite dev",
-    "vite:build": "vite build",
-    "vite:preview": "vite preview"
   },
   "config": {
     "forge": "./forge.config.js"
@@ -46,16 +43,11 @@
     "@electron-forge/maker-squirrel": "^6.1.1",
     "@electron-forge/maker-zip": "^6.1.1",
     "@electron-forge/publisher-github": "^6.0.4",
-    "@sveltejs/vite-plugin-svelte": "^2.4.3",
     "child_process": "^1.0.2",
     "dotenv": "^16.0.3",
     "electron": "^22.3.12",
     "electron-squirrel-startup": "^1.0.0",
     "fs": "^0.0.1-security",
-    "svelte": "^4.0.5",
-    "svelte-check": "^3.4.3",
-    "typescript": "^5.0.0",
-    "vite": "^4.4.2",
     "windows-shortcuts": "^0.1.6"
   }
 }
