@@ -50,6 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Get the textarea input element for the prompt
 const promptEl = document.getElementById('prompt');
+promptEl.focus()
 
 // Get the key binding for submitting the prompt from the store
 const SuperPromptEnterKey = store.get('SuperPromptEnterKey', false);
