@@ -9,11 +9,11 @@ class OobaBooga extends Provider {
 
 	static url = 'http://127.0.0.1:7860/';
 
-  // todo: let user customize their preferred template.
-  static templateFn = input => `Common sense questions and answers
+	// todo: let user customize their preferred template.
+	static templateFn = (input) => `Common sense questions and answers
 
   Question: ${input}
-  Factual answer:`
+  Factual answer:`;
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
@@ -48,7 +48,7 @@ class OobaBooga extends Provider {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			this.getWebview().insertCSS(`
-      `)
+      `);
 		});
 	}
 

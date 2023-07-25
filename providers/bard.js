@@ -5,7 +5,7 @@ const Provider = require('./provider');
 
 class Bard extends Provider {
 	static webviewId = 'webviewBARD';
-  static fullName = 'Google Bard';
+	static fullName = 'Google Bard';
 
 	static url = 'https://bard.google.com';
 

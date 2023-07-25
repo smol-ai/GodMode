@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
@@ -37,12 +43,14 @@ body {
 }
 
 .page {
+  --superprompt-height: 100px;
+  
   background: #eeeeee;
   /* overflow: auto; */
   /* disabled because its quite buggy */
   /* resize: both;  */
   width: 100%;
-  height: calc(100vh - 12px - 80px);
+  height: calc(100vh - 12px - var(--superprompt-height));
   margin-top: 12px;
   margin: 0 auto;
   position: relative;
@@ -55,26 +63,59 @@ body {
 }
 
 #form {
-  height: 80px;
+  height: var(--superprompt-height);
   width: 100%;
   display: flex;
-  padding: 5px;
-}
-#form textarea {
-  width: 100%;
-  height: 80px;
-  resize: none;
-  overflow-y: auto; /* Adds a scrollbar when the content is too big */
-  padding: 0 12px;
-  font-size: 16px;
-  outline: none;
-  background-color: bisque;
-  flex-grow: 1;
+  align-items: center;
+  border: 1px solid black;
+  margin-top: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #eee;
 }
 
+#form:focus-within {
+  background-color: #fff;
+}
+
+#form textarea {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  overflow-y: auto; /* Adds a scrollbar when the content is too big */
+  padding: 4px 12px;
+  font-size: 16px;
+  outline: none;
+  flex-grow: 1;
+  border-radius: 5px;
+  border: 0;
+  background-color: transparent;
+}
+
+
 #form button {
-  margin: 0 4px;
-  padding: 0 12px;
+  margin-left: 4px;
+  margin-right: 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: black;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.1s ease;
+  cursor: pointer;
+  display: flex;
+}
+
+#form svg {
+  stroke: white;
+  width: 20px;
+  height: 20px;
+  margin: 0.5rem;
+  transform: rotate(-30deg) translateY(-2px) translateX(2px);
+  transition: all 0.1s ease;
+}
+
+#form button:hover svg {
+  stroke: rgba(255, 255, 255, 0.8);
 }
 
 webview {
@@ -83,7 +124,7 @@ webview {
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100vh - 12px - 80px);
+  height: calc(100vh - 12px - var(--superprompt-height));
   display: inline-flex !important;
 }
 
