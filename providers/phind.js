@@ -40,9 +40,19 @@ class Phind extends Provider {
       // simulate keyup event
       var keyupEvent = new KeyboardEvent('keyup', {key: ' ', bubbles: true});
       inputElement.dispatchEvent(keyupEvent);
-
-      // click the submit button
-      var buttonElement = document.querySelector('button[type="submit"]');
+      
+        function findParentButton() {
+          let buttons = document.querySelectorAll('button[type="submit"]');
+          for(let button of buttons) {
+            let childIcon = button.querySelector('i.fe.fe-arrow-right');
+            if(childIcon) {
+              return button;
+            }
+          }
+          return null;
+        }
+        
+      var buttonElement = findParentButton();
       buttonElement.click();
       `);
 	}
