@@ -244,10 +244,9 @@ app.on('ready', () => {
 			// Return the complete context menu template
 			return [
 				...menuHeader,
+				superPromptEnterKey, // TODO: move into the customize keyboard shortcut window
 				separator,
 				...providersToggles,
-				separator,
-				superPromptEnterKey,
 				separator,
 				...providerLinks,
 				separator,
