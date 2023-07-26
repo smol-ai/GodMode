@@ -109,29 +109,29 @@ app.on('ready', () => {
 
 		// The createContextMenuTemplate function creates the context menu template
 		// It contains the header, providers' toggles, links, and footer of the menu
-    const createContextMenuTemplate = () => {
-      const menuHeader = [
-        {
-          label: 'Quit',
-          accelerator: 'CommandorControl+Q',
-          click: () => {
-            app.quit();
-          },
-        },
-        {
-          label: 'Reload',
-          accelerator: 'CommandorControl+R',
-          click: () => {
-            window.reload();
-          },
-        },
-        {
-          label: 'Quick Open (use this!)',
-          accelerator: store.get('quickOpenShortcut', quickOpenDefaultShortcut),
-          click: () => {
-            window.reload();
-          },
-        },
+		const createContextMenuTemplate = () => {
+			const menuHeader = [
+				{
+					label: 'Quit',
+					accelerator: 'CommandorControl+Q',
+					click: () => {
+						app.quit();
+					},
+				},
+				{
+					label: 'Reload',
+					accelerator: 'CommandorControl+R',
+					click: () => {
+						window.reload();
+					},
+				},
+				{
+					label: 'Quick Open (use this!)',
+					accelerator: store.get('quickOpenShortcut', quickOpenDefaultShortcut),
+					click: () => {
+						window.reload();
+					},
+				},
 				{
 					label: 'Change Quick Open Shortcut',
 					click: () => {
@@ -150,19 +150,25 @@ app.on('ready', () => {
 							fullscreenable: false,
 							maximizable: false,
 							webPreferences: {
-								preload: path.join(__dirname, 'settings', 'settings-preload.js'),
+								preload: path.join(
+									__dirname,
+									'settings',
+									'settings-preload.js',
+								),
 								contextIsolation: true,
 							},
 						});
-						
-						settingsWindow.loadFile(path.join(__dirname, 'settings', 'settings.html'));
+
+						settingsWindow.loadFile(
+							path.join(__dirname, 'settings', 'settings.html'),
+						);
 						if (process.env.NODE_ENV === 'development') {
 							// open devtools if in dev mode
 							settingsWindow.openDevTools({
 								mode: 'detach',
 							});
 						}
-						
+
 						settingsWindow.once('ready-to-show', () => {
 							mb.hideWindow();
 						});
@@ -277,7 +283,10 @@ app.on('ready', () => {
 			}
 		}
 
-		globalShortcut.register(store.get('quickOpenShortcut', quickOpenDefaultShortcut), quickOpen);
+		globalShortcut.register(
+			store.get('quickOpenShortcut', quickOpenDefaultShortcut),
+			quickOpen,
+		);
 
 		store.onDidChange('quickOpenShortcut', (newValue, oldValue) => {
 			if (newValue === oldValue) return;
@@ -401,7 +410,7 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.handle('getQuickOpenShortcut', () => {
-	return store.get('quickOpenShortcut', quickOpenDefaultShortcut)
+	return store.get('quickOpenShortcut', quickOpenDefaultShortcut);
 });
 
 ipcMain.handle('setQuickOpenShortcut', (event, value) => {
@@ -410,8 +419,9 @@ ipcMain.handle('setQuickOpenShortcut', (event, value) => {
 
 ipcMain.handle('getPlatform', () => {
 	return process.platform;
+});
 
-  ipcMain.handle('getStoreValue', (event, key) => {
+ipcMain.handle('getStoreValue', (event, key) => {
 	return store.get(key);
 });
 
