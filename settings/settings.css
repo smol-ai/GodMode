@@ -64,6 +64,13 @@ body {
   border-radius: 2px;
   width: fit-content;
   font-size: 12px;
+  background-color: #eee;
+  color: #222;
+}
+
+.tag.in-progress {
+  background-color: #e0e7ff;
+  color: #3730a3;
 }
 
 button {

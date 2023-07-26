@@ -153,14 +153,19 @@ function updateDOM() {
     wrapper.classList.add("accelerator-wrapper");
     const shortcutDiv = document.createElement("div");
     shortcutDiv.classList.add("accelerator");
-    shortcut.forEach((token) => {
+    if (isRecording) {
       const tagDiv = document.createElement("div");
-      tagDiv.classList.add("tag");
-      tagDiv.style.backgroundColor = "#f5f5f5";
-      tagDiv.style.color = "#black";
-      tagDiv.textContent = token;
+      tagDiv.classList.add("tag", "in-progress");
+      tagDiv.textContent = "Type shortcut...";
       shortcutDiv.appendChild(tagDiv);
-    });
+    } else {
+      shortcut.forEach((token) => {
+        const tagDiv = document.createElement("div");
+        tagDiv.classList.add("tag");
+        tagDiv.textContent = token;
+        shortcutDiv.appendChild(tagDiv);
+      });
+    }
     const btn = document.createElement("button");
     btn.textContent = isRecording
       ? "Cancel recording"
