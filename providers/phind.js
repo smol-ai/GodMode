@@ -12,12 +12,15 @@ class Phind extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Describe your technical task"]');
-
+        if (!inputElement) {
+            inputElement = document.querySelector('textarea[placeholder*="Send message"]');
+        }
+        
         function simulateUserInput(element, text) {
           var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
           var event = new Event('input', { bubbles: true});
 
-          nativeTextAreaValueSetter.call(inputElement, "${input}");
+          nativeTextAreaValueSetter.call(inputElement, text);
           inputElement.dispatchEvent(event);
         }
 
