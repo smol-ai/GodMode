@@ -1,4 +1,5 @@
 // Import necessary modules
+const { ipcRenderer } = require('electron');
 const log = require('electron-log');
 const Store = require('electron-store');
 const store = new Store();
@@ -124,6 +125,14 @@ document.addEventListener('keydown', (event) => {
 			provider
 				.getWebview()
 				.setZoomLevel(provider.getWebview().getZoomLevel() - 1);
+		});
+	}
+});
+
+document.addEventListener('keydown', function (event) {
+	if (event.shiftKey && event.metaKey && event.keyCode === 70) {
+		ipcRenderer.invoke('getStoreValue', 'isFullscreen').then((isFullscreen) => {
+			ipcRenderer.invoke('setStoreValue', 'isFullscreen', !isFullscreen);
 		});
 	}
 });
