@@ -36,6 +36,7 @@ const providers = {
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 	HuggingChat: require('./providers/huggingchat'),
+	Perplexity: require('./providers/perplexity'),
 };
 
 // Getting all the providers in an array
@@ -44,9 +45,12 @@ const allProviders = Object.values(providers);
 // Electron-store used for persistent data storage
 const Store = require('electron-store');
 const store = new Store();
-console.log('if process.env.NODE_ENV is development, reset the store', process.env.NODE_ENV )
+console.log(
+	'if process.env.NODE_ENV is development, reset the store',
+	process.env.NODE_ENV,
+);
 if (process.env.NODE_ENV === 'development') {
-	store.clear() // reset to defaults when in dev
+	store.clear(); // reset to defaults when in dev
 }
 log.info('store reset', store); // Logging the store
 
@@ -58,7 +62,7 @@ const contextMenu = require('electron-context-menu');
 
 // Creating an icon image
 const image = nativeImage.createFromPath(
-	path.join(__dirname, `images/iconTemplate.png`)
+	path.join(__dirname, `images/iconTemplate.png`),
 );
 
 // Default quick open shortcut
@@ -67,7 +71,6 @@ let settingsWindow = null;
 
 // Once the app is ready, the following code will execute
 app.on('ready', () => {
-
 	const tray = new Tray(image);
 
 	let { width } = screen.getPrimaryDisplay().workAreaSize;
@@ -94,7 +97,7 @@ app.on('ready', () => {
 		icon: image,
 	});
 
-  // On menubar ready, the following code will execute
+	// On menubar ready, the following code will execute
 	mb.on('ready', () => {
 		const { window } = mb;
 
@@ -104,7 +107,7 @@ app.on('ready', () => {
 			app.dock.hide();
 		}
 
-    // The createContextMenuTemplate function creates the context menu template
+		// The createContextMenuTemplate function creates the context menu template
 		// It contains the header, providers' toggles, links, and footer of the menu
     const createContextMenuTemplate = () => {
       const menuHeader = [
@@ -171,32 +174,26 @@ app.on('ready', () => {
 					type: 'checkbox',
 					checked: store.get('isFullscreen', false),
 					click: () => {
-						const fullscreen = !store.get('isFullscreen', false);
-						store.set('isFullscreen', fullscreen);
-						if (fullscreen) {
-							window.setBounds({x: 0, width: width, height: window.getSize()[1]});
-						} else {
-							window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
-						}
+						store.set('isFullscreen', !store.get('isFullscreen', false));
 					},
 				},
-      ];
+			];
 
-      const separator = { type: 'separator' };
+			const separator = { type: 'separator' };
 
-			const providersToggles = allProviders.map(provider => {
+			const providersToggles = allProviders.map((provider) => {
 				return {
 					label: provider.fullName,
 					type: 'checkbox',
-					checked: store.get(`${provider.webviewId}Enabled`, provider.isEnabled()),
+					checked: store.get(
+						`${provider.webviewId}Enabled`,
+						provider.isEnabled(),
+					),
 					click: () => {
-						store.set(
-							`${provider.webviewId}Enabled`,
-							!provider.isEnabled()
-						);
+						store.set(`${provider.webviewId}Enabled`, !provider.isEnabled());
 						setTimeout(() => {
 							window.reload();
-						}, 100)
+						}, 100);
 					},
 				};
 			});
@@ -208,49 +205,49 @@ app.on('ready', () => {
 				click: () => {
 					store.set(
 						'SuperPromptEnterKey',
-						!store.get('SuperPromptEnterKey', false)
+						!store.get('SuperPromptEnterKey', false),
 					);
 					window.reload();
 				},
 			};
 
-      const providerLinks = allProviders.map(provider => {
-        return {
-          label: `Visit ${provider.name} website`,
-          click: () => {
-            shell.openExternal(provider.url);
-          },
-        };
-      });
+			const providerLinks = allProviders.map((provider) => {
+				return {
+					label: `Visit ${provider.name} website`,
+					click: () => {
+						shell.openExternal(provider.url);
+					},
+				};
+			});
 
-      const menuFooter = [
-        {
-          label: 'View on GitHub',
-          click: () => {
-            shell.openExternal('https://github.com/smol-ai/menubar');
-          },
-        },
-        {
-          type: 'separator',
-        },
-        {
-          label: 'Version ' + version,
-        }
-      ]
+			const menuFooter = [
+				{
+					label: 'View on GitHub',
+					click: () => {
+						shell.openExternal('https://github.com/smol-ai/menubar');
+					},
+				},
+				{
+					type: 'separator',
+				},
+				{
+					label: 'Version ' + version,
+				},
+			];
 
-      // Return the complete context menu template
-      return [
-        ...menuHeader,
-        separator,
-        ...providersToggles,
-        separator,
-        superPromptEnterKey,
-        separator,
-        ...providerLinks,
-        separator,
-        ...menuFooter,
-      ]
-    };
+			// Return the complete context menu template
+			return [
+				...menuHeader,
+				separator,
+				...providersToggles,
+				separator,
+				superPromptEnterKey,
+				separator,
+				...providerLinks,
+				separator,
+				...menuFooter,
+			];
+		};
 
 		// Create the context menu when right-clicking the tray icon
 		tray.on('right-click', () => {
@@ -259,7 +256,7 @@ app.on('ready', () => {
 		});
 
 		// Create the context menu when clicking the tray icon with control or meta key
-		tray.on('click', e => {
+		tray.on('click', (e) => {
 			//check if ctrl or meta key is pressed while clicking
 			if (e.ctrlKey || e.metaKey) {
 				const contextMenuTemplate = createContextMenuTemplate();
@@ -294,18 +291,18 @@ app.on('ready', () => {
 			}
 		});
 
-		// Fullscreen menu shortcut
-		globalShortcut.register('CommandOrControl+Shift+F', () => {
-			const fullscreen = !store.get('isFullscreen', false);
-			store.set('isFullscreen', fullscreen);
+		store.onDidChange('isFullscreen', (isFullscreen) => {
 			const { window } = mb;
-			if (fullscreen) {
-				window.setBounds({x: 0, width: width, height: window.getSize()[1]});
+			if (isFullscreen) {
+				window.setBounds({ x: 0, width: width, height: window.getSize()[1] });
 			} else {
-				window.setBounds({x: width - 1200, width: 1200, height: window.getSize()[1]});
+				window.setBounds({
+					x: width - 1200,
+					width: 1200,
+					height: window.getSize()[1],
+				});
 			}
 		});
-
 		Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 		// open devtools if in dev mode
@@ -390,7 +387,7 @@ app.on('ready', () => {
 	// prevent background flickering
 	app.commandLine.appendSwitch(
 		'disable-backgrounding-occluded-windows',
-		'true'
+		'true',
 	);
 });
 
@@ -413,4 +410,11 @@ ipcMain.handle('setQuickOpenShortcut', (event, value) => {
 
 ipcMain.handle('getPlatform', () => {
 	return process.platform;
+
+  ipcMain.handle('getStoreValue', (event, key) => {
+	return store.get(key);
+});
+
+ipcMain.handle('setStoreValue', (event, key, value) => {
+	return store.set(key, value);
 });

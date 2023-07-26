@@ -1,4 +1,5 @@
 // Import necessary modules
+const { ipcRenderer } = require('electron');
 const log = require('electron-log');
 const Store = require('electron-store');
 const store = new Store();
@@ -13,6 +14,7 @@ const providers = {
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 	HuggingChat: require('./providers/huggingchat'),
+	Perplexity: require('./providers/perplexity'),
 };
 
 const {
@@ -30,7 +32,7 @@ const enabledProviders = getEnabledProviders(providers);
 drawPanes(enabledProviders);
 
 // Create an array of pane IDs for the enabled providers
-const panes = enabledProviders.map(provider => `#${provider.paneId()}`);
+const panes = enabledProviders.map((provider) => `#${provider.paneId()}`);
 log.info('panes', panes);
 
 // Initialize the Split.js library to create split views with the pane IDs
@@ -50,6 +52,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Get the textarea input element for the prompt
 const promptEl = document.getElementById('prompt');
+promptEl.focus();
 
 // Get the key binding for submitting the prompt from the store
 const SuperPromptEnterKey = store.get('SuperPromptEnterKey', false);
@@ -72,8 +75,8 @@ promptEl.addEventListener('input', function (event) {
 	const sanitizedInput = promptEl.value
 		.replace(/"/g, '\\"')
 		.replace(/\n/g, '\\n');
-	enabledProviders.forEach(provider => provider.handleInput(sanitizedInput));
-})
+	enabledProviders.forEach((provider) => provider.handleInput(sanitizedInput));
+});
 
 /* ========================================================================== */
 /* Submit Event Listener                                                      */
@@ -89,7 +92,7 @@ form.addEventListener('submit', function (event) {
 	promptEl.value = '';
 	event.preventDefault();
 
-	enabledProviders.forEach(provider => provider.handleSubmit(sanitizedInput));
+	enabledProviders.forEach((provider) => provider.handleSubmit(sanitizedInput));
 });
 
 /* ========================================================================== */
@@ -102,7 +105,7 @@ for (let i = 0; i < panes.length; i++) paneStates[`${i + 1}`] = i;
 paneStates['a'] = null;
 paneStates['A'] = null;
 
-document.addEventListener('keydown', event => {
+document.addEventListener('keydown', (event) => {
 	if ((event.metaKey || event.ctrlKey) && event.key in paneStates) {
 		updateSplitSizes(panes, splitInstance, paneStates[event.key]);
 		// event.preventDefault();
@@ -111,17 +114,25 @@ document.addEventListener('keydown', event => {
 		((event.metaKey || event.ctrlKey) && event.key === '=')
 	) {
 		// Increase zoom level with Cmd/Ctrl + '+' or '='
-		enabledProviders.forEach(provider => {
+		enabledProviders.forEach((provider) => {
 			provider
 				.getWebview()
 				.setZoomLevel(provider.getWebview().getZoomLevel() + 1);
 		});
 	} else if ((event.metaKey || event.ctrlKey) && event.key === '-') {
 		// Decrease zoom level with Cmd/Ctrl + '-'
-		enabledProviders.forEach(provider => {
+		enabledProviders.forEach((provider) => {
 			provider
 				.getWebview()
 				.setZoomLevel(provider.getWebview().getZoomLevel() - 1);
+		});
+	}
+});
+
+document.addEventListener('keydown', function (event) {
+	if (event.shiftKey && event.metaKey && event.keyCode === 70) {
+		ipcRenderer.invoke('getStoreValue', 'isFullscreen').then((isFullscreen) => {
+			ipcRenderer.invoke('setStoreValue', 'isFullscreen', !isFullscreen);
 		});
 	}
 });
