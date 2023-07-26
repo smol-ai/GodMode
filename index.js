@@ -204,10 +204,11 @@ app.on('ready', () => {
 				};
 			});
 
+			const superPromptChecked = store.get('SuperPromptEnterKey', false)
 			const superPromptEnterKey = {
-				label: 'Super Prompt "Enter" Key',
+				label: superPromptChecked ? 'Toggle "Enter" Submit (faster, but harder to multiline)' :  'Toggle "Cmd+Enter" Submit (takes extra key, but easier to multiline)',
 				type: 'checkbox',
-				checked: store.get('SuperPromptEnterKey', false),
+				checked: superPromptChecked,
 				click: () => {
 					store.set(
 						'SuperPromptEnterKey',
