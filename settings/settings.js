@@ -1,15 +1,15 @@
 /**
- * @type {"darwin" | "win32" | "linux" | undefined}
+ * @type {"darwin" | "win32" | "linux"}
  */
-let currentPlatform;
+let currentPlatform = "darwin";
 /**
- * @type {"Command" | "Super" | undefined}
+ * @type {"Command" | "Super"}
  */
-let MetaKey;
-window.settings.getPlatform().then((platform) => {
+let metaKey = "Command";
+window.settings?.getPlatform?.().then((platform) => {
   // Get the platform from the main process
   currentPlatform = platform;
-  MetaKey = currentPlatform === "darwin" ? "Command" : "Super";
+  metaKey = currentPlatform === "darwin" ? "Command" : "Super";
 });
 
 /**
@@ -74,13 +74,13 @@ function recordShortcut(event) {
   if (interimShift && modifierKeys.has(key)) {
     modifierKeySet.add("Shift");
     if (key === "Meta") {
-      modifierKeySet.add(MetaKey);
+      modifierKeySet.add(metaKey);
     } else {
       modifierKeySet.add(key);
     }
   } else if (modifierKeys.has(key)) {
     if (key === "Meta") {
-      modifierKeySet.add(MetaKey);
+      modifierKeySet.add(metaKey);
     } else {
       modifierKeySet.add(key);
     }
