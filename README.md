@@ -41,12 +41,17 @@ Yes and no:
 
 - **Keyboard Shortcuts**:
   - Use `Cmd+Shift+G` for quick open and `Cmd+Enter` to submit.
-  - Customize these shortcuts by building from source.
+  - Customize these shortcuts (thanks [@davej](https://github.com/smol-ai/menubar/pull/85)!):
+    - Quick Open
+      - ![image](https://github.com/davej/smol-ai-menubar/assets/6764957/3a6d0a16-7f54-43e5-9060-ec7b2486d32d)
+    - Submit can be toggled to use `Enter` (faster for quick chat replies) vs `Cmd+Enter` (easier to enter multiline prompts)
+  - Remember you can customize further by building from source!
 
 - **Window Resizing**:
   - Resize the window by clicking and dragging.
-  - Use `Cmd+Shift+F` to set the width to 100% of your screen.
   - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
+    - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
+  - Use `Cmd+Shift+F` to set the width to 100% of your screen.
 
 - **Model Toggle**:
   - Enable/disable providers by accessing the context menu from the menubar icon (right-click and choose from the list). The choice is saved for future sessions.
