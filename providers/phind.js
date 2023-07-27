@@ -12,12 +12,15 @@ class Phind extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Describe your technical task"]');
-
+        if (!inputElement) {
+            inputElement = document.querySelector('textarea[placeholder*="Send message"]');
+        }
+        
         function simulateUserInput(element, text) {
           var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
           var event = new Event('input', { bubbles: true});
 
-          nativeTextAreaValueSetter.call(inputElement, "${input}");
+          nativeTextAreaValueSetter.call(inputElement, text);
           inputElement.dispatchEvent(event);
         }
 
@@ -37,9 +40,19 @@ class Phind extends Provider {
       // simulate keyup event
       var keyupEvent = new KeyboardEvent('keyup', {key: ' ', bubbles: true});
       inputElement.dispatchEvent(keyupEvent);
-
-      // click the submit button
-      var buttonElement = document.querySelector('button[type="submit"]');
+      
+        function findParentButton() {
+          let buttons = document.querySelectorAll('button[type="submit"]');
+          for(let button of buttons) {
+            let childIcon = button.querySelector('i.fe.fe-arrow-right');
+            if(childIcon) {
+              return button;
+            }
+          }
+          return null;
+        }
+        
+      var buttonElement = findParentButton();
       buttonElement.click();
       `);
 	}
