@@ -19,6 +19,7 @@ const {
 	globalShortcut,
 	shell,
 	screen,
+	BrowserWindow,
 	ipcMain,
 } = require('electron');
 
@@ -64,6 +65,10 @@ const contextMenu = require('electron-context-menu');
 const image = nativeImage.createFromPath(
 	path.join(__dirname, `images/iconTemplate.png`),
 );
+
+// Default quick open shortcut
+const quickOpenDefaultShortcut = 'CommandOrControl+Shift+G';
+let settingsWindow = null;
 
 // Once the app is ready, the following code will execute
 app.on('ready', () => {
@@ -123,9 +128,51 @@ app.on('ready', () => {
 				},
 				{
 					label: 'Quick Open (use this!)',
-					accelerator: 'CommandorControl+Shift+G',
+					accelerator: store.get('quickOpenShortcut', quickOpenDefaultShortcut),
 					click: () => {
 						window.reload();
+					},
+				},
+				{
+					label: 'Change Quick Open Shortcut',
+					click: () => {
+						if (settingsWindow && !settingsWindow.isDestroyed()) {
+							// If the settings window is already open, just focus it
+							settingsWindow.show();
+							settingsWindow.focus();
+							return;
+						}
+						settingsWindow = new BrowserWindow({
+							show: true,
+							width: 380,
+							height: 200,
+							titleBarStyle: 'hidden',
+							minimizable: false,
+							fullscreenable: false,
+							maximizable: false,
+							webPreferences: {
+								preload: path.join(
+									__dirname,
+									'settings',
+									'settings-preload.js',
+								),
+								contextIsolation: true,
+							},
+						});
+
+						settingsWindow.loadFile(
+							path.join(__dirname, 'settings', 'settings.html'),
+						);
+						if (process.env.NODE_ENV === 'development') {
+							// open devtools if in dev mode
+							settingsWindow.openDevTools({
+								mode: 'detach',
+							});
+						}
+
+						settingsWindow.once('ready-to-show', () => {
+							mb.hideWindow();
+						});
 					},
 				},
 				{
@@ -158,10 +205,11 @@ app.on('ready', () => {
 				};
 			});
 
+			const superPromptChecked = store.get('SuperPromptEnterKey', false)
 			const superPromptEnterKey = {
-				label: 'Super Prompt "Enter" Key',
+				label: superPromptChecked ? 'Toggle "Enter" Submit (faster, but harder to multiline)' :  'Toggle "Cmd+Enter" Submit (takes extra key, but easier to multiline)',
 				type: 'checkbox',
-				checked: store.get('SuperPromptEnterKey', false),
+				checked: superPromptChecked,
 				click: () => {
 					store.set(
 						'SuperPromptEnterKey',
@@ -181,37 +229,6 @@ app.on('ready', () => {
 			});
 
 			const menuFooter = [
-				// Removing the preferences window for now because all settings are now
-				// in the menubar context menu dropdown. (Seemed like a better UX)
-				// {
-				//   label: 'Preferences',
-				//   click: () => {
-				//     const preferencesWindow = new BrowserWindow({
-				//       parent: null,
-				//       modal: false,
-				//       alwaysOnTop: true,
-				//       show: false,
-				//       autoHideMenuBar: true,
-				//       width: 500,
-				//       height: 300,
-				//       webPreferences: {
-				//         nodeIntegration: true,
-				//         contextIsolation: false,
-				//       },
-				//     });
-				//     preferencesWindow.loadFile('preferences.html');
-				//     preferencesWindow.once('ready-to-show', () => {
-				//       mb.hideWindow();
-				//       preferencesWindow.show();
-				//     });
-
-				//     // When the preferences window is closed, show the main window again
-				//     preferencesWindow.on('close', () => {
-				//       mb.showWindow();
-				//       mb.window.reload(); // reload the main window to apply the new settings
-				//     });
-				//   },
-				// },
 				{
 					label: 'View on GitHub',
 					click: () => {
@@ -229,10 +246,9 @@ app.on('ready', () => {
 			// Return the complete context menu template
 			return [
 				...menuHeader,
+				superPromptEnterKey, // TODO: move into the customize keyboard shortcut window
 				separator,
 				...providersToggles,
-				separator,
-				superPromptEnterKey,
 				separator,
 				...providerLinks,
 				separator,
@@ -256,7 +272,7 @@ app.on('ready', () => {
 		});
 		const menu = new Menu();
 
-		globalShortcut.register('CommandOrControl+Shift+g', () => {
+		function quickOpen() {
 			if (window.isVisible()) {
 				mb.hideWindow();
 			} else {
@@ -265,6 +281,23 @@ app.on('ready', () => {
 					mb.app.show();
 				}
 				mb.app.focus();
+			}
+		}
+
+		globalShortcut.register(
+			store.get('quickOpenShortcut', quickOpenDefaultShortcut),
+			quickOpen,
+		);
+
+		store.onDidChange('quickOpenShortcut', (newValue, oldValue) => {
+			if (newValue === oldValue) return;
+			if (oldValue) {
+				globalShortcut.unregister(oldValue);
+			} else if (quickOpenDefaultShortcut) {
+				globalShortcut.unregister(quickOpenDefaultShortcut);
+			}
+			if (newValue) {
+				globalShortcut.register(newValue, quickOpen);
 			}
 		});
 
@@ -375,6 +408,18 @@ app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
+});
+
+ipcMain.handle('getQuickOpenShortcut', () => {
+	return store.get('quickOpenShortcut', quickOpenDefaultShortcut);
+});
+
+ipcMain.handle('setQuickOpenShortcut', (event, value) => {
+	store.set('quickOpenShortcut', value);
+});
+
+ipcMain.handle('getPlatform', () => {
+	return process.platform;
 });
 
 ipcMain.handle('getStoreValue', (event, key) => {

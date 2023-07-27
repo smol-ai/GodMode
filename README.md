@@ -1,6 +1,6 @@
 # 👼 smol menubar
 
-This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G).
+This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Bing, Claude 2, and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
 
 > we also support Bard, Claude 1, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
 
@@ -41,16 +41,21 @@ Yes and no:
 
 - **Keyboard Shortcuts**:
   - Use `Cmd+Shift+G` for quick open and `Cmd+Enter` to submit.
-  - Customize these shortcuts by building from source.
+  - Customize these shortcuts (thanks [@davej](https://github.com/smol-ai/menubar/pull/85)!):
+    - Quick Open
+      - ![image](https://github.com/davej/smol-ai-menubar/assets/6764957/3a6d0a16-7f54-43e5-9060-ec7b2486d32d)
+    - Submit can be toggled to use `Enter` (faster for quick chat replies) vs `Cmd+Enter` (easier to enter multiline prompts)
+  - Remember you can customize further by building from source!
 
 - **Window Resizing**:
   - Resize the window by clicking and dragging.
-  - Use `Cmd+Shift+F` to set the width to 100% of your screen.
   - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
+    - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
+  - Use `Cmd+Shift+F` to set the width to 100% of your screen.
 
 - **Model Toggle**:
   - Enable/disable providers by accessing the context menu from the menubar icon (right-click and choose from the list). The choice is saved for future sessions.
-  - Supported models: ChatGPT, Bing, Bard, Claude 1/2.
+  - Supported models: ChatGPT, Bing, Bard, Claude 1/2, and more (see Supported LLM Providers above)
 
 - **Support for oobabooga/text-generation-webui**:
   - Initial support for [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) has been added.

@@ -94,3 +94,6 @@ first-run.flag
 
 todo.md
 .env
+
+# VSCode
+.vscode/*
