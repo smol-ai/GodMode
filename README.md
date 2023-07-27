@@ -1,8 +1,8 @@
 # 👼 smol menubar
 
-This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Bing, Claude 2, and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
+This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Perplexity.ai, Claude 2, and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
 
-> we also support Bard, Claude 1, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
+> we also support Bard, Bing, Claude 1, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
@@ -21,16 +21,16 @@ Yes and no:
 
 ## Supported LLM Providers
 
-| Provider | Status | Notes |
+| Provider (default in **bold**) | Status | Notes |
 | -------- | ------ | ------------------ |
-| OpenAi | ☑️ | Defaults to GPT 4 Code Interpreter |
+| **ChatGPT** | ☑️ | Defaults to GPT 4 Code Interpreter |
 | Bard | ☑️ |  |
-| Bing | ☑️ | |
+| Bing | ☑️ | [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20) |
 | Claude | ☑️ | Requires Beta Access |
-| Claude 2 | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
+| **Claude 2** | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️ | Requires Local Setup |
-| HuggingChat | ☑️ |  |
-| Perplexity | ☑️ |  |
+| **HuggingChat** | ☑️ | Offers Llama2, OpenAssistant |
+| **Perplexity** | ☑️ |  |
 | Phind | ☑️ |  |
 | OpenAssistant | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)! |
 | Quora Poe | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)! |
