@@ -30,8 +30,8 @@ Yes and no:
 | Claude 2 | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️ | Requires Local Setup |
 | HuggingChat | ☑️ |  |
-| Perplexity | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/35)! |
-| Phind | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/39)! |
+| Perplexity | ☑️ |  |
+| Phind | ☑️ |  |
 | OpenAssistant | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)! |
 | Quora Poe | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)! |
 | ... What's Else? | ☐ | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)! |

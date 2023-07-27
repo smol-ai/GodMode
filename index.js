@@ -32,10 +32,11 @@ const providers = {
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
 	Claude2: require('./providers/claude2'),
+	Perplexity: require('./providers/perplexity'),
+	Phind: require('./providers/phind'),
+	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
-	HuggingChat: require('./providers/huggingchat'),
-	Perplexity: require('./providers/perplexity'),
 };
 
 // Getting all the providers in an array
