@@ -59,8 +59,8 @@ class Phind extends Provider {
 
 	static handleCss() {
 		this.getWebview().addEventListener('dom-ready', () => {
-        setTimeout(() => {
-        this.getWebview().executeJavaScript(`
+			setTimeout(() => {
+				this.getWebview().executeJavaScript(`
         // Add Dark Mode
         const page = document.documentElement;
         page.setAttribute('data-theme', 'dark');
@@ -79,8 +79,8 @@ class Phind extends Provider {
         exploreOptions.setAttribute('style', 'display: none;');
 
         `);
-      }, 100);
-      });
+			}, 100);
+		});
 	}
 
 	static isEnabled() {

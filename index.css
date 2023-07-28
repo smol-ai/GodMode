@@ -1,157 +1,155 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+		Arial, sans-serif;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
 }
 
 :root {
-  /* account for the arrow */
-  --actual-height: calc(100vh - 12px - 80px);
+	/* account for the arrow */
+	--actual-height: calc(100vh - 12px - 80px);
 }
 
 .myarrow {
-  position: relative;
-  padding: 12px 0 0 0;
+	position: relative;
+	padding: 12px 0 0 0;
 }
 
 .myarrow:before {
-  content: "";
-  height: 0;
-  width: 0;
-  border-width: 0 8px 12px 8px;
-  border-style: solid;
-  border-color: transparent transparent white transparent;
-  position: absolute;
+	content: '';
+	height: 0;
+	width: 0;
+	border-width: 0 8px 12px 8px;
+	border-style: solid;
+	border-color: transparent transparent white transparent;
+	position: absolute;
 
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 @media (prefers-color-scheme: dark) {
-  .myarrow:before {
-    border-color: transparent transparent #343541 transparent !important;
-  }
+	.myarrow:before {
+		border-color: transparent transparent #343541 transparent !important;
+	}
 }
 
 .page {
-  --superprompt-height: 100px;
-  
-  background: #eeeeee;
-  /* overflow: auto; */
-  /* disabled because its quite buggy */
-  /* resize: both;  */
-  width: 100%;
-  height: calc(100vh - 12px - var(--superprompt-height));
-  margin-top: 12px;
-  margin: 0 auto;
-  position: relative;
+	--superprompt-height: 100px;
+
+	background: #eeeeee;
+	/* overflow: auto; */
+	/* disabled because its quite buggy */
+	/* resize: both;  */
+	width: 100%;
+	height: calc(100vh - 12px - var(--superprompt-height));
+	margin-top: 12px;
+	margin: 0 auto;
+	position: relative;
 }
 
 .flex {
-  display: flex;
-  border-radius: 8px;
-  overflow: hidden;
+	display: flex;
+	border-radius: 8px;
+	overflow: hidden;
 }
 
 #form {
-  height: var(--superprompt-height);
-  width: 100%;
-  display: flex;
-  align-items: center;
-  border: 1px solid black;
-  margin-top: 8px;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: #eee;
+	height: var(--superprompt-height);
+	width: 100%;
+	display: flex;
+	align-items: center;
+	border: 1px solid black;
+	margin-top: 8px;
+	border-radius: 10px;
+	overflow: hidden;
+	background-color: #eee;
 }
 
 #form:focus-within {
-  background-color: #fff;
+	background-color: #fff;
 }
 
 #form textarea {
-  width: 100%;
-  height: 100%;
-  resize: none;
-  overflow-y: auto; /* Adds a scrollbar when the content is too big */
-  padding: 4px 12px;
-  font-size: 16px;
-  outline: none;
-  flex-grow: 1;
-  border-radius: 5px;
-  border: 0;
-  background-color: transparent;
+	width: 100%;
+	height: 100%;
+	resize: none;
+	overflow-y: auto; /* Adds a scrollbar when the content is too big */
+	padding: 4px 12px;
+	font-size: 16px;
+	outline: none;
+	flex-grow: 1;
+	border-radius: 5px;
+	border: 0;
+	background-color: transparent;
 }
 
-
 #form button {
-  margin-left: 4px;
-  margin-right: 8px;
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  background: black;
-  color: rgba(255, 255, 255, 0.7);
-  transition: all 0.1s ease;
-  cursor: pointer;
-  display: flex;
+	margin-left: 4px;
+	margin-right: 8px;
+	border-radius: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	background: black;
+	color: rgba(255, 255, 255, 0.7);
+	transition: all 0.1s ease;
+	cursor: pointer;
+	display: flex;
 }
 
 #form svg {
-  stroke: white;
-  width: 20px;
-  height: 20px;
-  margin: 0.5rem;
-  transform: rotate(-30deg) translateY(-2px) translateX(2px);
-  transition: all 0.1s ease;
+	stroke: white;
+	width: 20px;
+	height: 20px;
+	margin: 0.5rem;
+	transform: rotate(-30deg) translateY(-2px) translateX(2px);
+	transition: all 0.1s ease;
 }
 
 #form button:hover svg {
-  stroke: rgba(255, 255, 255, 0.8);
+	stroke: rgba(255, 255, 255, 0.8);
 }
 
 webview {
-  /* overflow: hidden; */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 12px - var(--superprompt-height));
-  display: inline-flex !important;
+	/* overflow: hidden; */
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: calc(100vh - 12px - var(--superprompt-height));
+	display: inline-flex !important;
 }
 
 .gutter {
-  background-color: #A9A9A9;
-  background-repeat: no-repeat;
-  background-position: 50%;
+	background-color: #a9a9a9;
+	background-repeat: no-repeat;
+	background-position: 50%;
 }
 
 .gutter:hover {
-  background-color: #929292;
+	background-color: #929292;
 }
 
 .gutter.gutter-horizontal {
-  background-image: url("images/vertical-grip.png");
-  cursor: col-resize;
+	background-image: url('images/vertical-grip.png');
+	cursor: col-resize;
 }
-
 
 /* this doesnt color the bar properly */
 
 /* Customize the bar color for Split.js */
-.split .split-content::after  {
-  background: linear-gradient(to right, #4c6ef5, #9059ff);
+.split .split-content::after {
+	background: linear-gradient(to right, #4c6ef5, #9059ff);
 }
 
 /* Customize the bar color on hover */
 .split .split-bar:hover {
-  background: linear-gradient(to right, #4c6fff, #9f59ff);
+	background: linear-gradient(to right, #4c6fff, #9f59ff);
 }
