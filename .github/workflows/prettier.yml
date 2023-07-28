@@ -1,22 +1,20 @@
-name: Prettier Format Check
+name: Prettier CI
 on:
   pull_request:
-    branches:
-      - main
-      - prettier
+  push:
+    branches: [main]
 jobs:
-  build:
+  prettier:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: '${{ github.head_ref }}'
-          token: '${{ secrets.GH_PAT }}'
+          fetch-depth: 0
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: --write .
+          prettier_options: --write **/*.{js,md}
           only_changed: True
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
