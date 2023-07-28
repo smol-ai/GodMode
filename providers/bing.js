@@ -133,7 +133,7 @@ class Bing extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return store.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

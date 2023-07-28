@@ -1,8 +1,8 @@
 # 👼 smol menubar
 
-This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Bing and Anthropic Claude 2 with a single keyboard shortcut (Cmd+Shift+G).
+This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Perplexity.ai, Claude 2, and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
 
-> we also support Bard, Claude 1, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
+> we also support Bard, Bing, Claude 1, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
@@ -21,17 +21,17 @@ Yes and no:
 
 ## Supported LLM Providers
 
-| Provider | Status | Notes |
+| Provider (default in **bold**) | Status | Notes |
 | -------- | ------ | ------------------ |
-| OpenAi | ☑️ | Defaults to GPT 4 Code Interpreter |
+| **ChatGPT** | ☑️ | Defaults to GPT 4 Code Interpreter |
 | Bard | ☑️ |  |
-| Bing | ☑️ | |
+| Bing | ☑️ | [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20) |
 | Claude | ☑️ | Requires Beta Access |
-| Claude 2 | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
+| **Claude 2** | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️ | Requires Local Setup |
-| HuggingChat | ☑️ |  |
-| Perplexity | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/35)! |
-| Phind | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/39)! |
+| **HuggingChat** | ☑️ | Offers Llama2, OpenAssistant |
+| **Perplexity** | ☑️ |  |
+| Phind | ☑️ |  |
 | OpenAssistant | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)! |
 | Quora Poe | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)! |
 | ... What's Else? | ☐ | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)! |
@@ -41,16 +41,21 @@ Yes and no:
 
 - **Keyboard Shortcuts**:
   - Use `Cmd+Shift+G` for quick open and `Cmd+Enter` to submit.
-  - Customize these shortcuts by building from source.
+  - Customize these shortcuts (thanks [@davej](https://github.com/smol-ai/menubar/pull/85)!):
+    - Quick Open
+      - ![image](https://github.com/davej/smol-ai-menubar/assets/6764957/3a6d0a16-7f54-43e5-9060-ec7b2486d32d)
+    - Submit can be toggled to use `Enter` (faster for quick chat replies) vs `Cmd+Enter` (easier to enter multiline prompts)
+  - Remember you can customize further by building from source!
 
 - **Window Resizing**:
   - Resize the window by clicking and dragging.
-  - Use `Cmd+Shift+F` to set the width to 100% of your screen.
   - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
+    - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
+  - Use `Cmd+Shift+F` to set the width to 100% of your screen.
 
 - **Model Toggle**:
   - Enable/disable providers by accessing the context menu from the menubar icon (right-click and choose from the list). The choice is saved for future sessions.
-  - Supported models: ChatGPT, Bing, Bard, Claude 1/2.
+  - Supported models: ChatGPT, Bing, Bard, Claude 1/2, and more (see Supported LLM Providers above)
 
 - **Support for oobabooga/text-generation-webui**:
   - Initial support for [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) has been added.

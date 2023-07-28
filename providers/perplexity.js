@@ -29,7 +29,6 @@ class Perplexity extends Provider {
 	}
 
 	static handleSubmit() {
-
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
         // var btn = document.querySelector('button.bg-super.aspect-square');
@@ -52,18 +51,18 @@ class Perplexity extends Provider {
 	static handleCss() {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
-        setTimeout(() => {
-          this.getWebview().executeJavaScript(`
+			setTimeout(() => {
+				this.getWebview().executeJavaScript(`
           // Add Dark Mode
           document.documentElement.classList.add('dark');
 
           `);
-        }, 100);
+			}, 100);
 		});
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return store.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

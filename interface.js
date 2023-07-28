@@ -1,4 +1,5 @@
 // Import necessary modules
+const { ipcRenderer } = require('electron');
 const log = require('electron-log');
 const Store = require('electron-store');
 const store = new Store();
@@ -10,10 +11,11 @@ const providers = {
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
 	Claude2: require('./providers/claude2'),
+	Perplexity: require('./providers/perplexity'),
+	Phind: require('./providers/phind'),
+	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
-	HuggingChat: require('./providers/huggingchat'),
-	Perplexity: require('./providers/perplexity'),
 };
 
 const {
@@ -124,6 +126,14 @@ document.addEventListener('keydown', (event) => {
 			provider
 				.getWebview()
 				.setZoomLevel(provider.getWebview().getZoomLevel() - 1);
+		});
+	}
+});
+
+document.addEventListener('keydown', function (event) {
+	if (event.shiftKey && event.metaKey && event.keyCode === 70) {
+		ipcRenderer.invoke('getStoreValue', 'isFullscreen').then((isFullscreen) => {
+			ipcRenderer.invoke('setStoreValue', 'isFullscreen', !isFullscreen);
 		});
 	}
 });
