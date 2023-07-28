@@ -21,25 +21,25 @@ Yes and no:
 
 ## Supported LLM Providers
 
-| Provider (default in **bold**) | Status | Notes |
-| -------- | ------ | ------------------ |
-| **ChatGPT** | ☑️ | Defaults to GPT 4 Code Interpreter |
-| Bard | ☑️ |  |
-| Bing | ☑️ | [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20) |
-| Claude | ☑️ | Requires Beta Access |
-| **Claude 2** | ☑️ | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
-| Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️ | Requires Local Setup |
-| **HuggingChat** | ☑️ | Offers Llama2, OpenAssistant |
-| **Perplexity** | ☑️ |  |
-| Phind | ☑️ |  |
-| OpenAssistant | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)! |
-| Quora Poe | ☐ | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)! |
-| ... What's Else? | ☐ | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)! |
-
+| Provider (default in **bold**)                                                     | Status | Notes                                                                                                                                        |
+| ---------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ChatGPT**                                                                        | ☑️     | Defaults to GPT 4 Code Interpreter                                                                                                           |
+| Bard                                                                               | ☑️     |                                                                                                                                              |
+| Bing                                                                               | ☑️     | [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20)                                             |
+| Claude                                                                             | ☑️     | Requires Beta Access                                                                                                                         |
+| **Claude 2**                                                                       | ☑️     | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
+| Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️     | Requires Local Setup                                                                                                                         |
+| **HuggingChat**                                                                    | ☑️     | Offers Llama2, OpenAssistant                                                                                                                 |
+| **Perplexity**                                                                     | ☑️     |                                                                                                                                              |
+| Phind                                                                              | ☑️     |                                                                                                                                              |
+| OpenAssistant                                                                      | ☐      | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
+| Quora Poe                                                                          | ☐      | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)!                                                                   |
+| ... What's Else?                                                                   | ☐      | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
 
 ## Features and Usage
 
 - **Keyboard Shortcuts**:
+
   - Use `Cmd+Shift+G` for quick open and `Cmd+Enter` to submit.
   - Customize these shortcuts (thanks [@davej](https://github.com/smol-ai/menubar/pull/85)!):
     - Quick Open
@@ -48,16 +48,19 @@ Yes and no:
   - Remember you can customize further by building from source!
 
 - **Window Resizing**:
+
   - Resize the window by clicking and dragging.
   - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
     - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
   - Use `Cmd+Shift+F` to set the width to 100% of your screen.
 
 - **Model Toggle**:
+
   - Enable/disable providers by accessing the context menu from the menubar icon (right-click and choose from the list). The choice is saved for future sessions.
   - Supported models: ChatGPT, Bing, Bard, Claude 1/2, and more (see Supported LLM Providers above)
 
 - **Support for oobabooga/text-generation-webui**:
+
   - Initial support for [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) has been added.
   - Users need to follow the process outlined in the text-generation-webui repository, including downloading models (e.g. [LLaMa-13B-GGML](https://huggingface.co/TheBloke/LLaMa-13B-GGML/blob/main/llama-13b.ggmlv3.q4_0.bin)).
   - Run the model on `http://127.0.0.1:7860/` before running it inside of the smol menubar.
@@ -66,7 +69,6 @@ Yes and no:
 - **Starting New Conversations**:
   - Use `Cmd+R` to start a new conversation with a simple window refresh.
 
-
 ## video demo
 
 - original version https://youtu.be/jrlxT1K4LEU
@@ -74,7 +76,6 @@ Yes and no:
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 - July 11 version https://twitter.com/swyx/status/1678944036135260160
-
 
 ## Download and Setup
 
@@ -116,10 +117,7 @@ If you want to build from source, you will need to clone the repo and open the p
 
    The outputs will be located in the `/out/make` directory. Note that it will start minimized in your taskbar; you'll need to click the icon to use it:
 
-
-
 ![image](https://github.com/smol-ai/menubar/assets/6764957/76c1f545-d32b-4a0b-a89c-1d68fc45fc72)
-
 
 ![image](images/minimized.jpg)
 
@@ -152,4 +150,3 @@ then anthropic dropped 100k context, and at that point i was convinced i need to
 ## Related project
 
 I only later heard about https://github.com/sunner/ChatALL which is cool but I think defaulting to a menbuar/webview experience is better - you get to use full features like Code Interpreter and Claude 2 file upload when they come out, without waiting for API
-
