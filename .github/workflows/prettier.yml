@@ -1,5 +1,5 @@
 name: Prettier Format Check
-'on':
+on:
   pull_request:
     branches:
       - main
@@ -7,35 +7,19 @@ name: Prettier Format Check
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version:
-          - 14.x
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
           ref: '${{ github.head_ref }}'
           token: '${{ secrets.GH_PAT }}'
-      - name: 'Use Node.js ${{ matrix.node-version }}'
-        uses: actions/setup-node@v3
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.3
         with:
-          node-version: '${{ matrix.node-version }}'
-      - name: Update npm
-        run: npm install -g npm
-      - name: Install Dependencies
-        run: npm ci
-      - name: Format code
-        run: npx prettier --write .
+          prettier_options: --write .
+          only_changed: True
       - name: Commit changes
-        run: >
-          git config --local user.email "action@github.com"
-
-          git config --local user.name "GitHub Action"
-
-          git diff --quiet && git diff --staged --quiet || (git add . && git
-          commit -m "Apply prettier changes")
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
-      - name: Push changes
-        run: git push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply prettier changes
+          branch: ${{ github.head_ref }}
