@@ -48,6 +48,22 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ========================================================================== */
+/* Dark Mode Listeners                                                        */
+/* ========================================================================== */
+
+// Get the initial value of isDarkMode from the store
+ipcRenderer.invoke('getStoreValue', 'isDarkMode').then((isDarkMode) => {
+    enabledProviders.forEach((provider) => provider.toggleDarkMode(isDarkMode));
+});
+
+// Listen for changes to the isDarkMode value in the store
+ipcRenderer.on('setStoreValue', (event, key, value) => {
+    if (key === 'isDarkMode') {
+        enabledProviders.forEach((provider) => provider.toggleDarkMode(value));
+    }
+});
+
+/* ========================================================================== */
 /* Prompt Input Listeners                                                     */
 /* ========================================================================== */
 

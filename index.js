@@ -186,6 +186,18 @@ app.on('ready', () => {
 				},
 			];
 
+			const darkModeToggle = {
+				label: 'Toggle Dark Mode',
+				type: 'checkbox',
+				checked: store.get('darkMode', false),
+				click: () => {
+					store.set('darkMode', !store.get('darkMode', false));
+					setTimeout(() => {
+						window.reload();
+					}, 100);
+				},
+			};
+
 			const separator = { type: 'separator' };
 
 			const providersToggles = allProviders.map((provider) => {
@@ -248,6 +260,7 @@ app.on('ready', () => {
 			// Return the complete context menu template
 			return [
 				...menuHeader,
+				darkModeToggle,
 				superPromptEnterKey, // TODO: move into the customize keyboard shortcut window
 				separator,
 				...providersToggles,
