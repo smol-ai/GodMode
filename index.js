@@ -188,6 +188,7 @@ app.on('ready', () => {
 
 			const darkModeToggle = {
 				label: 'Toggle Dark Mode',
+				accelerator: 'CommandorControl+Shift+L',
 				type: 'checkbox',
 				checked: store.get('darkMode', false),
 				click: () => {
