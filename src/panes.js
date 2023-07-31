@@ -10,7 +10,7 @@ const store = new Store();
 // Function to get the enabled providers from the providers object
 function getEnabledProviders(providers) {
 	const allProviders = Object.values(providers);
-	return allProviders.filter(provider => provider.isEnabled());
+	return allProviders.filter((provider) => provider.isEnabled());
 }
 
 // Function to create and render webview panes for each provider
@@ -21,7 +21,7 @@ function drawPanes(providers) {
 	container.innerHTML = '';
 
 	// Create a new webview pane for each provider
-	providers.forEach(provider => {
+	providers.forEach((provider) => {
 		// Create a new div element and set its class and id
 		const div = document.createElement('div');
 		div.className = 'page darwin';
@@ -54,20 +54,20 @@ function drawPanes(providers) {
 // Function to update the split pane sizes evenly
 function updateSplitSizes(panes, splitInstance, focalIndex = null) {
 	// Get the currently enabled providers and calculate the size for each pane
-  let sizes = [];
+	let sizes = [];
 	if (focalIndex !== null) {
-    sizes = new Array(panes.length).fill(0);
-    sizes[focalIndex] = 100;
-  } else {
-    const paneSize = (1 / panes.length) * 100;
-    sizes = new Array(panes.length).fill(paneSize);
-  }
-  log.info('sizes', sizes);
-  return splitInstance.setSizes(sizes);
+		sizes = new Array(panes.length).fill(0);
+		sizes[focalIndex] = 100;
+	} else {
+		const paneSize = (1 / panes.length) * 100;
+		sizes = new Array(panes.length).fill(paneSize);
+	}
+	log.info('sizes', sizes);
+	return splitInstance.setSizes(sizes);
 }
 
 module.exports = {
-  drawPanes,
-  getEnabledProviders,
-  updateSplitSizes
+	drawPanes,
+	getEnabledProviders,
+	updateSplitSizes,
 };

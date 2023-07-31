@@ -13,12 +13,14 @@ const path = require('path');
 // Importing necessary modules from electron
 const {
 	app,
-	BrowserWindow,
 	nativeImage,
 	Tray,
 	Menu,
 	globalShortcut,
 	shell,
+	screen,
+	BrowserWindow,
+	ipcMain,
 } = require('electron');
 
 // Getting the application's version from package.json
@@ -32,6 +34,9 @@ const providers = {
 	Claude: require('./providers/claude'),
 	Claude2: require('./providers/claude2'),
 	Together: require('./providers/together'),
+	Perplexity: require('./providers/perplexity'),
+	Phind: require('./providers/phind'),
+	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 };
@@ -42,24 +47,35 @@ const allProviders = Object.values(providers);
 // Electron-store used for persistent data storage
 const Store = require('electron-store');
 const store = new Store();
-console.log('if process.env.NODE_ENV is development, reset the store', process.env.NODE_ENV )
+console.log(
+	'if process.env.NODE_ENV is development, reset the store',
+	process.env.NODE_ENV,
+);
 if (process.env.NODE_ENV === 'development') {
-	store.clear() // reset to defaults when in dev
+	store.clear(); // reset to defaults when in dev
 }
 log.info('store reset', store); // Logging the store
+
+// Initialize fullscreen toggle
+store.set('isFullscreen', false);
 
 // Context menu for electron apps
 const contextMenu = require('electron-context-menu');
 
 // Creating an icon image
 const image = nativeImage.createFromPath(
-	path.join(__dirname, `images/iconTemplate.png`)
+	path.join(__dirname, `images/iconTemplate.png`),
 );
+
+// Default quick open shortcut
+const quickOpenDefaultShortcut = 'CommandOrControl+Shift+G';
+let settingsWindow = null;
 
 // Once the app is ready, the following code will execute
 app.on('ready', () => {
-
 	const tray = new Tray(image);
+
+	let { width } = screen.getPrimaryDisplay().workAreaSize;
 
 	const mb = menubar({
 		browserWindow: {
@@ -73,17 +89,18 @@ app.on('ready', () => {
 				enableWebView: true, // from chatgpt
 				// nativeWindowOpen: true,
 			},
-			width: 1200,
+			width: store.get('isFullscreen', false) ? width : 1200,
 			height: 750,
+			focusable: process.env.NODE_ENV !== 'development',
 		},
 		tray,
-		showOnAllWorkspaces: true,
+		showOnAllWorkspaces: false,
 		preloadWindow: true,
 		showDockIcon: false,
 		icon: image,
 	});
 
-  // On menubar ready, the following code will execute
+	// On menubar ready, the following code will execute
 	mb.on('ready', () => {
 		const { window } = mb;
 
@@ -93,151 +110,173 @@ app.on('ready', () => {
 			app.dock.hide();
 		}
 
-    // The createContextMenuTemplate function creates the context menu template
+		// The createContextMenuTemplate function creates the context menu template
 		// It contains the header, providers' toggles, links, and footer of the menu
-    const createContextMenuTemplate = () => {
-      const menuHeader = [
-        {
-          label: 'Quit',
-          accelerator: 'CommandorControl+Q',
-          click: () => {
-            app.quit();
-          },
-        },
-        {
-          label: 'Reload',
-          accelerator: 'CommandorControl+R',
-          click: () => {
-            window.reload();
-          },
-        },
-        {
-          label: 'Quick Open (use this!)',
-          accelerator: 'CommandorControl+Shift+G',
-          click: () => {
-            window.reload();
-          },
-        }
-      ];
+		const createContextMenuTemplate = () => {
+			const menuHeader = [
+				{
+					label: 'Quit',
+					accelerator: 'CommandorControl+Q',
+					click: () => {
+						app.quit();
+					},
+				},
+				{
+					label: 'Reload',
+					accelerator: 'CommandorControl+R',
+					click: () => {
+						window.reload();
+					},
+				},
+				{
+					label: 'Quick Open (use this!)',
+					accelerator: store.get('quickOpenShortcut', quickOpenDefaultShortcut),
+					click: () => {
+						window.reload();
+					},
+				},
+				{
+					label: 'Change Quick Open Shortcut',
+					click: () => {
+						if (settingsWindow && !settingsWindow.isDestroyed()) {
+							// If the settings window is already open, just focus it
+							settingsWindow.show();
+							settingsWindow.focus();
+							return;
+						}
+						settingsWindow = new BrowserWindow({
+							show: true,
+							width: 380,
+							height: 200,
+							titleBarStyle: 'hidden',
+							minimizable: false,
+							fullscreenable: false,
+							maximizable: false,
+							webPreferences: {
+								preload: path.join(
+									__dirname,
+									'settings',
+									'settings-preload.js',
+								),
+								contextIsolation: true,
+							},
+						});
 
-      const separator = { type: 'separator' };
+						settingsWindow.loadFile(
+							path.join(__dirname, 'settings', 'settings.html'),
+						);
+						if (process.env.NODE_ENV === 'development') {
+							// open devtools if in dev mode
+							settingsWindow.openDevTools({
+								mode: 'detach',
+							});
+						}
 
-			const providersToggles = allProviders.map(provider => {
+						settingsWindow.once('ready-to-show', () => {
+							mb.hideWindow();
+						});
+					},
+				},
+				{
+					label: 'Toggle Fullscreen',
+					accelerator: 'CommandorControl+Shift+F',
+					type: 'checkbox',
+					checked: store.get('isFullscreen', false),
+					click: () => {
+						store.set('isFullscreen', !store.get('isFullscreen', false));
+					},
+				},
+			];
+
+			const separator = { type: 'separator' };
+
+			const providersToggles = allProviders.map((provider) => {
 				return {
 					label: provider.fullName,
 					type: 'checkbox',
-					checked: store.get(`${provider.webviewId}Enabled`, provider.isEnabled()),
+					checked: store.get(
+						`${provider.webviewId}Enabled`,
+						provider.isEnabled(),
+					),
 					click: () => {
-						store.set(
-							`${provider.webviewId}Enabled`,
-							!provider.isEnabled()
-						);
+						store.set(`${provider.webviewId}Enabled`, !provider.isEnabled());
 						setTimeout(() => {
 							window.reload();
-						}, 100)
+						}, 100);
 					},
 				};
 			});
 
+			const superPromptChecked = store.get('SuperPromptEnterKey', false);
 			const superPromptEnterKey = {
-				label: 'Super Prompt "Enter" Key',
+				label: superPromptChecked
+					? 'Toggle "Enter" Submit (faster, but harder to multiline)'
+					: 'Toggle "Cmd+Enter" Submit (takes extra key, but easier to multiline)',
 				type: 'checkbox',
-				checked: store.get('SuperPromptEnterKey', false),
+				checked: superPromptChecked,
 				click: () => {
 					store.set(
 						'SuperPromptEnterKey',
-						!store.get('SuperPromptEnterKey', false)
+						!store.get('SuperPromptEnterKey', false),
 					);
 					window.reload();
 				},
 			};
 
-      const providerLinks = allProviders.map(provider => {
-        return {
-          label: `Visit ${provider.name} website`,
-          click: () => {
-            shell.openExternal(provider.url);
-          },
-        };
-      });
+			const providerLinks = allProviders.map((provider) => {
+				return {
+					label: `Visit ${provider.name} website`,
+					click: () => {
+						shell.openExternal(provider.url);
+					},
+				};
+			});
 
-      const menuFooter = [
-        // Removing the preferences window for now because all settings are now
-        // in the menubar context menu dropdown. (Seemed like a better UX)
-        // {
-        //   label: 'Preferences',
-        //   click: () => {
-        //     const preferencesWindow = new BrowserWindow({
-        //       parent: null,
-        //       modal: false,
-        //       alwaysOnTop: true,
-        //       show: false,
-        //       autoHideMenuBar: true,
-        //       width: 500,
-        //       height: 300,
-        //       webPreferences: {
-        //         nodeIntegration: true,
-        //         contextIsolation: false,
-        //       },
-        //     });
-        //     preferencesWindow.loadFile('preferences.html');
-        //     preferencesWindow.once('ready-to-show', () => {
-        //       mb.hideWindow();
-        //       preferencesWindow.show();
-        //     });
+			const menuFooter = [
+				{
+					label: 'View on GitHub',
+					click: () => {
+						shell.openExternal('https://github.com/smol-ai/menubar');
+					},
+				},
+				{
+					type: 'separator',
+				},
+				{
+					label: 'Version ' + version,
+				},
+			];
 
-        //     // When the preferences window is closed, show the main window again
-        //     preferencesWindow.on('close', () => {
-        //       mb.showWindow();
-        //       mb.window.reload(); // reload the main window to apply the new settings
-        //     });
-        //   },
-        // },
-        {
-          label: 'View on GitHub',
-          click: () => {
-            shell.openExternal('https://github.com/smol-ai/menubar');
-          },
-        },
-        {
-          type: 'separator',
-        },
-        {
-          label: 'Version ' + version,
-        }
-      ]
+			// Return the complete context menu template
+			return [
+				...menuHeader,
+				superPromptEnterKey, // TODO: move into the customize keyboard shortcut window
+				separator,
+				...providersToggles,
+				separator,
+				...providerLinks,
+				separator,
+				...menuFooter,
+			];
+		};
 
-      // Return the complete context menu template
-      return [
-        ...menuHeader,
-        separator,
-        ...providersToggles,
-        separator,
-        superPromptEnterKey,
-        separator,
-        ...providerLinks,
-        separator,
-        ...menuFooter,
-      ]
-    };
-
-    // Create the context menu when right-clicking the tray icon
+		// Create the context menu when right-clicking the tray icon
 		tray.on('right-click', () => {
-      const contextMenuTemplate = createContextMenuTemplate();
+			const contextMenuTemplate = createContextMenuTemplate();
 			mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
 		});
 
-    // Create the context menu when clicking the tray icon with control or meta key
-		tray.on('click', e => {
+		// Create the context menu when clicking the tray icon with control or meta key
+		tray.on('click', (e) => {
 			//check if ctrl or meta key is pressed while clicking
 			if (e.ctrlKey || e.metaKey) {
-        const contextMenuTemplate = createContextMenuTemplate();
-        mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
-      }
+				const contextMenuTemplate = createContextMenuTemplate();
+				mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
+			}
 		});
 		const menu = new Menu();
 
-		globalShortcut.register('CommandOrControl+Shift+g', () => {
+		function quickOpen() {
 			if (window.isVisible()) {
 				mb.hideWindow();
 			} else {
@@ -247,8 +286,37 @@ app.on('ready', () => {
 				}
 				mb.app.focus();
 			}
+		}
+
+		globalShortcut.register(
+			store.get('quickOpenShortcut', quickOpenDefaultShortcut),
+			quickOpen,
+		);
+
+		store.onDidChange('quickOpenShortcut', (newValue, oldValue) => {
+			if (newValue === oldValue) return;
+			if (oldValue) {
+				globalShortcut.unregister(oldValue);
+			} else if (quickOpenDefaultShortcut) {
+				globalShortcut.unregister(quickOpenDefaultShortcut);
+			}
+			if (newValue) {
+				globalShortcut.register(newValue, quickOpen);
+			}
 		});
 
+		store.onDidChange('isFullscreen', (isFullscreen) => {
+			const { window } = mb;
+			if (isFullscreen) {
+				window.setBounds({ x: 0, width: width, height: window.getSize()[1] });
+			} else {
+				window.setBounds({
+					x: width - 1200,
+					width: 1200,
+					height: window.getSize()[1],
+				});
+			}
+		});
 		Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 		// open devtools if in dev mode
@@ -333,7 +401,7 @@ app.on('ready', () => {
 	// prevent background flickering
 	app.commandLine.appendSwitch(
 		'disable-backgrounding-occluded-windows',
-		'true'
+		'true',
 	);
 });
 
@@ -344,4 +412,24 @@ app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
+});
+
+ipcMain.handle('getQuickOpenShortcut', () => {
+	return store.get('quickOpenShortcut', quickOpenDefaultShortcut);
+});
+
+ipcMain.handle('setQuickOpenShortcut', (event, value) => {
+	store.set('quickOpenShortcut', value);
+});
+
+ipcMain.handle('getPlatform', () => {
+	return process.platform;
+});
+
+ipcMain.handle('getStoreValue', (event, key) => {
+	return store.get(key);
+});
+
+ipcMain.handle('setStoreValue', (event, key, value) => {
+	return store.set(key, value);
 });
