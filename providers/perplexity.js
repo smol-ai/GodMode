@@ -11,15 +11,7 @@ class Perplexity extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
-        // function simulateUserInput(element, text) {
-        //   const inputEvent = new Event('input', { bubbles: true });
-        //   element.focus();
-        //   element.value = text;
-        //   element.dispatchEvent(inputEvent);
-        // }
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
-        // inputElement.focus(); inputElement.click();
-        // simulateUserInput(inputElement, "${input}");
         var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
         nativeTextAreaValueSetter.call(inputElement, "${input}");
 

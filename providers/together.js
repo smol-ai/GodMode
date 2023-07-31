@@ -12,22 +12,28 @@ class Together extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
     var inputElement = document.querySelector('form textarea[placeholder*="Enter text here"]');
-    inputElement.focus();
-    inputElement.value = "${input}";
-    // try to send keyboard event to trigger the re-enable of the disabled button
-    // thanks chatgpt!
-    var event = new Event('input', { bubbles: true });
-    event.simulated = true;
-    var tracker = inputElement._valueTracker;
-    if (tracker) {
-      tracker.setValue("${input}");
-    }
-    // Dispatch the event after a short delay to fix the button state
-    setTimeout(function() {
-      inputElement.dispatchEvent(event);
-    }, 100);
+    var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+    nativeTextAreaValueSetter.call(inputElement, "${input}");
+    var event = new Event('input', { bubbles: true});
+    inputElement.dispatchEvent(event);
     `);
 	}
+
+  // inputElement.focus();
+  // inputElement.value = "${input}";
+  // // try to send keyboard event to trigger the re-enable of the disabled button
+  // // thanks chatgpt!
+  // var event = new Event('input', { bubbles: true });
+  // event.simulated = true;
+  // var tracker = inputElement._valueTracker;
+  // if (tracker) {
+  //   tracker.setValue("${input}");
+  // }
+  // // Dispatch the event after a short delay to fix the button state
+  // setTimeout(function() {
+  //   inputElement.dispatchEvent(event);
+  // }, 100);
+
 
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
