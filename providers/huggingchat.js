@@ -78,7 +78,7 @@ class HuggingChat extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return store.get(`${this.webviewId}Enabled`, true);
 	}
 }
 
