@@ -90,6 +90,7 @@ app.on('ready', () => {
 			},
 			width: store.get('isFullscreen', false) ? width : 1200,
 			height: 750,
+			focusable: process.env.NODE_ENV !== 'development'
 		},
 		tray,
 		showOnAllWorkspaces: false,
