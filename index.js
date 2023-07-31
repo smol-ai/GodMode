@@ -32,7 +32,7 @@ const providers = {
 	Bard: require('./providers/bard'),
 	Bing: require('./providers/bing'),
 	Claude: require('./providers/claude'),
-						Claude2: require('./providers/claude2'), // test bad indent
+	Claude2: require('./providers/claude2'), // test bad indent
 	Together: require('./providers/together'),
 	Perplexity: require('./providers/perplexity'),
 	Phind: require('./providers/phind'),
