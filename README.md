@@ -52,7 +52,6 @@ Yes and no:
   - Resize the window by clicking and dragging.
   - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
     - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
-  - Use `Cmd+Shift+F` to set the width to 100% of your screen.
 
 - **Model Toggle**:
 
