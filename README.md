@@ -1,8 +1,8 @@
 # 👼 smol menubar
 
-This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Claude 2, Perplexity.ai, Phind and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
+This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Claude 2, Perplexity.ai, Bing and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
 
-> we also support Bard, Bing, Phind, Together.ai, and local models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
+> we also support Bard, Phind, Together.ai, and local/GGML models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
@@ -21,20 +21,21 @@ Yes and no:
 
 ## Supported LLM Providers
 
-| Provider (default in **bold**)                                                     | Status | Notes                                                                                                                                        |
-| ---------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ChatGPT**                                                                        | ☑️     | Defaults to GPT 4 Code Interpreter                                                                                                           |
-| **Claude 2**                                                                       | ☑️     | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
-| **HuggingChat**                                                                    | ☑️     | Offers Llama2, OpenAssistant                                                                                                                 |
-| **Perplexity**                                                                     | ☑️     | Search + Chat                                                                                                                                |
-| **Bing**                                                                           | ☑️     | Microsoft's best. [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20)                           |
-| Bard                                                                               | ☑️     | Google's best. [Bard's updates are... flaky](https://twitter.com/swyx/status/1678495067663925248)                                            |
-| Local Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | ☑️     | Requires Local Setup                                                                                                                         |
-| Phind                                                                              | ☑️     | Developer focused chat                                                                                                                       |
-| OpenAssistant                                                                      | ☐      | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
-| Quora Poe                                                                          | ☐      | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)!                                                                   |
-| Claude                                                                             | ☑️     | Requires Beta Access                                                                                                                         |
-| ... What's Else?                                                                   | ☐      | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
+| Provider (default in **bold**)                                                     | Notes                                                                                                                                        |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ChatGPT**                                                                        | Defaults to GPT 4 Code Interpreter                                                                                                           |
+| **Claude 2**                                                                       | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
+| **HuggingChat**                                                                    | Offers Llama2, OpenAssistant                                                                                                                 |
+| **Perplexity**                                                                     | Search + Chat                                                                                                                                |
+| **Bing**                                                                           | Microsoft's best. [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20)                           |
+| Bard                                                                               | Google's best. [Bard's updates are... flaky](https://twitter.com/swyx/status/1678495067663925248)                                            |
+| Local/GGML Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | Requires Local Setup                                                                                                                         |
+| Phind                                                                              | Developer focused chat                                                                                                                       |
+| OpenAssistant                                                                      | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
+| Quora Poe                                                                          | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)!                                                                   |
+| Vercel Chat                                                                          | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/40)!                                                                   |
+| Claude                                                                             | Requires Beta Access                                                                                                                         |
+| ... What's Else?                                                                   |[Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
 
 ## Features and Usage
 
