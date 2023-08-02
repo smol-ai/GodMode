@@ -2,16 +2,12 @@
 const log = require('electron-log');
 const Store = require('electron-store');
 const store = new Store();
+const { getEnabledProviders } = require('./utils');
 
 /* ========================================================================== */
 /* Create Panes                                                               */
 /* ========================================================================== */
 
-// Function to get the enabled providers from the providers object
-function getEnabledProviders(providers) {
-	const allProviders = Object.values(providers);
-	return allProviders.filter((provider) => provider.isEnabled());
-}
 
 // Function to create and render webview panes for each provider
 function drawPanes(providers) {
@@ -68,6 +64,5 @@ function updateSplitSizes(panes, splitInstance, focalIndex = null) {
 
 module.exports = {
 	drawPanes,
-	getEnabledProviders,
 	updateSplitSizes,
 };
