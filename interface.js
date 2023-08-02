@@ -41,6 +41,8 @@ log.info('panes', panes);
 const splitInstance = Split(panes, {
 	direction: 'horizontal',
 	minSize: 0,
+	gutterSize: 3,
+	// gutterStyle: () => ({ background: 'black' })
 });
 
 // Update the split sizes once the Electron app DOM is ready
