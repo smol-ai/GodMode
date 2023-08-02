@@ -21,21 +21,21 @@ Yes and no:
 
 ## Supported LLM Providers
 
-| Provider (default in **bold**)                                                     | Notes                                                                                                                                        |
-| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ChatGPT**                                                                        | Defaults to GPT 4 Code Interpreter                                                                                                           |
-| **Claude 2**                                                                       | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
-| **HuggingChat**                                                                    | Offers Llama2, OpenAssistant                                                                                                                 |
-| **Perplexity**                                                                     | Search + Chat                                                                                                                                |
-| **Bing**                                                                           | Microsoft's best. [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20)                           |
-| Bard                                                                               | Google's best. [Bard's updates are... flaky](https://twitter.com/swyx/status/1678495067663925248)                                            |
+| Provider (default in **bold**)                                                          | Notes                                                                                                                                        |
+| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ChatGPT**                                                                             | Defaults to GPT 4 Code Interpreter                                                                                                           |
+| **Claude 2**                                                                            | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
+| **HuggingChat**                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
+| **Perplexity**                                                                          | Search + Chat                                                                                                                                |
+| **Bing**                                                                                | Microsoft's best. [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20)                           |
+| Bard                                                                                    | Google's best. [Bard's updates are... flaky](https://twitter.com/swyx/status/1678495067663925248)                                            |
 | Local/GGML Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | Requires Local Setup                                                                                                                         |
-| Phind                                                                              | Developer focused chat                                                                                                                       |
-| OpenAssistant                                                                      | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
-| Quora Poe                                                                          | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)!                                                                   |
-| Vercel Chat                                                                          | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/40)!                                                                   |
-| Claude                                                                             | Requires Beta Access                                                                                                                         |
-| ... What's Else?                                                                   |[Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
+| Phind                                                                                   | Developer focused chat                                                                                                                       |
+| OpenAssistant                                                                           | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
+| Quora Poe                                                                               | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)!                                                                   |
+| Vercel Chat                                                                             | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/40)!                                                                   |
+| Claude                                                                                  | Requires Beta Access                                                                                                                         |
+| ... What's Else?                                                                        | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
 
 ## Features and Usage
 
