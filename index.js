@@ -56,9 +56,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 log.info('store reset', store); // Logging the store
 
-// Initialize fullscreen toggle
-store.set('isFullscreen', false);
-
 // Context menu for electron apps
 const contextMenu = require('electron-context-menu');
 
@@ -89,7 +86,7 @@ app.on('ready', () => {
 				enableWebView: true, // from chatgpt
 				// nativeWindowOpen: true,
 			},
-			width: store.get('isFullscreen', false) ? width : 1200,
+			width: 1200,
 			height: 750,
 		},
 		tray,
@@ -174,15 +171,6 @@ app.on('ready', () => {
 						settingsWindow.once('ready-to-show', () => {
 							mb.hideWindow();
 						});
-					},
-				},
-				{
-					label: 'Toggle Fullscreen',
-					accelerator: 'CommandorControl+Shift+F',
-					type: 'checkbox',
-					checked: store.get('isFullscreen', false),
-					click: () => {
-						store.set('isFullscreen', !store.get('isFullscreen', false));
 					},
 				},
 			];
@@ -304,18 +292,6 @@ app.on('ready', () => {
 			}
 		});
 
-		store.onDidChange('isFullscreen', (isFullscreen) => {
-			const { window } = mb;
-			if (isFullscreen) {
-				window.setBounds({ x: 0, width: width, height: window.getSize()[1] });
-			} else {
-				window.setBounds({
-					x: width - 1200,
-					width: 1200,
-					height: window.getSize()[1],
-				});
-			}
-		});
 		Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 		// open devtools if in dev mode
