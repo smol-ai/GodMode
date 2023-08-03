@@ -2,6 +2,7 @@ const Store = require('electron-store');
 const store = new Store();
 
 const Provider = require('./provider');
+const { ipcRenderer } = require('electron');
 
 class Claude2 extends Provider {
 	static webviewId = 'webviewCLAUDE2';
@@ -30,11 +31,6 @@ class Claude2 extends Provider {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
 				this.getWebview().insertCSS(`
-				/* black background */
-				body {
-					background-color: #1d1d1d !important;
-          filter: invert(100%) hue-rotate(180deg);
-        }
         /* hide the claude avatar in response */
         .p-1.w-9.h-9.shrink-0 {
           display: none;
@@ -53,6 +49,24 @@ class Claude2 extends Provider {
 				`);
 			}, 1000);
 		});
+	}
+
+	static handleDarkMode(isDarkMode) {
+		if (isDarkMode) {
+			this.getWebview().insertCSS(`
+				body {
+					background-color: #1d1d1d !important;
+					filter: invert(100%) hue-rotate(180deg);
+				}
+			`);
+		} else {
+			this.getWebview().insertCSS(`
+				body {
+					background-color: #ffffff !important;
+					filter: none;
+				}
+			`);
+		}
 	}
 
 	static getUserAgent() {

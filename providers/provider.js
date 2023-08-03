@@ -1,6 +1,7 @@
 const Store = require('electron-store');
 const store = new Store();
 const log = require('electron-log');
+const { ipcRenderer } = require('electron');
 
 class Provider {
 	static webviewId = '';
@@ -20,7 +21,7 @@ class Provider {
 					var text = event.clipboardData.getData('text');
 					var activeElement = document.activeElement;
 
-					// sometimes the active element needs a "wake up" before paste (swyx: not entirely sure this works...)
+					// sometimes the active element needs  a "wake up" before paste (swyx: not entirely sure this works...)
 					// Create a KeyboardEvent
 					var event = new KeyboardEvent('keydown', {
 						key: ' ',
@@ -32,8 +33,6 @@ class Provider {
 
 					// Dispatch the event to the active element
 					activeElement.dispatchEvent(event);
-
-
 
 					var start = activeElement.selectionStart;
 					var end = activeElement.selectionEnd;
@@ -54,6 +53,22 @@ class Provider {
 
 	static handleCss() {
 		throw new Error(`Provider ${this.name} must implement handleCss()`);
+	}
+
+	// Some providers will have their own dark mode implementation
+	static handleDarkMode(isDarkMode) {
+		// Implement dark or light mode using prodiver-specific code
+		if (isDarkMode) {
+			this.getWebview().executeJavaScript(`
+				document.documentElement.classList.add('dark');
+				document.documentElement.classList.remove('light');
+			`);
+		} else {
+			this.getWebview().executeJavaScript(`
+				document.documentElement.classList.add('light');
+				document.documentElement.classList.remove('dark');
+			`);
+		}
 	}
 
 	static getUserAgent() {

@@ -76,6 +76,23 @@ class Bard extends Provider {
 		});
 	}
 
+	static handleDarkMode(isDarkMode) {
+		// Toggle the dark mode setting in the store
+		store.set('isDarkMode', isDarkMode);
+
+		if (isDarkMode) {
+			this.getWebview().executeJavaScript(`
+        document.querySelector('body').classList.add('dark-theme');
+        document.querySelector('body').classList.remove('light-theme');
+      `);
+		} else {
+			this.getWebview().executeJavaScript(`
+        document.querySelector('body').classList.add('light-theme');
+        document.querySelector('body').classList.remove('dark-theme');
+      `);
+		}
+	}
+
 	static isEnabled() {
 		return store.get(`${this.webviewId}Enabled`, false);
 	}

@@ -15,7 +15,7 @@ class Phind extends Provider {
         if (!inputElement) {
             inputElement = document.querySelector('textarea[placeholder*="Send message"]');
         }
-        
+
         function simulateUserInput(element, text) {
           var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
           var event = new Event('input', { bubbles: true});
@@ -40,7 +40,7 @@ class Phind extends Provider {
       // simulate keyup event
       var keyupEvent = new KeyboardEvent('keyup', {key: ' ', bubbles: true});
       inputElement.dispatchEvent(keyupEvent);
-      
+
         function findParentButton() {
           let buttons = document.querySelectorAll('button[type="submit"]');
           for(let button of buttons) {
@@ -51,7 +51,7 @@ class Phind extends Provider {
           }
           return null;
         }
-        
+
       var buttonElement = findParentButton();
       buttonElement.click();
       `);
@@ -61,11 +61,6 @@ class Phind extends Provider {
 		this.getWebview().addEventListener('dom-ready', () => {
 			setTimeout(() => {
 				this.getWebview().executeJavaScript(`
-        // Add Dark Mode
-        const page = document.documentElement;
-        page.setAttribute('data-theme', 'dark');
-        page.setAttribute('style', 'color-scheme: dark;');
-
         // Hide Phind Logo
         const images = document.querySelectorAll('img[src*="phind"]');
         images[images.length - 1].setAttribute('style', 'display: none;');
@@ -81,6 +76,20 @@ class Phind extends Provider {
         `);
 			}, 100);
 		});
+	}
+
+	// Some providers will have their own dark mode implementation
+	static handleDarkMode(isDarkMode) {
+		// Implement dark or light mode using prodiver-specific code
+		if (isDarkMode) {
+			this.getWebview().executeJavaScript(`
+        document.documentElement.setAttribute('data-theme', 'dark');
+			`);
+		} else {
+			this.getWebview().executeJavaScript(`
+        document.documentElement.setAttribute('data-theme', 'light');
+			`);
+		}
 	}
 
 	static isEnabled() {

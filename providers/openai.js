@@ -62,19 +62,6 @@ class OpenAi extends Provider {
 
 
         `);
-			setTimeout(() => {
-				this.getWebview().executeJavaScript(`
-          // Get the root element
-          const root = document.querySelector(':root');
-
-          // Set the color-scheme CSS variable
-          root.style.setProperty('--color-scheme', 'dark');
-
-          // Add the .dark class to the body
-          document.body.classList.add('dark');
-
-          `);
-			}, 0);
 		});
 	}
 

@@ -69,13 +69,6 @@ class Bing extends Provider {
 					overflow: hidden;
 					scrollbar-width: none;
 				}
-				body {
-					background-color: #1d1d1d !important;
-					color: #d7d7d7 !important;
-				}
-				#b_sydBgCover {
-					background: black !important;
-				}
 				header {
 					display: none !important;
 				}
@@ -123,13 +116,23 @@ class Bing extends Provider {
 					conversationDOM.querySelector('.fade.top').remove();
 					conversationDOM.querySelector('.fade.bottom').remove();
 
-					// Recolor text input
-					textInputDOM.querySelector('textarea').setAttribute('style', 'background-color: #1d1d1d !important; color: #d7d7d7 !important;');
-					actionBarDOM.querySelector('.main-container.body-2').setAttribute('style', 'background-color: #1d1d1d !important; color: #d7d7d7 !important;');
-
 				`);
 			}, 1000);
 		});
+	}
+
+	// Some providers will have their own dark mode implementation
+	static handleDarkMode(isDarkMode) {
+		// Implement dark or light mode using prodiver-specific code
+		if (isDarkMode) {
+			this.getWebview().executeJavaScript(`
+				document.getElementById("rdiodark").click();
+			`);
+		} else {
+			this.getWebview().executeJavaScript(`
+				document.getElementById("rdiolight").click();
+			`);
+		}
 	}
 
 	static isEnabled() {
