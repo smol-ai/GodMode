@@ -46,7 +46,7 @@ class Claude extends Provider {
 		});
 	}
 
-  static toggleDarkMode() {
+	static toggleDarkMode() {
 		console.log('🔴 provider toggle', self.name);
 		if (isDarkMode) {
 			this.getWebview().insertCSS(`

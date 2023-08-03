@@ -8,7 +8,6 @@ const { getEnabledProviders } = require('./utils');
 /* Create Panes                                                               */
 /* ========================================================================== */
 
-
 // Function to create and render webview panes for each provider
 function drawPanes(providers) {
 	// Get the webview container element

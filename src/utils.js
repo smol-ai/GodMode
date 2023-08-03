@@ -6,10 +6,10 @@ function getEnabledProviders(providers) {
 
 // Get all providers regardless of enabled status
 function getAllProviders(providers) {
-  return Object.values(providers);
+	return Object.values(providers);
 }
 
 module.exports = {
-  getEnabledProviders,
-  getAllProviders,
+	getEnabledProviders,
+	getAllProviders,
 };
