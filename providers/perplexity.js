@@ -53,8 +53,6 @@ class Perplexity extends Provider {
 			// hide message below text input, sidebar, suggestions on new chat
 			setTimeout(() => {
 				this.getWebview().executeJavaScript(`
-          // Add Dark Mode
-          document.documentElement.classList.add('dark');
 
           `);
 			}, 100);
