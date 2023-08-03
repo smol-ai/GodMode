@@ -42,7 +42,7 @@ class Claude extends Provider {
           margin: 0 !important;
         }
         `);
-			}, 1000);
+			}, 100);
 		});
 	}
 

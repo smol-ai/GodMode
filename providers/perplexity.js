@@ -11,15 +11,7 @@ class Perplexity extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
-        // function simulateUserInput(element, text) {
-        //   const inputEvent = new Event('input', { bubbles: true });
-        //   element.focus();
-        //   element.value = text;
-        //   element.dispatchEvent(inputEvent);
-        // }
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
-        // inputElement.focus(); inputElement.click();
-        // simulateUserInput(inputElement, "${input}");
         var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
         nativeTextAreaValueSetter.call(inputElement, "${input}");
 
@@ -30,7 +22,7 @@ class Perplexity extends Provider {
 
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
-        var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
+        // var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
         // var btn = document.querySelector('button.bg-super.aspect-square');
         // btn.click();
         // const event = new KeyboardEvent('keyup', {
@@ -38,7 +30,7 @@ class Perplexity extends Provider {
         //   metaKey: true
         // });
         // inputElement.dispatchEvent(event);
-        var buttons = Array.from(document.querySelectorAll('button'));
+        var buttons = Array.from(document.querySelectorAll('button.bg-super'));
         var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 
         var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
@@ -54,7 +46,16 @@ class Perplexity extends Provider {
 			setTimeout(() => {
 				this.getWebview().executeJavaScript(`
 
+          
           `);
+			}, 100);
+			// Hide the "Try asking" segment
+			setTimeout(() => {
+				this.getWebview().insertCSS(`
+        .mt-lg {
+          display: none;
+        }
+		    `);
 			}, 100);
 		});
 	}
