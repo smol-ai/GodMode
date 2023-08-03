@@ -123,7 +123,6 @@ class Bing extends Provider {
 
 	// Some providers will have their own dark mode implementation
 	static handleDarkMode(isDarkMode) {
-
 		// Implement dark or light mode using prodiver-specific code
 		if (isDarkMode) {
 			this.getWebview().executeJavaScript(`
