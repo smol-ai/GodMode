@@ -77,7 +77,6 @@ class Bard extends Provider {
 	}
 
 	static handleDarkMode(isDarkMode) {
-		console.log('🔴 provider toggle', self.name);
 
 		// Toggle the dark mode setting in the store
 		store.set('isDarkMode', isDarkMode);

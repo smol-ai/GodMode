@@ -52,7 +52,6 @@ class Claude2 extends Provider {
 	}
 
 	static handleDarkMode(isDarkMode) {
-		console.log('🔴 provider toggle', self.name);
 		if (isDarkMode) {
 			this.getWebview().insertCSS(`
 				body {
