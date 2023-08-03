@@ -58,6 +58,9 @@ log.info('store reset', store); // Logging the store
 // Initialize fullscreen toggle
 store.set('isFullscreen', false);
 
+// Initialize dark mode toggle
+store.set('isDarkMode', false);
+
 // Context menu for electron apps
 const contextMenu = require('electron-context-menu');
 
