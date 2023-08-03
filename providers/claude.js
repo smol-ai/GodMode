@@ -49,14 +49,14 @@ class Claude extends Provider {
   static toggleDarkMode() {
 		console.log('🔴 provider toggle', self.name);
 		if (isDarkMode) {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().insertCSS(`
 				body {
 					background-color: #1d1d1d !important;
 					filter: invert(100%) hue-rotate(180deg);
 				}
 			`);
 		} else {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().insertCSS(`
 				body {
 					background-color: #ffffff !important;
 					filter: none;

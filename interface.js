@@ -158,11 +158,3 @@ document.addEventListener('keydown', (event) => {
 		});
 	}
 });
-
-document.addEventListener('keydown', function (event) {
-	if (event.shiftKey && event.metaKey && event.keyCode === 70) {
-		ipcRenderer.invoke('getStoreValue', 'isFullscreen').then((isFullscreen) => {
-			ipcRenderer.invoke('setStoreValue', 'isFullscreen', !isFullscreen);
-		});
-	}
-});
