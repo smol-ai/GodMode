@@ -195,9 +195,9 @@ app.on('ready', () => {
 				label: 'Toggle Dark Mode',
 				accelerator: 'CommandorControl+Shift+L',
 				type: 'checkbox',
-				checked: store.get('darkMode', false),
+				checked: store.get('isDarkMode', false),
 				click: () => {
-					store.set('darkMode', !store.get('darkMode', false));
+					store.set('isDarkMode', !store.get('isDarkMode', false));
 					setTimeout(() => {
 						window.reload();
 					}, 100);
