@@ -96,6 +96,22 @@ app.on('ready', () => {
 		icon: image,
 	});
 
+	// Flag to detect if the window was hidden manually
+	let manualHide = false;
+
+	// Prevent window from hiding when in development mode if not hidden manually
+	// (for debugging)
+	if (process.env.NODE_ENV === 'development') {
+		const originalHideWindow = mb.hideWindow.bind(mb);
+
+		mb.hideWindow = () => {
+			if (manualHide) {
+				manualHide = false; // Reset the flag
+				originalHideWindow(); // Call the original hideWindow method
+			}
+		};
+	}
+
 	// On menubar ready, the following code will execute
 	mb.on('ready', () => {
 		const { window } = mb;
@@ -247,6 +263,16 @@ app.on('ready', () => {
 				},
 			];
 
+			// FYI to the user that they are in development mode
+			if (process.env.NODE_ENV === 'development') {
+				menuHeader.unshift(
+					{
+						label: '👨‍💻 IN DEV MODE 👨‍💻',
+					},
+					separator,
+				);
+			}
+
 			// Return the complete context menu template
 			return [
 				...menuHeader,
@@ -273,12 +299,20 @@ app.on('ready', () => {
 			if (e.ctrlKey || e.metaKey) {
 				const contextMenuTemplate = createContextMenuTemplate();
 				mb.tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
+			} else {
+				quickOpen();
 			}
 		});
+
+		tray.on('double-click', () => {
+			quickOpen();
+		});
+
 		const menu = new Menu();
 
 		function quickOpen() {
 			if (window.isVisible()) {
+				manualHide = true; // Honor manual hide in development mode
 				mb.hideWindow();
 			} else {
 				mb.showWindow();
