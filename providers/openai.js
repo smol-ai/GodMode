@@ -62,44 +62,7 @@ class OpenAi extends Provider {
 
 
         `);
-			setTimeout(() => {
-        // Get the current dark mode setting from the store
-        const isDarkMode = store.get('darkMode', false);
-
-        // Toggle dark mode based on the current setting
-        this.toggleDarkMode(isDarkMode);
-      }, 300);
 		});
-	}
-
-  static toggleDarkMode(isDarkMode) {
-		if (isDarkMode) {
-			// Add code to enable dark mode
-			this.getWebview().executeJavaScript(`
-				// Get the root element
-				const root = document.querySelector(':root');
-
-				// Set the color-scheme CSS variable
-				root.style.setProperty('--color-scheme', 'dark');
-
-				// Add the .dark class to the body
-				document.body.classList.add('dark');
-        document.body.classList.remove('light');
-			`);
-		} else {
-			// Add code to disable dark mode
-			this.getWebview().executeJavaScript(`
-				// Get the root element
-				const root = document.querySelector(':root');
-
-				// Remove the color-scheme CSS variable
-				root.style.setProperty('--color-scheme', 'light');
-
-				// Remove the .dark class from the body
-        document.body.classList.add('light');
-				document.body.classList.remove('dark');
-			`);
-		}
 	}
 
 	static isEnabled() {
