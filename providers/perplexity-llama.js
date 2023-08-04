@@ -9,7 +9,6 @@ class PerplexityLlama extends Provider {
 
 	static url = 'https://labs.perplexity.ai/';
 
-
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
