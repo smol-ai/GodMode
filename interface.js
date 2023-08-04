@@ -18,6 +18,7 @@ const providers = {
 	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
+	PerplexityLlama: require('./providers/perplexity-llama.js')
 };
 
 const { drawPanes, updateSplitSizes } = require('./src/panes');

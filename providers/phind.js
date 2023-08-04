@@ -11,7 +11,7 @@ class Phind extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
-        var inputElement = document.querySelector('textarea[placeholder*="Describe your technical task"]');
+        var inputElement = document.querySelector('textarea[placeholder*="Describe your task in detail. What are you stuck on"]');
         if (!inputElement) {
             inputElement = document.querySelector('textarea[placeholder*="Send message"]');
         }
