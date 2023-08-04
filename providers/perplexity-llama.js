@@ -5,7 +5,7 @@ const Provider = require('./provider');
 
 class PerplexityLlama extends Provider {
 	static webviewId = 'webiewPerplexityLlama';
-	static fullName = 'Perplexity LLama Agent';
+	static fullName = 'Llama 2 (via Perplexity)';
 
 	static url = 'https://labs.perplexity.ai/';
 
