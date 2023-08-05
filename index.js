@@ -247,7 +247,7 @@ app.on('ready', () => {
 					label: 'Version ' + version,
 				},
 			];
-			
+
 			// FYI to the user that they are in development mode
 			if (process.env.NODE_ENV === 'development') {
 				menuHeader.unshift(
