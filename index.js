@@ -382,7 +382,6 @@ app.on('ready', () => {
 				window: contents,
 			});
 
-
 			// we can't set the native app menu with "menubar" so need to manually register these events
 			// register cmd+c/cmd+v events
 			contents.on('before-input-event', (event, input) => {
@@ -398,7 +397,8 @@ app.on('ready', () => {
 				if (key === 'r') contents.reload();
 				if (key === 'h') contents.goBack();
 				if (key === 'l') contents.goForward();
-				if (key === 'Delete') contents.cookies.flushStore(); contents.reload();
+				if (key === 'Delete') contents.cookies.flushStore();
+				contents.reload();
 			});
 		}
 		// we can't set the native app menu with "menubar" so need to manually register these events
@@ -416,7 +416,8 @@ app.on('ready', () => {
 			if (key === 'r') contents.reload();
 			if (key === 'h') contents.goBack();
 			if (key === 'l') contents.goForward();
-			if (key === 'Delete') contents.cookies.flushStore(); contents.reload();
+			if (key === 'Delete') contents.cookies.flushStore();
+			contents.reload();
 		});
 	});
 
