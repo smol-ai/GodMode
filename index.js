@@ -80,12 +80,18 @@ app.on('ready', () => {
 			icon: image,
 			transparent: path.join(__dirname, `images/iconApp.png`),
 			autoHideMenuBar: false,
+			// zoomFactor: 0.8, // handled by webview.setZoomLevel, dont bother setting this
+			// we're not intentionally trying to reduce security here, just want it to act like a more tolerant browser
+			webSecurity: false,
+			allowRunningInsecureContent: true,
+			scrollBounce: true,
 			webPreferences: {
 				webviewTag: true,
 				nodeIntegration: true,
 				contextIsolation: false,
 				enableWebView: true, // from chatgpt
-				// nativeWindowOpen: true,
+				// nativeWindowOpen: true, // defaults true anyway
+				nodeIntegrationInSubFrames: true,
 			},
 			width: 1200,
 			height: 750,
@@ -93,7 +99,7 @@ app.on('ready', () => {
 		tray,
 		showOnAllWorkspaces: false,
 		preloadWindow: true,
-		showDockIcon: false,
+		showDockIcon: true,
 		icon: image,
 	});
 
@@ -376,6 +382,7 @@ app.on('ready', () => {
 				window: contents,
 			});
 
+
 			// we can't set the native app menu with "menubar" so need to manually register these events
 			// register cmd+c/cmd+v events
 			contents.on('before-input-event', (event, input) => {
@@ -389,6 +396,9 @@ app.on('ready', () => {
 				if (key === 'y') contents.redo();
 				if (key === 'q') app.quit();
 				if (key === 'r') contents.reload();
+				if (key === 'h') contents.goBack();
+				if (key === 'l') contents.goForward();
+				if (key === 'Delete') contents.cookies.flushStore(); contents.reload();
 			});
 		}
 		// we can't set the native app menu with "menubar" so need to manually register these events
@@ -404,6 +414,9 @@ app.on('ready', () => {
 			if (key === 'y') contents.redo();
 			if (key === 'q') app.quit();
 			if (key === 'r') contents.reload();
+			if (key === 'h') contents.goBack();
+			if (key === 'l') contents.goForward();
+			if (key === 'Delete') contents.cookies.flushStore(); contents.reload();
 		});
 	});
 
