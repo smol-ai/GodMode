@@ -101,7 +101,7 @@ body {
 #webviewContainer {
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
-	display: flex;	
+	display: flex;
 }
 
 .titlebar {

@@ -24,7 +24,7 @@ class SmolTalk extends Provider {
 	`);
 	}
 
-  static clearCookies() {
+	static clearCookies() {
 		this.getWebview().executeJavaScript(`
       const cookies = document.cookie.split(";");
   
@@ -35,7 +35,7 @@ class SmolTalk extends Provider {
           document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
       }
       `);
-  }
+	}
 
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
