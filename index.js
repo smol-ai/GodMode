@@ -36,10 +36,10 @@ const providers = {
 	Together: require('./providers/together'),
 	Perplexity: require('./providers/perplexity'),
 	Phind: require('./providers/phind'),
+	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
-	PerplexityLlama: require('./providers/perplexity-llama.js'),
 };
 
 // Getting all the providers in an array
@@ -87,7 +87,7 @@ app.on('ready', () => {
 				enableWebView: true, // from chatgpt
 				// nativeWindowOpen: true,
 			},
-			width: 1200,
+			width,
 			height: 750,
 		},
 		tray,
@@ -169,9 +169,9 @@ app.on('ready', () => {
 							});
 						}
 
-						settingsWindow.once('ready-to-show', () => {
-							mb.hideWindow();
-						});
+						// settingsWindow.once('ready-to-show', () => {
+						// 	mb.hideWindow();
+						// });
 					},
 				},
 			];
@@ -288,15 +288,15 @@ app.on('ready', () => {
 		const menu = new Menu();
 
 		function quickOpen() {
-			if (window.isVisible()) {
-				mb.hideWindow();
-			} else {
+			// if (window.isVisible()) {
+			// 	mb.hideWindow();
+			// } else {
 				mb.showWindow();
 				if (process.platform == 'darwin') {
 					mb.app.show();
 				}
-				mb.app.focus();
-			}
+			// }
+			mb.app.focus();
 		}
 
 		globalShortcut.register(

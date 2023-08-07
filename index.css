@@ -24,13 +24,14 @@ body {
 
 .page {
 	--superprompt-height: 100px;
+	--titlebar-height: 20px;
 
 	background: #eeeeee;
 	/* overflow: auto; */
 	/* disabled because its quite buggy */
 	/* resize: both;  */
 	width: 100%;
-	height: calc(100vh - var(--superprompt-height));
+	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
 	margin-top: 4px;
 	margin: 0 auto;
 	position: relative;
@@ -97,13 +98,24 @@ body {
 	stroke: rgba(255, 255, 255, 0.8);
 }
 
+#webviewContainer {
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	display: flex;	
+}
+
+.titlebar {
+	display: flex;
+	justify-content: space-around;
+}
+
 webview {
 	/* overflow: hidden; */
 	position: absolute;
-	top: 0;
+	top: 20px;
 	left: 0;
 	width: 100%;
-	height: calc(100vh - var(--superprompt-height));
+	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
 	display: inline-flex !important;
 }
 

@@ -16,15 +16,11 @@ class Phind extends Provider {
             inputElement = document.querySelector('textarea[placeholder*="Send message"]');
         }
 
-        function simulateUserInput(element, text) {
-          var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
-          var event = new Event('input', { bubbles: true});
+        var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+        var event = new Event('input', { bubbles: true});
 
-          nativeTextAreaValueSetter.call(inputElement, text);
-          inputElement.dispatchEvent(event);
-        }
-
-        simulateUserInput(inputElement, "${input}");
+        nativeTextAreaValueSetter.call(inputElement, "${input}");
+        inputElement.dispatchEvent(event);
       `);
 	}
 
