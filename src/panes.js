@@ -43,7 +43,7 @@ function drawPanes(providers) {
 		webview.src = provider.url;
 		webview.autosize = 'on';
 		webview.addEventListener('dom-ready', () => {
-			webview.setZoomLevel(0); // Set initial zoom level here
+			webview.setZoomLevel(-1); // Set initial zoom level here
 		});
 
 		// If the provider has a getUserAgent function, set the webview's useragent

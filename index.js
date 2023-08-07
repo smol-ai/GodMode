@@ -80,6 +80,7 @@ app.on('ready', () => {
 			icon: image,
 			transparent: path.join(__dirname, `images/iconApp.png`),
 			autoHideMenuBar: false,
+			// zoomFactor: 0.8, // handled by webview.setZoomLevel, dont bother setting this
 			webPreferences: {
 				webviewTag: true,
 				nodeIntegration: true,
@@ -93,7 +94,7 @@ app.on('ready', () => {
 		tray,
 		showOnAllWorkspaces: false,
 		preloadWindow: true,
-		showDockIcon: false,
+		showDockIcon: true,
 		icon: image,
 	});
 
@@ -364,6 +365,8 @@ app.on('ready', () => {
 				if (key === 'y') contents.redo();
 				if (key === 'q') app.quit();
 				if (key === 'r') contents.reload();
+				if (key === 'h') contents.goBack();
+				if (key === 'l') contents.goForward();
 			});
 		}
 		// we can't set the native app menu with "menubar" so need to manually register these events
@@ -379,6 +382,8 @@ app.on('ready', () => {
 			if (key === 'y') contents.redo();
 			if (key === 'q') app.quit();
 			if (key === 'r') contents.reload();
+			if (key === 'h') contents.goBack();
+			if (key === 'l') contents.goForward();
 		});
 	});
 

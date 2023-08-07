@@ -3,7 +3,7 @@ const store = new Store();
 
 const Provider = require('./provider');
 
-class OpenAi extends Provider {
+class OpenAI extends Provider {
 	static webviewId = 'webviewOAI';
 	static fullName = 'OpenAI ChatGPT';
 
@@ -70,4 +70,4 @@ class OpenAi extends Provider {
 	}
 }
 
-module.exports = OpenAi;
+module.exports = OpenAI;
