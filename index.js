@@ -292,10 +292,10 @@ app.on('ready', () => {
 			// if (window.isVisible()) {
 			// 	mb.hideWindow();
 			// } else {
-				mb.showWindow();
-				if (process.platform == 'darwin') {
-					mb.app.show();
-				}
+			mb.showWindow();
+			if (process.platform == 'darwin') {
+				mb.app.show();
+			}
 			// }
 			mb.app.focus();
 		}

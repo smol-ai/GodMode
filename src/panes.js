@@ -24,7 +24,7 @@ function drawPanes(providers) {
 
 		// create a title bar
 		const titlebar = document.createElement('div');
-		titlebar.className = 'titlebar'
+		titlebar.className = 'titlebar';
 		// add in a h1 with the provider name
 		const title = document.createElement('span');
 		title.innerHTML = provider.name;
@@ -34,7 +34,7 @@ function drawPanes(providers) {
 		darkModeButton.innerHTML = 'Clear Cookies';
 		darkModeButton.addEventListener('click', provider.clearCookies);
 		titlebar.appendChild(darkModeButton);
-		
+
 		div.appendChild(titlebar);
 
 		// Create a new webview and set its id, source url, and autosize attributes
