@@ -11,15 +11,30 @@ class SmolTalk extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
-    function simulateUserInput(element, text) {
-      const inputEvent = new Event('input', { bubbles: true });
-      element.focus();
-      element.value = text;
-      element.dispatchEvent(inputEvent);
-    }
-    var inputElement = document.querySelector('#smol-inputbox')
-    simulateUserInput(inputElement, "${input}");
+		var inputElement = document.querySelector('#smol-inputbox')
+		function simulateUserInput(element, text) {
+			var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+			var event = new Event('input', { bubbles: true});
+
+			nativeTextAreaValueSetter.call(inputElement, text);
+			inputElement.dispatchEvent(event);
+		}
+
+		simulateUserInput(inputElement, "${input}");
 	`);
+	}
+
+	static clearCookies() {
+		this.getWebview().executeJavaScript(`
+      const cookies = document.cookie.split(";");
+  
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i];
+          const eqPos = cookie.indexOf("=");
+          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+          document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+      `);
 	}
 
 	static handleSubmit() {
@@ -72,7 +87,7 @@ class SmolTalk extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return store.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

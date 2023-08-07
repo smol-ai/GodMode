@@ -36,10 +36,10 @@ const providers = {
 	Together: require('./providers/together'),
 	Perplexity: require('./providers/perplexity'),
 	Phind: require('./providers/phind'),
+	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
-	PerplexityLlama: require('./providers/perplexity-llama.js'),
 };
 
 // Getting all the providers in an array
@@ -80,6 +80,7 @@ app.on('ready', () => {
 			icon: image,
 			transparent: path.join(__dirname, `images/iconApp.png`),
 			autoHideMenuBar: false,
+			// zoomFactor: 0.8, // handled by webview.setZoomLevel, dont bother setting this
 			webPreferences: {
 				webviewTag: true,
 				nodeIntegration: true,
@@ -87,13 +88,13 @@ app.on('ready', () => {
 				enableWebView: true, // from chatgpt
 				// nativeWindowOpen: true,
 			},
-			width: 1200,
+			width,
 			height: 750,
 		},
 		tray,
 		showOnAllWorkspaces: false,
 		preloadWindow: true,
-		showDockIcon: false,
+		showDockIcon: true,
 		icon: image,
 	});
 
@@ -169,9 +170,9 @@ app.on('ready', () => {
 							});
 						}
 
-						settingsWindow.once('ready-to-show', () => {
-							mb.hideWindow();
-						});
+						// settingsWindow.once('ready-to-show', () => {
+						// 	mb.hideWindow();
+						// });
 					},
 				},
 			];
@@ -288,15 +289,15 @@ app.on('ready', () => {
 		const menu = new Menu();
 
 		function quickOpen() {
-			if (window.isVisible()) {
-				mb.hideWindow();
-			} else {
-				mb.showWindow();
-				if (process.platform == 'darwin') {
-					mb.app.show();
-				}
-				mb.app.focus();
+			// if (window.isVisible()) {
+			// 	mb.hideWindow();
+			// } else {
+			mb.showWindow();
+			if (process.platform == 'darwin') {
+				mb.app.show();
 			}
+			// }
+			mb.app.focus();
 		}
 
 		globalShortcut.register(
@@ -364,6 +365,8 @@ app.on('ready', () => {
 				if (key === 'y') contents.redo();
 				if (key === 'q') app.quit();
 				if (key === 'r') contents.reload();
+				if (key === 'h') contents.goBack();
+				if (key === 'l') contents.goForward();
 			});
 		}
 		// we can't set the native app menu with "menubar" so need to manually register these events
@@ -379,6 +382,8 @@ app.on('ready', () => {
 			if (key === 'y') contents.redo();
 			if (key === 'q') app.quit();
 			if (key === 'r') contents.reload();
+			if (key === 'h') contents.goBack();
+			if (key === 'l') contents.goForward();
 		});
 	});
 
