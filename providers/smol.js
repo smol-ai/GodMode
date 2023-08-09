@@ -40,21 +40,6 @@ class SmolTalk extends Provider {
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`
 
-    var inputElement = document.querySelector('#smol-inputbox')
-
-    // try to send keyboard event to trigger the re-enable of the disabled button
-    // thanks chatgpt!
-    var event = new Event('input', { bubbles: true });
-    event.simulated = true;
-    var tracker = inputElement._valueTracker;
-    if (tracker) {
-      tracker.setValue("${input}");
-    }
-    inputElement.value = "${input}"
-    inputElement.dispatchEvent(event);
-    inputElement.value = "${input}"
-    inputElement.dispatchEvent(event);
-
     var btn = document.querySelector('#smol-submitbtn');
 
     btn.focus();

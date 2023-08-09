@@ -13,7 +13,9 @@ body {
 }
 
 :root {
-	--actual-height: calc(100vh - 20px);
+	--superprompt-height: 100px;
+	--titlebar-height: 0px; /* 20px */
+	--actual-height: calc(100vh - var(--titlebar-height));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,8 +25,6 @@ body {
 }
 
 .page {
-	--superprompt-height: 100px;
-	--titlebar-height: 20px;
 
 	background: #eeeeee;
 	/* overflow: auto; */
@@ -52,7 +52,7 @@ body {
 	margin-top: 8px;
 	border-radius: 10px;
 	overflow: hidden;
-	background-color: #eee;
+	background-color: #aaa;
 }
 
 #form:focus-within {
@@ -113,7 +113,7 @@ body {
 webview {
 	/* overflow: hidden; */
 	position: absolute;
-	top: 20px;
+	top: var(--titlebar-height);
 	left: 0;
 	width: 100%;
 	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));

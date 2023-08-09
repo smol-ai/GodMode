@@ -1,9 +1,9 @@
 {
-	"name": "smolmenubar",
+	"name": "smol-gods",
 	"productName": "smolmenubar",
 	"version": "0.0.15",
 	"author": "smol-ai",
-	"description": "smol menubar app for ChatGPT, Claude, Bing, Bard",
+	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
 	"main": "index.js",
 	"scripts": {
 		"launch": "NODE_ENV=development electron-forge start",
@@ -29,7 +29,6 @@
 		"electron-context-menu": "^3.6.0",
 		"electron-log": "^5.0.0-beta.24",
 		"electron-store": "^8.1.0",
-		"menubar": "^9.2.3",
 		"update-electron-app": "^2.0.1"
 	},
 	"repository": {

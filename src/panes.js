@@ -22,25 +22,27 @@ function drawPanes(providers) {
 		div.className = 'page darwin';
 		div.id = provider.paneId();
 
-		// create a title bar
-		const titlebar = document.createElement('div');
-		titlebar.className = 'titlebar';
-		// add in a h1 with the provider name
-		const title = document.createElement('span');
-		title.innerHTML = provider.name;
-		titlebar.appendChild(title);
-		// add in a button to toggle dark mode
-		const darkModeButton = document.createElement('button');
-		darkModeButton.innerHTML = 'Clear Cookies';
-		darkModeButton.addEventListener('click', provider.clearCookies);
-		titlebar.appendChild(darkModeButton);
+		// // create a title bar
+		// const titlebar = document.createElement('div');
+		// titlebar.className = 'titlebar';
+		// // add in a h1 with the provider name
+		// const title = document.createElement('span');
+		// title.innerHTML = provider.name;
+		// titlebar.appendChild(title);
+		// // add in a button to toggle dark mode
+		// const darkModeButton = document.createElement('button');
+		// darkModeButton.innerHTML = 'Clear Cookies';
+		// darkModeButton.addEventListener('click', provider.clearCookies);
+		// titlebar.appendChild(darkModeButton);
 
-		div.appendChild(titlebar);
+		// div.appendChild(titlebar);
 
 		// Create a new webview and set its id, source url, and autosize attributes
 		const webview = document.createElement('webview');
 		webview.id = provider.webviewId;
 		webview.src = provider.url;
+		// set allowpopups property on webview
+		webview.setAttribute('allowpopups', 'true');
 		webview.autosize = 'on';
 		webview.addEventListener('dom-ready', () => {
 			webview.setZoomLevel(-1); // Set initial zoom level here
