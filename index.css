@@ -32,6 +32,7 @@ body {
 	/* resize: both;  */
 	width: 100%;
 	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
+	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
 	margin-top: 4px;
 	margin: 0 auto;
 	position: relative;
@@ -116,6 +117,7 @@ webview {
 	top: var(--titlebar-height);
 	left: 0;
 	width: 100%;
+	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
 	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
 	display: inline-flex !important;
 }

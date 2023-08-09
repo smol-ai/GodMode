@@ -1,7 +1,7 @@
 {
 	"name": "smol-gods",
 	"productName": "smolmenubar",
-	"version": "0.0.15",
+	"version": "0.0.17",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
 	"main": "index.js",
