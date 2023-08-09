@@ -8,7 +8,7 @@ This is a **dedicated chat browser** that helps you quickly access **the full we
 
 We also support Bard, Phind, Together.ai, and local/GGML models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default!
 
-![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
+![image](https://github.com/smol-ai/menubar/assets/6764957/703c839b-db30-4b06-b40b-2bf469682b12)
 
 ([click for video demo](https://twitter.com/swyx/status/1678944036135260160))
 
