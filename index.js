@@ -289,7 +289,9 @@ app.whenReady().then(() => {
 		if (e.ctrlKey || e.metaKey) {
 			const contextMenuTemplate = createContextMenuTemplate();
 			tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
+			return
 		}
+		quickOpen()
 	});
 
 	function quickOpen() {
@@ -342,7 +344,6 @@ app.whenReady().then(() => {
 
 	app.on('web-contents-created', (e, wc) => {
 		// wc: webContents of <webview> is now under control
-		console.log('wc', wc)
 		wc.setWindowOpenHandler((handler) => {
 				return {action : "allow"}; // deny or allow
 		});
