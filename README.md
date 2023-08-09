@@ -70,7 +70,7 @@ Yes and no:
 
   - Initial support for [oobabooga/text-generation-webui](https://github.com/oobabooga/text-generation-webui) has been added.
   - Users need to follow the process outlined in the text-generation-webui repository, including downloading models (e.g. [LLaMa-13B-GGML](https://huggingface.co/TheBloke/LLaMa-13B-GGML/blob/main/llama-13b.ggmlv3.q4_0.bin)).
-  - Run the model on `http://127.0.0.1:7860/` before running it inside of the smol menubar.
+  - Run the model on `http://127.0.0.1:7860/` before running it inside of smol gods.
   - The UI only supports one kind of prompt template. Contributions are welcome to make the templating customizable (see the Oobabooga.js provider).
 
 - **Starting New Conversations**:
