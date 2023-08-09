@@ -40,7 +40,7 @@ Yes and no:
 | Quora Poe                                                                               | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/38)!                                         |
 | Vercel Chat                                                                             | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/40)!                                         |
 | Claude                                                                                  | Requires Beta Access                                                                                               |
-| Smol Talk                                                                                  | in Beta soon                                                                                                                         |
+| Smol Talk                                                                               | in Beta soon                                                                                                       |
 | ... What's Else?                                                                        | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                   |
 
 ## Features and Usage
