@@ -4,7 +4,7 @@
 >
 > ― [Terry Pratchett, Small Gods](https://www.goodreads.com/work/quotes/1636629-small-gods)
 
-This is a **dedicated chat browser** that helps you quickly access **the full webapps** of ChatGPT, Claude 2, Perplexity.ai, Bing and more (see below) with a single keyboard shortcut (Cmd+Shift+G). 
+This is a **dedicated chat browser** that helps you quickly access **the full webapps** of ChatGPT, Claude 2, Perplexity.ai, Bing and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
 
 We also support Bard, Phind, Together.ai, and local/GGML models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default!
 
@@ -27,7 +27,7 @@ Yes and no:
 
 | Provider (default in **bold**)                                                          | Notes                                                                                                                                        |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ChatGPT**                                                                             | Defaults to  (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!)                                                                                                           |
+| **ChatGPT**                                                                             | Defaults to (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!)                                                   |
 | **Claude 2**                                                                            | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | **HuggingChat**                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
 | **Perplexity**                                                                          | Search + Chat                                                                                                                                |
