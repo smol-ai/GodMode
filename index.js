@@ -91,7 +91,7 @@ app.whenReady().then(() => {
 		showDockIcon: true,
 		icon: image,
 		/// TODO: Maybe add transparency
-		transparent: true,
+		// transparent: true,
 		// TODO: maybe toggle alwaysontop
 	});
 
