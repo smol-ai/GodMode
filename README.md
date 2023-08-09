@@ -27,7 +27,7 @@ Yes and no:
 
 | Provider (default in **bold**)                                                          | Notes                                                                                                                                        |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ChatGPT**                                                                             | Defaults to (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!)                                                   |
+| **ChatGPT**                                                                             | Defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!                                                   |
 | **Claude 2**                                                                            | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | **HuggingChat**                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
 | **Perplexity**                                                                          | Search + Chat                                                                                                                                |
