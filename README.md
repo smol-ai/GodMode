@@ -1,8 +1,12 @@
-# 👼 smol menubar
+# 🐢 smol gods
 
-This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Claude 2, Perplexity.ai, Bing and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
+> “That's why it's always worth having a few philosophers around the place. One minute it's all is truth beauty and is beauty truth, and does a falling tree in the forest make a sound if there's no one there to hear it, and then just when you think they're going to start dribbling one of 'em says, incidentally, putting a thirty-foot parabolic reflector on a high place to shoot the rays of the sun at an enemy's ships would be a very interesting demonstration of optical principles.”
+>
+> ― [Terry Pratchett, Small Gods](https://www.goodreads.com/work/quotes/1636629-small-gods)
 
-> we also support Bard, Phind, Together.ai, and local/GGML models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
+This is a **dedicated chat browser** that helps you quickly access **the full webapps** of ChatGPT, Claude 2, Perplexity.ai, Bing and more (see below) with a single keyboard shortcut (Cmd+Shift+G). 
+
+We also support Bard, Phind, Together.ai, and local/GGML models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default!
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
@@ -15,7 +19,7 @@ Whatever is typed at the bottom is entered into all **web apps** simultaneously,
 Yes and no:
 
 1. SOTA functionality is often released without API (eg: ChatGPT Code Interpreter, Bing Image Creator, Bard Multimodal Input, Claude Multifile Upload). **We insist on using webapps** so that you have full access to all functionality on launch day. We also made light/dark mode for each app, just for fun (`Cmd+Shift+L`)
-2. This is a menubar app that can be invoked with a keyboard shortcut (Cmd+Shift+G). Feels a LOT faster than having it live in a browser window somewhere and is easy to pull up/dismiss during long generations.
+2. This is a desktop **chat browser** (evolved from a smol menubar app) that can be invoked with a keyboard shortcut (Cmd+Shift+G). Feels a LOT faster than having it live in a browser window somewhere and is easy to pull up/dismiss during long generations.
 3. Supports local models like LLaMa and Vicuna via [OobaBooga](https://github.com/oobabooga/text-generation-webui).
 4. No paywall, build from source.
 
@@ -23,7 +27,7 @@ Yes and no:
 
 | Provider (default in **bold**)                                                          | Notes                                                                                                                                        |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ChatGPT**                                                                             | Defaults to GPT 4 Code Interpreter                                                                                                           |
+| **ChatGPT**                                                                             | Defaults to  (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!)                                                                                                           |
 | **Claude 2**                                                                            | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | **HuggingChat**                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
 | **Perplexity**                                                                          | Search + Chat                                                                                                                                |
@@ -151,3 +155,5 @@ then anthropic dropped 100k context, and at that point i was convinced i need to
 ## Related project
 
 I only later heard about https://github.com/sunner/ChatALL which is cool but I think defaulting to a menbuar/webview experience is better - you get to use full features like Code Interpreter and Claude 2 file upload when they come out, without waiting for API
+
+> The Turtle Moves!
