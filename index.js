@@ -1,4 +1,4 @@
-require("update-electron-app")(); // uncomment this line to enable auto-updates.
+require('update-electron-app')(); // uncomment this line to enable auto-updates.
 // we commented out because of https://github.com/smol-ai/menubar/issues/17
 // but then we figured out code signing so we got it back in
 
@@ -59,7 +59,6 @@ log.info('store reset', store); // Logging the store
 // Context menu for electron apps
 const contextMenu = require('electron-context-menu');
 
-
 // Default quick open shortcut
 const quickOpenDefaultShortcut = 'CommandOrControl+Shift+G';
 let settingsWindow = null;
@@ -74,20 +73,19 @@ app.whenReady().then(() => {
 
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-	
-  const window = new BrowserWindow({
-    width: width - 100,
-    height: height - 100,
-    title: 'smol gods',
-    // titleBarStyle: "hiddenInset",
-    alwaysOnTop: false,
-    webPreferences: {
+	const window = new BrowserWindow({
+		width: width - 100,
+		height: height - 100,
+		title: 'smol gods',
+		// titleBarStyle: "hiddenInset",
+		alwaysOnTop: false,
+		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
-      // preload: path.join(__dirname, 'preload.js'),
-      webviewTag: true
-    },
-    zoomFactor: 0.8,
+			// preload: path.join(__dirname, 'preload.js'),
+			webviewTag: true,
+		},
+		zoomFactor: 0.8,
 		showOnAllWorkspaces: false,
 		preloadWindow: true,
 		showDockIcon: true,
@@ -95,14 +93,11 @@ app.whenReady().then(() => {
 		/// TODO: Maybe add transparency
 		transparent: true,
 		// TODO: maybe toggle alwaysontop
-  })
+	});
 
-  window.loadFile('index.html', {
-		nodeIntegration: true
-	})
-
-
-
+	window.loadFile('index.html', {
+		nodeIntegration: true,
+	});
 
 	// On menubar ready, the following code will execute
 	if (process.platform !== 'darwin') {
@@ -110,8 +105,6 @@ app.whenReady().then(() => {
 	} else {
 		app.dock.hide();
 	}
-	
-
 
 	// The createContextMenuTemplate function creates the context menu template
 	// It contains the header, providers' toggles, links, and footer of the menu
@@ -156,11 +149,7 @@ app.whenReady().then(() => {
 						fullscreenable: false,
 						maximizable: false,
 						webPreferences: {
-							preload: path.join(
-								__dirname,
-								'settings',
-								'settings-preload.js',
-							),
+							preload: path.join(__dirname, 'settings', 'settings-preload.js'),
 							contextIsolation: true,
 						},
 					});
@@ -300,7 +289,7 @@ app.whenReady().then(() => {
 		// if (process.platform == 'darwin') {
 		// 	mb.app.show();
 		// }
-		window.focus()
+		window.focus();
 	}
 
 	globalShortcut.register(
@@ -331,20 +320,20 @@ app.whenReady().then(() => {
 	// window.webContents.on('new-window', (event, url) => {
 	// 	var hostname = (new URL(url)).hostname.toLowerCase();
 	// 	alert(url)
-	
+
 	// 	if (hostname.indexOf('dropbox.com') !== -1 && url.indexOf('chooser') !== -1) {
 	// 		// this should allow open window
 	// 	} else {
-	
+
 	// 		event.preventDefault();
-	// 	} 
+	// 	}
 	// })
 
 	app.on('web-contents-created', (e, wc) => {
 		// wc: webContents of <webview> is now under control
-		console.log('wc', wc)
+		console.log('wc', wc);
 		wc.setWindowOpenHandler((handler) => {
-				return {action : "allow"}; // deny or allow
+			return { action: 'allow' }; // deny or allow
 		});
 	});
 	// // this doesnt seem to work yet but it seems to be necessary
@@ -364,7 +353,6 @@ app.whenReady().then(() => {
 	// 	// }
 	// 	// return { action: 'deny' }
 	// })
-
 });
 
 app.on('web-contents-created', (e, contents) => {
@@ -443,10 +431,7 @@ app.on('web-contents-created', (e, contents) => {
 // });
 
 // prevent background flickering
-app.commandLine.appendSwitch(
-	'disable-backgrounding-occluded-windows',
-	'true',
-);
+app.commandLine.appendSwitch('disable-backgrounding-occluded-windows', 'true');
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
