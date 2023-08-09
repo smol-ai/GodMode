@@ -278,9 +278,9 @@ app.whenReady().then(() => {
 		if (e.ctrlKey || e.metaKey) {
 			const contextMenuTemplate = createContextMenuTemplate();
 			tray.popUpContextMenu(Menu.buildFromTemplate(contextMenuTemplate));
-			return
+			return;
 		}
-		quickOpen()
+		quickOpen();
 	});
 
 	function quickOpen() {
