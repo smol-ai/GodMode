@@ -24,7 +24,7 @@ fs.access(firstRunFile, fs.constants.F_OK, (err) => {
 			const appDir = __dirname;
 			const appPath = `${appDir}/${appEntryPoint}`;
 
-			const appIconPath = `${appDir}/images/icon.png`;
+			const appIconPath = `${appDir}/images/godmode.png`;
 
 			const desktopEntryContent = `[Desktop Entry]
 Type=Application

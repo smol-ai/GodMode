@@ -22,7 +22,7 @@ const {
 } = require('electron');
 
 // Getting the application's version from package.json
-const { version } = require('./package.json');
+const { version } = require('../package.json');
 
 // Providers for different services
 const providers = {
@@ -34,7 +34,6 @@ const providers = {
 	Together: require('./providers/together'),
 	Perplexity: require('./providers/perplexity'),
 	Phind: require('./providers/phind'),
-	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
@@ -66,10 +65,25 @@ let settingsWindow = null;
 // Once the app is ready, the following code will execute
 app.whenReady().then(() => {
 	// Creating an icon image
-	const image = nativeImage.createFromPath(
-		path.join(__dirname, `images/iconTemplate.png`),
-	);
-	const tray = new Tray(image);
+	// const image = nativeImage.createFromPath(
+	// 	path.join(__dirname, `images/iconTemplate.png`),
+	// );
+	let iconPath;
+  switch (process.platform) {
+    case 'darwin': // macOS
+      iconPath = path.join(__dirname, 'images/godmodeicon.icns');
+      break;
+    case 'win32': // Windows
+      iconPath = path.join(__dirname, 'images/godmode.ico');
+      break;
+    default: // Linux and others
+      iconPath = path.join(__dirname, 'images/godmode.png');
+      break;
+  }
+
+	const icon = nativeImage.createFromPath(iconPath);
+	app.dock.setIcon(icon);
+	const tray = new Tray(icon);
 
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
@@ -89,21 +103,22 @@ app.whenReady().then(() => {
 		showOnAllWorkspaces: false,
 		preloadWindow: true,
 		showDockIcon: true,
-		icon: image,
+		icon: icon,
 		/// TODO: Maybe add transparency
 		// transparent: true,
 		// TODO: maybe toggle alwaysontop
 	});
 
-	window.loadFile('index.html', {
+	window.loadFile('src/index.html', {
 		nodeIntegration: true,
 	});
 
 	// On menubar ready, the following code will execute
+	// Skip adding a taskbar/menubar icon on Windows and Linux
 	if (process.platform !== 'darwin') {
 		window.setSkipTaskbar(true);
 	} else {
-		app.dock.hide();
+		// app.dock.hide();
 	}
 
 	// The createContextMenuTemplate function creates the context menu template
@@ -178,6 +193,7 @@ app.whenReady().then(() => {
 			checked: store.get('isDarkMode', false),
 			click: () => {
 				store.set('isDarkMode', !store.get('isDarkMode', false));
+				document.body.classList.toggle('dark-mode');
 				setTimeout(() => {
 					window.reload();
 				}, 100);

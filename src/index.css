@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 *,
 *::before,
 *::after {
@@ -132,7 +136,7 @@ webview {
 }
 
 .gutter.gutter-horizontal {
-	background-image: url('images/vertical-grip.png');
+	background-image: url('../images/vertical-grip.png');
 	cursor: col-resize;
 }
 
@@ -146,4 +150,113 @@ webview {
 /* Customize the bar color on hover */
 .split .split-bar:hover {
 	background: linear-gradient(to right, #4c6fff, #9f59ff);
+}
+
+/* ========================================================================== */
+/* Title Bar Styles                                                           */
+/* ========================================================================== */
+
+.page {
+	position: relative;
+}
+
+.titlebar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 30px; /* Adjust as needed */
+	background-color: #fff; /* Choose your preferred color */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 30px;
+	z-index: 1;
+	font-family:
+		'Inter var',
+		ui-sans-serif,
+		system-ui,
+		-apple-system,
+		system-ui,
+		'Segoe UI',
+		Roboto,
+		'Helvetica Neue',
+		Arial,
+		'Noto Sans',
+		sans-serif,
+		'Apple Color Emoji',
+		'Segoe UI Emoji',
+		'Segoe UI Symbol',
+		'Noto Color Emoji';
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.titlebar p {
+	font-size: 14px; /* Adjust as needed */
+	font-weight: bold;
+}
+
+/* CSS */
+.titlebar button {
+	background-color: #ffffff;
+	border: 1px solid rgb(209, 213, 219);
+	border-radius: 0.5rem;
+	box-sizing: border-box;
+	color: #111827;
+	font-family:
+		'Inter var',
+		ui-sans-serif,
+		system-ui,
+		-apple-system,
+		system-ui,
+		'Segoe UI',
+		Roboto,
+		'Helvetica Neue',
+		Arial,
+		'Noto Sans',
+		sans-serif,
+		'Apple Color Emoji',
+		'Segoe UI Emoji',
+		'Segoe UI Symbol',
+		'Noto Color Emoji';
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.25rem;
+	padding: 0.5rem 1rem;
+	text-align: center;
+	text-decoration: none #d1d5db solid;
+	text-decoration-thickness: auto;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+}
+
+.titlebar button:hover {
+	background-color: rgb(249, 250, 251);
+}
+
+.titlebar button:focus {
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+.titlebar button:focus-visible {
+	box-shadow: none;
+}
+
+body.dark-mode .titlebar {
+	background-color: #333; /* Dark background color */
+	color: #fff; /* White text color */
+}
+
+body.dark-mode .titlebar button {
+	background-color: #444;
+	color: #fff;
+	border: 1px solid #555;
+}
+
+body.dark-mode .titlebar button:hover {
+	background-color: #555;
 }

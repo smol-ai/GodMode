@@ -4,7 +4,7 @@
 	"version": "0.0.17",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
-	"main": "index.js",
+	"main": "src/index.js",
 	"scripts": {
 		"launch": "NODE_ENV=development electron-forge start",
 		"start": "NODE_ENV=development node setup.js && NODE_ENV=development electron-forge start",
@@ -49,6 +49,7 @@
 		"electron-squirrel-startup": "^1.0.0",
 		"fs": "^0.0.1-security",
 		"prettier": "^3.0.0",
+		"tailwindcss": "^3.3.3",
 		"windows-shortcuts": "^0.1.6"
 	}
 }

@@ -22,20 +22,23 @@ function drawPanes(providers) {
 		div.className = 'page darwin';
 		div.id = provider.paneId();
 
-		// // create a title bar
-		// const titlebar = document.createElement('div');
-		// titlebar.className = 'titlebar';
-		// // add in a h1 with the provider name
-		// const title = document.createElement('span');
-		// title.innerHTML = provider.name;
-		// titlebar.appendChild(title);
-		// // add in a button to toggle dark mode
-		// const darkModeButton = document.createElement('button');
-		// darkModeButton.innerHTML = 'Clear Cookies';
-		// darkModeButton.addEventListener('click', provider.clearCookies);
-		// titlebar.appendChild(darkModeButton);
+	// Create a title bar
+	const titlebar = document.createElement('div');
+	titlebar.className = 'titlebar';
 
-		// div.appendChild(titlebar);
+	// Add in a h1 with the provider name
+	const title = document.createElement('p');
+	title.innerHTML = provider.name;
+	titlebar.appendChild(title);
+
+	// Add in a button to clear cookies (or any other functionality)
+	const clearCookiesButton = document.createElement('button');
+	clearCookiesButton.innerHTML = 'Clear Cookies';
+	clearCookiesButton.addEventListener('click', provider.clearCookies);
+	titlebar.appendChild(clearCookiesButton);
+
+	// append the title bar
+	div.appendChild(titlebar);
 
 		// Create a new webview and set its id, source url, and autosize attributes
 		const webview = document.createElement('webview');
@@ -63,19 +66,29 @@ function drawPanes(providers) {
 	});
 }
 
+// TODO: Reimplement this so that we're specifying inferred pixel width rather than percentage
 // Function to update the split pane sizes evenly
 function updateSplitSizes(panes, splitInstance, focalIndex = null) {
-	// Get the currently enabled providers and calculate the size for each pane
-	let sizes = [];
-	if (focalIndex !== null) {
-		sizes = new Array(panes.length).fill(0);
-		sizes[focalIndex] = 100;
-	} else {
-		const paneSize = (1 / panes.length) * 100;
-		sizes = new Array(panes.length).fill(paneSize);
-	}
-	log.info('sizes', sizes);
-	return splitInstance.setSizes(sizes);
+  // Calculate the total width of the container
+  const containerWidth = splitInstance.getSizes().reduce((acc, val) => acc + val, 0);
+
+  // Calculate the minimum size for each pane in pixels
+  const minWidth = 100; // minimum width in pixels
+  const minPercentage = (minWidth / containerWidth) * 100;
+
+  // Handle specific pane focus
+  if (focalIndex !== null) {
+    let sizes = new Array(panes.length).fill(minPercentage);
+    sizes[focalIndex] = 100 - minPercentage * (panes.length - 1);
+    return splitInstance.setSizes(sizes);
+  }
+
+  // Evenly distribute remaining space among all panes
+  let remainingPercentage = 100 - minPercentage * panes.length;
+  let sizes = panes.map(() => minPercentage + (remainingPercentage / panes.length));
+
+  log.info('sizes', sizes);
+  return splitInstance.setSizes(sizes);
 }
 
 module.exports = {
