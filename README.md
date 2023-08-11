@@ -158,4 +158,8 @@ then anthropic dropped 100k context, and at that point i was convinced i need to
 
 I only later heard about https://github.com/sunner/ChatALL which is cool but I think defaulting to a menbuar/webview experience is better - you get to use full features like Code Interpreter and Claude 2 file upload when they come out, without waiting for API
 
+also:
+- https://www.typingmind.com/
+- https://github.com/chathub-dev/chathub/
+
 > The Turtle Moves!
