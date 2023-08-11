@@ -41,87 +41,57 @@ body {
 	position: relative;
 }
 
-.flex {
+/* .flex {
 	display: flex;
 	border-radius: 8px;
 	overflow: hidden;
-}
-
+} */
 #form {
-	height: var(--superprompt-height);
-	width: 100%;
-	display: flex;
-	align-items: center;
-	border: 1px solid black;
-	margin-top: 8px;
-	border-radius: 10px;
-	overflow: hidden;
-	background-color: #aaa;
+	@apply bg-gray-600 flex justify-center items-center border-0;
 }
 
-#form:focus-within {
-	background-color: #fff;
+#form-wrapper {
+	@apply flex w-screen;
 }
 
 #form textarea {
-	width: 100%;
-	height: 100%;
-	resize: none;
-	overflow-y: auto; /* Adds a scrollbar when the content is too big */
-	padding: 4px 4px;
-	font-size: 16px;
-	outline: none;
-	flex-grow: 1;
-	border-radius: 5px;
-	border: 0;
-	background-color: transparent;
+	@apply bg-gray-600 shadow-inner focus:bg-gray-200 h-screen w-11/12 transition-colors text-sm font-mono border-0 overflow-y-auto py-2 px-4 outline-none;
 }
 
 #form button {
-	margin-left: 4px;
-	margin-right: 8px;
-	border-radius: 5px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	background: black;
-	color: rgba(255, 255, 255, 0.7);
-	transition: all 0.1s ease;
-	cursor: pointer;
-	display: flex;
+	@apply bg-gray-600 text-white w-1/12 transition shadow-inner hover:bg-gray-200 flex justify-center items-center;
 }
 
 #form svg {
-	stroke: white;
-	width: 20px;
-	height: 20px;
-	margin: 0.5rem;
-	transform: rotate(-30deg) translateY(-2px) translateX(2px);
-	transition: all 0.1s ease;
-}
-
-#form button:hover svg {
-	stroke: rgba(255, 255, 255, 0.8);
+	@apply stroke-white; /* Adding a margin to center the svg inside the button */
 }
 
 #webviewContainer {
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
-	display: flex;
-	height: calc(100vh - 100px);
+	@apply h-max flex;
 }
 
 .titlebar {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
+	@apply z-10 text-xs absolute top-0 left-0 right-0 h-16 shadow-xl bg-gray-600 text-white items-center;
+}
+
+.titlebar p {
+	@apply ml-4 font-semibold font-mono;
+}
+
+.titlebar button {
+	@apply bg-gray-700 hover:bg-gray-500 text-white font-mono p-2 rounded mr-4;
 }
 
 webview {
 	/* overflow: hidden; */
 	position: absolute;
-	top: var(--titlebar-height);
+	@apply top-16;
 	left: 0;
 	width: 100%;
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
+	height: calc(100vh - var(--superprompt-height) - 4rem);
+	height: calc(100vh - var(--superprompt-height) - 4rem);
 	display: inline-flex !important;
 }
 
@@ -150,113 +120,4 @@ webview {
 /* Customize the bar color on hover */
 .split .split-bar:hover {
 	background: linear-gradient(to right, #4c6fff, #9f59ff);
-}
-
-/* ========================================================================== */
-/* Title Bar Styles                                                           */
-/* ========================================================================== */
-
-.page {
-	position: relative;
-}
-
-.titlebar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 30px; /* Adjust as needed */
-	background-color: #fff; /* Choose your preferred color */
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 30px;
-	z-index: 1;
-	font-family:
-		'Inter var',
-		ui-sans-serif,
-		system-ui,
-		-apple-system,
-		system-ui,
-		'Segoe UI',
-		Roboto,
-		'Helvetica Neue',
-		Arial,
-		'Noto Sans',
-		sans-serif,
-		'Apple Color Emoji',
-		'Segoe UI Emoji',
-		'Segoe UI Symbol',
-		'Noto Color Emoji';
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.titlebar p {
-	font-size: 14px; /* Adjust as needed */
-	font-weight: bold;
-}
-
-/* CSS */
-.titlebar button {
-	background-color: #ffffff;
-	border: 1px solid rgb(209, 213, 219);
-	border-radius: 0.5rem;
-	box-sizing: border-box;
-	color: #111827;
-	font-family:
-		'Inter var',
-		ui-sans-serif,
-		system-ui,
-		-apple-system,
-		system-ui,
-		'Segoe UI',
-		Roboto,
-		'Helvetica Neue',
-		Arial,
-		'Noto Sans',
-		sans-serif,
-		'Apple Color Emoji',
-		'Segoe UI Emoji',
-		'Segoe UI Symbol',
-		'Noto Color Emoji';
-	font-size: 0.875rem;
-	font-weight: 600;
-	line-height: 1.25rem;
-	padding: 0.5rem 1rem;
-	text-align: center;
-	text-decoration: none #d1d5db solid;
-	text-decoration-thickness: auto;
-	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-	cursor: pointer;
-	user-select: none;
-	-webkit-user-select: none;
-	touch-action: manipulation;
-}
-
-.titlebar button:hover {
-	background-color: rgb(249, 250, 251);
-}
-
-.titlebar button:focus {
-	outline: 2px solid transparent;
-	outline-offset: 2px;
-}
-
-.titlebar button:focus-visible {
-	box-shadow: none;
-}
-
-body.dark-mode .titlebar {
-	background-color: #333; /* Dark background color */
-	color: #fff; /* White text color */
-}
-
-body.dark-mode .titlebar button {
-	background-color: #444;
-	color: #fff;
-	border: 1px solid #555;
-}
-
-body.dark-mode .titlebar button:hover {
-	background-color: #555;
 }
