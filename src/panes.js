@@ -22,27 +22,27 @@ function drawPanes(providers) {
 		div.className = 'page darwin';
 		div.id = provider.paneId();
 
-	// Create a title bar
-	const titlebar = document.createElement('div');
-	titlebar.className = 'titlebar';
+		// Create a title bar
+		const titlebar = document.createElement('div');
+		titlebar.className = 'titlebar';
 
-	// Add in a h1 with the provider name
-	const title = document.createElement('p');
-	title.innerHTML = provider.name;
-	titlebar.appendChild(title);
+		// Add in a h1 with the provider name
+		const title = document.createElement('p');
+		title.innerHTML = provider.name;
+		titlebar.appendChild(title);
 
-	// Add in a button to clear cookies (or any other functionality)
-	const clearCookiesButton = document.createElement('button');
-	clearCookiesButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+		// Add in a button to clear cookies (or any other functionality)
+		const clearCookiesButton = document.createElement('button');
+		clearCookiesButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
 </svg>`;
-	clearCookiesButton.classList.add('clear-cookies');
+		clearCookiesButton.classList.add('clear-cookies');
 
-	clearCookiesButton.addEventListener('click', provider.clearCookies);
-	titlebar.appendChild(clearCookiesButton);
+		clearCookiesButton.addEventListener('click', provider.clearCookies);
+		titlebar.appendChild(clearCookiesButton);
 
-	// append the title bar
-	div.appendChild(titlebar);
+		// append the title bar
+		div.appendChild(titlebar);
 
 		// Create a new webview and set its id, source url, and autosize attributes
 		const webview = document.createElement('webview');
@@ -73,26 +73,30 @@ function drawPanes(providers) {
 // TODO: Reimplement this so that we're specifying inferred pixel width rather than percentage
 // Function to update the split pane sizes evenly
 function updateSplitSizes(panes, splitInstance, focalIndex = null) {
-  // Calculate the total width of the container
-  const containerWidth = splitInstance.getSizes().reduce((acc, val) => acc + val, 0);
+	// Calculate the total width of the container
+	const containerWidth = splitInstance
+		.getSizes()
+		.reduce((acc, val) => acc + val, 0);
 
-  // Calculate the minimum size for each pane in pixels
-  const minWidth = 100; // minimum width in pixels
-  const minPercentage = (minWidth / containerWidth) * 100;
+	// Calculate the minimum size for each pane in pixels
+	const minWidth = 100; // minimum width in pixels
+	const minPercentage = (minWidth / containerWidth) * 100;
 
-  // Handle specific pane focus
-  if (focalIndex !== null) {
-    let sizes = new Array(panes.length).fill(minPercentage);
-    sizes[focalIndex] = 100 - minPercentage * (panes.length - 1);
-    return splitInstance.setSizes(sizes);
-  }
+	// Handle specific pane focus
+	if (focalIndex !== null) {
+		let sizes = new Array(panes.length).fill(minPercentage);
+		sizes[focalIndex] = 100 - minPercentage * (panes.length - 1);
+		return splitInstance.setSizes(sizes);
+	}
 
-  // Evenly distribute remaining space among all panes
-  let remainingPercentage = 100 - minPercentage * panes.length;
-  let sizes = panes.map(() => minPercentage + (remainingPercentage / panes.length));
+	// Evenly distribute remaining space among all panes
+	let remainingPercentage = 100 - minPercentage * panes.length;
+	let sizes = panes.map(
+		() => minPercentage + remainingPercentage / panes.length,
+	);
 
-  log.info('sizes', sizes);
-  return splitInstance.setSizes(sizes);
+	log.info('sizes', sizes);
+	return splitInstance.setSizes(sizes);
 }
 
 module.exports = {

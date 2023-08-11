@@ -11,7 +11,6 @@ const path = require('path');
 // Menu template for the menubar
 const menu = require('./menu');
 
-
 // Importing necessary modules from electron
 const {
 	app,
@@ -73,17 +72,17 @@ app.whenReady().then(() => {
 	// 	path.join(__dirname, `images/iconTemplate.png`),
 	// );
 	let iconPath;
-  switch (process.platform) {
-    case 'darwin': // macOS
-      iconPath = path.join(__dirname, 'images/godmodeicon.icns');
-      break;
-    case 'win32': // Windows
-      iconPath = path.join(__dirname, 'images/godmode.ico');
-      break;
-    default: // Linux and others
-      iconPath = path.join(__dirname, 'images/godmode.png');
-      break;
-  }
+	switch (process.platform) {
+		case 'darwin': // macOS
+			iconPath = path.join(__dirname, 'images/godmodeicon.icns');
+			break;
+		case 'win32': // Windows
+			iconPath = path.join(__dirname, 'images/godmode.ico');
+			break;
+		default: // Linux and others
+			iconPath = path.join(__dirname, 'images/godmode.png');
+			break;
+	}
 
 	const icon = nativeImage.createFromPath(iconPath);
 	app.dock.setIcon(icon);
@@ -457,6 +456,3 @@ ipcMain.handle('getStoreValue', (event, key) => {
 ipcMain.handle('setStoreValue', (event, key, value) => {
 	return store.set(key, value);
 });
-
-
-
