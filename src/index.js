@@ -8,6 +8,10 @@ const log = require('electron-log');
 // Path module for handling and transforming file paths
 const path = require('path');
 
+// Menu template for the menubar
+const menu = require('./menu');
+
+
 // Importing necessary modules from electron
 const {
 	app,
@@ -259,15 +263,6 @@ app.whenReady().then(() => {
 			},
 		];
 
-		// FYI to the user that they are in development mode
-		if (process.env.NODE_ENV === 'development') {
-			menuHeader.unshift(
-				{
-					label: '👨‍💻 IN DEV MODE 👨‍💻',
-				},
-				separator,
-			);
-		}
 		// Return the complete context menu template
 		return [
 			...menuHeader,
@@ -327,7 +322,6 @@ app.whenReady().then(() => {
 		}
 	});
 
-	const menu = new Menu();
 	Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 	// open devtools if in dev mode
@@ -432,21 +426,6 @@ app.on('web-contents-created', (e, contents) => {
 	});
 });
 
-// if (process.platform == 'darwin') {
-// 	// restore focus to previous app on hiding
-// 	mb.on('after-hide', () => {
-// 		mb.app.hide();
-// 	});
-// }
-
-// open links in new window
-// app.on("web-contents-created", (event, contents) => {
-//   contents.on("will-navigate", (event, navigationUrl) => {
-//     event.preventDefault();
-//     shell.openExternal(navigationUrl);
-//   });
-// });
-
 // prevent background flickering
 app.commandLine.appendSwitch('disable-backgrounding-occluded-windows', 'true');
 
@@ -478,3 +457,6 @@ ipcMain.handle('getStoreValue', (event, key) => {
 ipcMain.handle('setStoreValue', (event, key, value) => {
 	return store.set(key, value);
 });
+
+
+
