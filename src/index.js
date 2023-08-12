@@ -8,6 +8,9 @@ const log = require('electron-log');
 // Path module for handling and transforming file paths
 const path = require('path');
 
+// Menu template for the menubar
+const menu = require('./menu');
+
 // Importing necessary modules from electron
 const {
 	app,
@@ -22,7 +25,7 @@ const {
 } = require('electron');
 
 // Getting the application's version from package.json
-const { version } = require('./package.json');
+const { version } = require('../package.json');
 
 // Providers for different services
 const providers = {
@@ -34,7 +37,6 @@ const providers = {
 	Together: require('./providers/together'),
 	Perplexity: require('./providers/perplexity'),
 	Phind: require('./providers/phind'),
-	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
@@ -66,17 +68,32 @@ let settingsWindow = null;
 // Once the app is ready, the following code will execute
 app.whenReady().then(() => {
 	// Creating an icon image
-	const image = nativeImage.createFromPath(
-		path.join(__dirname, `images/iconTemplate.png`),
-	);
-	const tray = new Tray(image);
+	// const image = nativeImage.createFromPath(
+	// 	path.join(__dirname, `images/iconTemplate.png`),
+	// );
+	let iconPath;
+	switch (process.platform) {
+		case 'darwin': // macOS
+			iconPath = path.join(__dirname, '../images/godmodeicon.icns');
+			break;
+		case 'win32': // Windows
+			iconPath = path.join(__dirname, '../images/godmode.ico');
+			break;
+		default: // Linux and others
+			iconPath = path.join(__dirname, '../images/godmode.png');
+			break;
+	}
+
+	const icon = nativeImage.createFromPath(iconPath);
+	app.dock.setIcon(icon);
+	const tray = new Tray(icon);
 
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
 	const window = new BrowserWindow({
 		width: width - 100,
 		height: height - 100,
-		title: 'smol gods',
+		title: 'smol.ai godmode',
 		// titleBarStyle: "hiddenInset",
 		alwaysOnTop: false,
 		webPreferences: {
@@ -89,21 +106,22 @@ app.whenReady().then(() => {
 		showOnAllWorkspaces: false,
 		preloadWindow: true,
 		showDockIcon: true,
-		icon: image,
+		icon: icon,
 		/// TODO: Maybe add transparency
 		// transparent: true,
 		// TODO: maybe toggle alwaysontop
 	});
 
-	window.loadFile('index.html', {
+	window.loadFile('src/index.html', {
 		nodeIntegration: true,
 	});
 
 	// On menubar ready, the following code will execute
+	// Skip adding a taskbar/menubar icon on Windows and Linux
 	if (process.platform !== 'darwin') {
 		window.setSkipTaskbar(true);
 	} else {
-		app.dock.hide();
+		// app.dock.hide();
 	}
 
 	// The createContextMenuTemplate function creates the context menu template
@@ -178,6 +196,7 @@ app.whenReady().then(() => {
 			checked: store.get('isDarkMode', false),
 			click: () => {
 				store.set('isDarkMode', !store.get('isDarkMode', false));
+				document.body.classList.toggle('dark-mode');
 				setTimeout(() => {
 					window.reload();
 				}, 100);
@@ -243,15 +262,6 @@ app.whenReady().then(() => {
 			},
 		];
 
-		// FYI to the user that they are in development mode
-		if (process.env.NODE_ENV === 'development') {
-			menuHeader.unshift(
-				{
-					label: '👨‍💻 IN DEV MODE 👨‍💻',
-				},
-				separator,
-			);
-		}
 		// Return the complete context menu template
 		return [
 			...menuHeader,
@@ -311,7 +321,6 @@ app.whenReady().then(() => {
 		}
 	});
 
-	const menu = new Menu();
 	Menu.setApplicationMenu(menu, { autoHideMenuBar: false });
 
 	// open devtools if in dev mode
@@ -415,21 +424,6 @@ app.on('web-contents-created', (e, contents) => {
 		if (key === 'l') contents.goForward();
 	});
 });
-
-// if (process.platform == 'darwin') {
-// 	// restore focus to previous app on hiding
-// 	mb.on('after-hide', () => {
-// 		mb.app.hide();
-// 	});
-// }
-
-// open links in new window
-// app.on("web-contents-created", (event, contents) => {
-//   contents.on("will-navigate", (event, navigationUrl) => {
-//     event.preventDefault();
-//     shell.openExternal(navigationUrl);
-//   });
-// });
 
 // prevent background flickering
 app.commandLine.appendSwitch('disable-backgrounding-occluded-windows', 'true');

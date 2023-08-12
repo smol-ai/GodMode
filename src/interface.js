@@ -3,7 +3,7 @@ const { ipcRenderer } = require('electron');
 const log = require('electron-log');
 const Store = require('electron-store');
 const store = new Store();
-const { getEnabledProviders, getAllProviders } = require('./src/utils');
+const { getEnabledProviders } = require('./utils');
 
 // Initialize the providers
 const providers = {
@@ -21,7 +21,7 @@ const providers = {
 	Smol: require('./providers/smol'),
 };
 
-const { drawPanes, updateSplitSizes } = require('./src/panes');
+const { drawPanes, updateSplitSizes } = require('./panes');
 
 /* ========================================================================== */
 /* Create Panes                                                               */

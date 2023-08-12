@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 *,
 *::before,
 *::after {
@@ -37,87 +41,60 @@ body {
 	position: relative;
 }
 
-.flex {
+/* .flex {
 	display: flex;
 	border-radius: 8px;
 	overflow: hidden;
-}
-
+} */
 #form {
-	height: var(--superprompt-height);
-	width: 100%;
-	display: flex;
-	align-items: center;
-	border: 1px solid black;
-	margin-top: 8px;
-	border-radius: 10px;
-	overflow: hidden;
-	background-color: #aaa;
+	@apply flex items-center justify-center bg-gray-600 border-0;
 }
 
-#form:focus-within {
-	background-color: #fff;
+#form-wrapper {
+	@apply flex w-screen;
 }
 
 #form textarea {
-	width: 100%;
-	height: 100%;
-	resize: none;
-	overflow-y: auto; /* Adds a scrollbar when the content is too big */
-	padding: 4px 4px;
-	font-size: 16px;
-	outline: none;
-	flex-grow: 1;
-	border-radius: 5px;
-	border: 0;
-	background-color: transparent;
+	@apply w-11/12 h-screen px-4 py-2 overflow-y-auto font-mono text-sm transition-colors bg-gray-600 border-0 shadow-inner outline-none focus:bg-gray-200;
 }
 
 #form button {
-	margin-left: 4px;
-	margin-right: 8px;
-	border-radius: 5px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	background: black;
-	color: rgba(255, 255, 255, 0.7);
-	transition: all 0.1s ease;
-	cursor: pointer;
-	display: flex;
+	@apply flex items-center justify-center w-1/12 text-white transition bg-gray-600 shadow-inner hover:bg-gray-200;
+
+	height: 100%;
+	margin-top: calc(var(--superprompt-height) / 2 - 24px);
 }
 
 #form svg {
-	stroke: white;
-	width: 20px;
-	height: 20px;
-	margin: 0.5rem;
-	transform: rotate(-30deg) translateY(-2px) translateX(2px);
-	transition: all 0.1s ease;
-}
-
-#form button:hover svg {
-	stroke: rgba(255, 255, 255, 0.8);
+	@apply stroke-white; /* Adding a margin to center the svg inside the button */
 }
 
 #webviewContainer {
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
-	display: flex;
-	height: calc(100vh - 100px);
+	@apply flex h-max;
 }
 
 .titlebar {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
+	@apply absolute top-0 left-0 right-0 z-10 items-center h-16 text-xs text-white bg-gray-600 shadow-xl;
+}
+
+.titlebar p {
+	@apply ml-4 font-mono font-semibold;
+}
+
+.titlebar button {
+	@apply p-2 mr-4 font-mono text-white bg-gray-700 rounded hover:bg-gray-500;
 }
 
 webview {
 	/* overflow: hidden; */
 	position: absolute;
-	top: var(--titlebar-height);
+	@apply top-16;
 	left: 0;
 	width: 100%;
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
+	height: calc(100vh - var(--superprompt-height) - 4rem);
+	height: calc(100vh - var(--superprompt-height) - 4rem);
 	display: inline-flex !important;
 }
 
@@ -132,7 +109,7 @@ webview {
 }
 
 .gutter.gutter-horizontal {
-	background-image: url('images/vertical-grip.png');
+	background-image: url('../images/vertical-grip.png');
 	cursor: col-resize;
 }
 
