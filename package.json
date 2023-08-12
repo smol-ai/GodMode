@@ -1,13 +1,15 @@
 {
-	"name": "smol-gods",
+	"name": "godmode",
 	"productName": "smolmenubar",
-	"version": "0.0.17",
+	"version": "1.0.0",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
 	"main": "src/index.js",
 	"scripts": {
 		"launch": "NODE_ENV=development electron-forge start",
-		"start": "NODE_ENV=development node setup.js && NODE_ENV=development electron-forge start",
+		"start": "npm run start:tw && npm run start:el",
+		"start:el": "NODE_ENV=development electron-forge start",
+		"start:tw": "tailwindcss -i ./src/index.css -o ./dist/index.css",
 		"package": "electron-forge package --arch arm64,x64",
 		"make": "electron-forge make --arch arm64,x64",
 		"build": "npm run make",

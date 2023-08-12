@@ -74,13 +74,13 @@ app.whenReady().then(() => {
 	let iconPath;
 	switch (process.platform) {
 		case 'darwin': // macOS
-			iconPath = path.join(__dirname, 'images/godmodeicon.icns');
+			iconPath = path.join(__dirname, '../images/godmodeicon.icns');
 			break;
 		case 'win32': // Windows
-			iconPath = path.join(__dirname, 'images/godmode.ico');
+			iconPath = path.join(__dirname, '../images/godmode.ico');
 			break;
 		default: // Linux and others
-			iconPath = path.join(__dirname, 'images/godmode.png');
+			iconPath = path.join(__dirname, '../images/godmode.png');
 			break;
 	}
 
@@ -93,7 +93,7 @@ app.whenReady().then(() => {
 	const window = new BrowserWindow({
 		width: width - 100,
 		height: height - 100,
-		title: 'smol gods',
+		title: 'smol.ai godmode',
 		// titleBarStyle: "hiddenInset",
 		alwaysOnTop: false,
 		webPreferences: {

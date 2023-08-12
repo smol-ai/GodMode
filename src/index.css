@@ -47,7 +47,7 @@ body {
 	overflow: hidden;
 } */
 #form {
-	@apply bg-gray-600 flex justify-center items-center border-0;
+	@apply flex items-center justify-center bg-gray-600 border-0;
 }
 
 #form-wrapper {
@@ -55,11 +55,14 @@ body {
 }
 
 #form textarea {
-	@apply bg-gray-600 shadow-inner focus:bg-gray-200 h-screen w-11/12 transition-colors text-sm font-mono border-0 overflow-y-auto py-2 px-4 outline-none;
+	@apply w-11/12 h-screen px-4 py-2 overflow-y-auto font-mono text-sm transition-colors bg-gray-600 border-0 shadow-inner outline-none focus:bg-gray-200;
 }
 
 #form button {
-	@apply bg-gray-600 text-white w-1/12 transition shadow-inner hover:bg-gray-200 flex justify-center items-center;
+	@apply flex items-center justify-center w-1/12 text-white transition bg-gray-600 shadow-inner hover:bg-gray-200;
+
+	height: 100%;
+	margin-top: calc(var(--superprompt-height)/2 - 24px);
 }
 
 #form svg {
@@ -67,21 +70,21 @@ body {
 }
 
 #webviewContainer {
-	@apply h-max flex;
+	@apply flex h-max;
 }
 
 .titlebar {
 	display: flex;
 	justify-content: space-between;
-	@apply z-10 text-xs absolute top-0 left-0 right-0 h-16 shadow-xl bg-gray-600 text-white items-center;
+	@apply absolute top-0 left-0 right-0 z-10 items-center h-16 text-xs text-white bg-gray-600 shadow-xl;
 }
 
 .titlebar p {
-	@apply ml-4 font-semibold font-mono;
+	@apply ml-4 font-mono font-semibold;
 }
 
 .titlebar button {
-	@apply bg-gray-700 hover:bg-gray-500 text-white font-mono p-2 rounded mr-4;
+	@apply p-2 mr-4 font-mono text-white bg-gray-700 rounded hover:bg-gray-500;
 }
 
 webview {
