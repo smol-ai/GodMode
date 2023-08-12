@@ -1,4 +1,4 @@
-# 🐢 God-Mode: The AI Chat Browser
+# 🐢 GodMode: The AI Chat Browser
 
 > “That's why it's always worth having a few philosophers around the place. One minute it's all is truth beauty and is beauty truth, and does a falling tree in the forest make a sound if there's no one there to hear it, and then just when you think they're going to start dribbling one of 'em says, incidentally, putting a thirty-foot parabolic reflector on a high place to shoot the rays of the sun at an enemy's ships would be a very interesting demonstration of optical principles.”
 >
