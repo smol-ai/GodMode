@@ -62,7 +62,7 @@ body {
 	@apply flex items-center justify-center w-1/12 text-white transition bg-gray-600 shadow-inner hover:bg-gray-200;
 
 	height: 100%;
-	margin-top: calc(var(--superprompt-height)/2 - 24px);
+	margin-top: calc(var(--superprompt-height) / 2 - 24px);
 }
 
 #form svg {
