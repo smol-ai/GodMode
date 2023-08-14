@@ -17,7 +17,7 @@ const providers = {
 	Phind: require('./providers/phind'),
 	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	HuggingChat: require('./providers/huggingchat'),
-	Poe: require("./providers/poe"),
+	Poe: require('./providers/poe'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
 };
