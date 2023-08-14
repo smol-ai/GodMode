@@ -11,7 +11,7 @@ class Poe extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
-        var inputElement = document.querySelector('textarea[placeholder*="Talk to Assistant on Poe"]'); 
+        var inputElement = document.querySelector('textarea[placeholder*="Talk to Assistant on Poe"]');
         var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
         nativeTextAreaValueSetter.call(inputElement, "${input}");
 
@@ -47,7 +47,7 @@ class Poe extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return store.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

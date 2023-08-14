@@ -27,7 +27,7 @@ class SmolTalk extends Provider {
 	static clearCookies() {
 		this.getWebview().executeJavaScript(`
       const cookies = document.cookie.split(";");
-  
+
       for (let i = 0; i < cookies.length; i++) {
           const cookie = cookies[i];
           const eqPos = cookie.indexOf("=");
@@ -87,7 +87,7 @@ class SmolTalk extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return store.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

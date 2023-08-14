@@ -40,7 +40,7 @@ class Vercel extends Provider {
 			setTimeout(() => {
 				this.getWebview().executeJavaScript(`
 
-          
+
           `);
 			}, 100);
 			// Hide the "Try asking" segment
@@ -55,7 +55,7 @@ class Vercel extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return store.get(`${this.webviewId}Enabled`, false);
 	}
 }
 
