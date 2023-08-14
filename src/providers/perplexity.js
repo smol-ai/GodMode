@@ -1,6 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
-
 const Provider = require('./provider');
 
 class Perplexity extends Provider {
@@ -13,7 +10,7 @@ class Perplexity extends Provider {
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
         var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
-        nativeTextAreaValueSetter.call(inputElement, "${input}");
+        nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
 
         var event = new Event('input', { bubbles: true});
         inputElement.dispatchEvent(event);
@@ -46,7 +43,7 @@ class Perplexity extends Provider {
 			setTimeout(() => {
 				this.getWebview().executeJavaScript(`
 
-          
+
           `);
 			}, 100);
 			// Hide the "Try asking" segment
@@ -61,7 +58,7 @@ class Perplexity extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

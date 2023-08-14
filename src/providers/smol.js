@@ -1,6 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
-
 const Provider = require('./provider');
 
 class SmolTalk extends Provider {
@@ -20,14 +17,14 @@ class SmolTalk extends Provider {
 			inputElement.dispatchEvent(event);
 		}
 
-		simulateUserInput(inputElement, "${input}");
+		simulateUserInput(inputElement, \`${input}\`);
 	`);
 	}
 
 	static clearCookies() {
 		this.getWebview().executeJavaScript(`
       const cookies = document.cookie.split(";");
-  
+
       for (let i = 0; i < cookies.length; i++) {
           const cookie = cookies[i];
           const eqPos = cookie.indexOf("=");
@@ -72,7 +69,7 @@ class SmolTalk extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

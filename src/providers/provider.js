@@ -1,7 +1,4 @@
-const Store = require('electron-store');
-const store = new Store();
-const log = require('electron-log');
-const { ipcRenderer } = require('electron');
+// const { ipcRenderer } = require('electron');
 
 class Provider {
 	static webviewId = '';
@@ -9,6 +6,7 @@ class Provider {
 	static getWebview() {
 		return document.getElementById(this.webviewId);
 	}
+
 	static paneId() {
 		return `${this.name.toLowerCase()}Pane`;
 	}
@@ -76,11 +74,11 @@ class Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`);
 	}
 
 	static setEnabled(state) {
-		store.set(`${this.webviewId}Enabled`, state);
+		window.electron.electronStore.set(`${this.webviewId}Enabled`, state);
 	}
 }
 

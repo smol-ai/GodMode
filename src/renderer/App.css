@@ -90,11 +90,9 @@ body {
 webview {
 	/* overflow: hidden; */
 	position: absolute;
-	@apply top-16;
 	left: 0;
-	width: 100%;
-	height: calc(100vh - var(--superprompt-height) - 4rem);
-	height: calc(100vh - var(--superprompt-height) - 4rem);
+	width: 100%;;
+	height: calc(100vh - var(--superprompt-height));
 	display: inline-flex !important;
 }
 

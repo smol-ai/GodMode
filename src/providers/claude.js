@@ -1,5 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
 
 const Provider = require('./provider');
 
@@ -12,7 +10,7 @@ class Claude extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
     var inputElement = document.querySelector('div.ProseMirror')
-    inputElement.innerHTML = "${input}"`);
+    inputElement.innerHTML = \`${input}\``);
 	}
 
 	static handleSubmit() {
@@ -65,7 +63,7 @@ class Claude extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

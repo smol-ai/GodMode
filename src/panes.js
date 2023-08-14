@@ -1,7 +1,4 @@
 // Import necessary modules
-const log = require('electron-log');
-const Store = require('electron-store');
-const store = new Store();
 const { getEnabledProviders } = require('./utils');
 
 /* ========================================================================== */
@@ -95,7 +92,7 @@ function updateSplitSizes(panes, splitInstance, focalIndex = null) {
 		() => minPercentage + remainingPercentage / panes.length,
 	);
 
-	log.info('sizes', sizes);
+	console.log('sizes', sizes);
 	return splitInstance.setSizes(sizes);
 }
 

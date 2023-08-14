@@ -1,6 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
-
 const Provider = require('./provider');
 
 class OobaBooga extends Provider {
@@ -53,7 +50,7 @@ class OobaBooga extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

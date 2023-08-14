@@ -1,6 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
-
 const Provider = require('./provider');
 
 class OpenAI extends Provider {
@@ -10,28 +7,23 @@ class OpenAI extends Provider {
 	static url = 'https://chat.openai.com/?model=gpt-4-code-interpreter'; // TODO - let people switch
 
 	static handleInput(input) {
-		this.getWebview().executeJavaScript(`
-        function simulateUserInput(element, text) {
-          const inputEvent = new Event('input', { bubbles: true });
-          element.focus();
-          element.value = text;
-          element.dispatchEvent(inputEvent);
-        }
+		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
-        simulateUserInput(inputElement, "${input}");
-      `);
+        const inputEvent = new Event('input', { bubbles: true });
+        inputElement.value = \`${input}\`; // must be escaped backticks to support multiline
+        inputElement.dispatchEvent(inputEvent);
+      }`);
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
         // var btn = document.querySelector("textarea[placeholder*='Send a message']+button"); // this one broke recently .. note that they add another div (for the file upload) in code interpreter mode
         var btn = document.querySelector("textarea[placeholder*='Send a message']").parentElement
-        // console.log('btn', btn)
         var btn = [...btn.querySelectorAll("button")].slice(-1)[0];
-        // console.log('btn', btn)
         btn.focus();
         btn.disabled = false;
         btn.click();
+    }
       `);
 	}
 
@@ -66,7 +58,7 @@ class OpenAI extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, true);
 	}
 }
 
