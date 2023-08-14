@@ -1,6 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
-
 const Provider = require('./provider');
 
 class HuggingChat extends Provider {
@@ -18,7 +15,7 @@ class HuggingChat extends Provider {
           element.dispatchEvent(inputEvent);
         }
         var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
-        simulateUserInput(inputElement, "${input}");
+        simulateUserInput(inputElement, \`${input}\`);
       `);
 	}
 
@@ -75,7 +72,7 @@ class HuggingChat extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

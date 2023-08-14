@@ -1,5 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
 
 const Provider = require('./provider');
 
@@ -10,7 +8,7 @@ class Bing extends Provider {
 	static url = 'https://bing.com/chat';
 
 	static handleInput(input) {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
 			// Simulate user input
 			function simulateUserInput(element, text) {
 				const inputEvent = new Event('input', { bubbles: true });
@@ -31,27 +29,29 @@ class Bing extends Provider {
 			// This inner cib-text-input Shadow DOM is not always present
 			var inputElement = textInputDOM ? textInputDOM.shadowRoot.querySelector('#searchbox') : inputDOM.shadowRoot.querySelector('#searchbox');
 
-			simulateUserInput(inputElement, "${input}");
+			simulateUserInput(inputElement, \`${input}\`);
+    }
 		`);
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
-		// Access SERP Shadow DOM
-		var serpDOM = document.querySelector('.cib-serp-main');
+	// 	this.getWebview().executeJavaScript(`{
+	// 	// Access SERP Shadow DOM
+	// 	var serpDOM = document.querySelector('.cib-serp-main');
 
-		// Inner Input Shadow DOM
-		var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
+	// 	// Inner Input Shadow DOM
+	// 	var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
 
-		// Submit Button
-		var submitButton = inputDOM.shadowRoot.querySelector('div.submit button.primary');
-		submitButton.click();
+	// 	// Submit Button
+	// 	var submitButton = inputDOM.shadowRoot.querySelector('div.submit button.primary');
+	// 	submitButton.click();
 
-		submitButton.focus();
-		setTimeout(() => {
-			submitButton.click();
-		}, 100)
-		`);
+	// 	submitButton.focus();
+	// 	setTimeout(() => {
+	// 		submitButton.click();
+	// 	}, 100)
+  // }
+	// 	`);
 	}
 
 	/** Bing requires MS Edge user agent. */
@@ -80,44 +80,46 @@ class Bing extends Provider {
 				}
         `);
 			}, 1000);
-			setTimeout(() => {
-				this.getWebview().executeJavaScript(`
-					// Access SERP Shadow DOM
-					var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
+			// setTimeout(() => {
+			// 	this.getWebview().executeJavaScript(`{
 
-					// Conversation Shadow DOM
-					var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
+			// 		// Access SERP Shadow DOM
+			// 		var serpDOM = document.querySelector('.cib-serp-main').shadowRoot;
 
-					// Action Bar Shadow DOM
-					var actionBarDOM = serpDOM.querySelector('#cib-action-bar-main').shadowRoot;
+			// 		// Conversation Shadow DOM
+			// 		var conversationDOM = serpDOM.querySelector('#cib-conversation-main').shadowRoot;
 
-					// Text Input Shadow DOM
-					var textInputDOM = actionBarDOM.querySelector('cib-text-input').shadowRoot;
+			// 		// Action Bar Shadow DOM
+			// 		var actionBarDOM = serpDOM.querySelector('#cib-action-bar-main').shadowRoot;
 
-					// Welcome Container Shadow DOM
-					var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
+			// 		// Text Input Shadow DOM
+			// 		var textInputDOM = actionBarDOM.querySelector('cib-text-input').shadowRoot;
 
-					// Hide all welcome container items except tone selector
-					// welcomeDOM.querySelector('div.preview-container').setAttribute('style', 'display: none !important;');
+			// 		// Welcome Container Shadow DOM
+			// 		var welcomeDOM = conversationDOM.querySelector('cib-welcome-container').shadowRoot;
 
-					// Hide all welcome container items except tone selector
-					welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
-					welcomeDOM.querySelector('div.container-title').setAttribute('style', 'color: white !important');
-					welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
-					welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
-					welcomeDOM.querySelector('div.learn-tag-item').setAttribute('style', 'display: none !important');
-					welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
+			// 		// Hide all welcome container items except tone selector
+			// 		// welcomeDOM.querySelector('div.preview-container').setAttribute('style', 'display: none !important;');
 
-					// Remove feedback widget
-					serpDOM.querySelector('cib-serp-feedback').setAttribute('style', 'display: none !important');
+			// 		// Hide all welcome container items except tone selector
+			// 		welcomeDOM.querySelector('div.container-logo').setAttribute('style', 'display: none !important');
+			// 		welcomeDOM.querySelector('div.container-title').setAttribute('style', 'color: white !important');
+			// 		welcomeDOM.querySelector('div.container-subTitle').setAttribute('style', 'display: none !important');
+			// 		welcomeDOM.querySelector('div.container-item').setAttribute('style', 'display: none !important');
+			// 		welcomeDOM.querySelector('div.learn-tag-item').setAttribute('style', 'display: none !important');
+			// 		welcomeDOM.querySelector('div.privacy-statement').setAttribute('style', 'display: none !important');
 
-					// Remove background gradients
-					serpDOM.querySelector('cib-background').remove();
-					conversationDOM.querySelector('.fade.top').remove();
-					conversationDOM.querySelector('.fade.bottom').remove();
+			// 		// Remove feedback widget
+			// 		serpDOM.querySelector('cib-serp-feedback').setAttribute('style', 'display: none !important');
 
-				`);
-			}, 1000);
+			// 		// Remove background gradients
+			// 		serpDOM.querySelector('cib-background').remove();
+			// 		conversationDOM.querySelector('.fade.top').remove();
+			// 		conversationDOM.querySelector('.fade.bottom').remove();
+
+      //   }
+			// 	`);
+			// }, 1000);
 		});
 	}
 
@@ -125,18 +127,20 @@ class Bing extends Provider {
 	static handleDarkMode(isDarkMode) {
 		// Implement dark or light mode using prodiver-specific code
 		if (isDarkMode) {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().executeJavaScript(`{
 				document.getElementById("rdiodark").click();
+      }
 			`);
 		} else {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().executeJavaScript(`{
 				document.getElementById("rdiolight").click();
+      }
 			`);
 		}
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

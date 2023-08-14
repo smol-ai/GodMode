@@ -1,8 +1,5 @@
-const Store = require('electron-store');
-const store = new Store();
 
 const Provider = require('./provider');
-const { ipcRenderer } = require('electron');
 
 class Claude2 extends Provider {
 	static webviewId = 'webviewCLAUDE2';
@@ -13,17 +10,18 @@ class Claude2 extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`
     var inputElement = document.querySelector('div.ProseMirror')
-    inputElement.innerHTML = "${input}"`);
+    inputElement.innerHTML = \`${input}\``);
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
 		var btn = document.querySelector("button[aria-label*='Send Message']"); // subsequent screens use this
     if (!btn) var btn = document.querySelector('button:has(div svg)'); // new chats use this
     if (!btn) var btn = document.querySelector('button:has(svg)'); // last ditch attempt
 		btn.focus();
     btn.disabled = false;
-    btn.click()`);
+    btn.click();
+  }`);
 	}
 
 	static handleCss() {
@@ -74,7 +72,7 @@ class Claude2 extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, true);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

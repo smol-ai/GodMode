@@ -1,6 +1,3 @@
-const Store = require('electron-store');
-const store = new Store();
-
 const Provider = require('./provider');
 
 class Phind extends Provider {
@@ -19,7 +16,7 @@ class Phind extends Provider {
         var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
         var event = new Event('input', { bubbles: true});
 
-        nativeTextAreaValueSetter.call(inputElement, "${input}");
+        nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
         inputElement.dispatchEvent(event);
       `);
 	}
@@ -89,7 +86,7 @@ class Phind extends Provider {
 	}
 
 	static isEnabled() {
-		return store.get(`${this.webviewId}Enabled`, false);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
 	}
 }
 
