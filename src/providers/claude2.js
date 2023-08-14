@@ -8,9 +8,9 @@ class Claude2 extends Provider {
 	static url = 'https://claude.ai/chats/';
 
 	static handleInput(input) {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('div.ProseMirror')
-    inputElement.innerHTML = \`${input}\``);
+    inputElement.innerHTML = \`${input}\`}`);
 	}
 
 	static handleSubmit() {
@@ -41,10 +41,10 @@ class Claude2 extends Provider {
         `);
 			}, 1000);
 			setTimeout(() => {
-				this.getWebview().executeJavaScript(`
+				this.getWebview().executeJavaScript(`{
 				// hide welcome back title
 				document.querySelector('h2').style.display = 'none';
-				`);
+				}`);
 			}, 1000);
 		});
 	}
