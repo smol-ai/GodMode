@@ -32,8 +32,8 @@ Yes and no:
 | Local/GGML Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | Requires Local Setup                                                                                                                         |
 | Phind                                                                                   | Developer focused chat                                                                                                                       |
 | OpenAssistant                                                                           | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
-| Quora Poe                                                                               | Added in #118                                                                   |
-| Vercel Chat                                                                             | Added in #117                                                                   |
+| Quora Poe                                                                               | Added in #118                                                                                                                                |
+| Vercel Chat                                                                             | Added in #117                                                                                                                                |
 | Claude                                                                                  | Requires Beta Access                                                                                                                         |
 | ... What's Else?                                                                        | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
 
