@@ -78,7 +78,7 @@ const template = [
 						{ role: 'front' },
 						{ type: 'separator' },
 						{ role: 'window' },
-				  ]
+					]
 				: [{ role: 'close' }]),
 		],
 	},

@@ -1,6 +1,6 @@
 {
 	"name": "godmode",
-	"productName": "smolmenubar",
+	"productName": "GodMode",
 	"version": "1.0.0",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
