@@ -38,6 +38,7 @@ const providers = {
 	Phind: require('./providers/phind'),
 	PerplexityLlama: require('./providers/perplexity-llama.js'),
 	VercelAIChat: require('./providers/vercel'),
+	Poe: require('./providers/poe'),
 	HuggingChat: require('./providers/huggingchat'),
 	OobaBooga: require('./providers/oobabooga'),
 	Smol: require('./providers/smol'),
