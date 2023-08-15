@@ -9,7 +9,8 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, globalShortcut } from 'electron';
+
+import { app, BrowserWindow, shell, screen, ipcMain, globalShortcut } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Store from 'electron-store';
@@ -90,13 +91,19 @@ const createWindow = async () => {
 		return path.join(RESOURCES_PATH, ...paths);
 	};
 
+	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
 	mainWindow = new BrowserWindow({
 		show: false,
-		width: 1024,
-		height: 728,
+		// frame: false,
+		titleBarStyle: 'hidden',
+		width: width - 100,
+		height: height - 100,
 		icon: getAssetPath('icon.png'),
+		// alwaysOnTop: true,
 		webPreferences: {
 			webviewTag: true,
+			nodeIntegration: true,
 			preload: app.isPackaged
 				? path.join(__dirname, 'preload.js')
 				: path.join(__dirname, '../../scripts/dll/preload.js'),
@@ -123,11 +130,11 @@ const createWindow = async () => {
 	const menuBuilder = new MenuBuilder(mainWindow);
 	menuBuilder.buildMenu();
 
-	// Open urls in the user's browser
-	mainWindow.webContents.setWindowOpenHandler((edata) => {
-		shell.openExternal(edata.url);
-		return { action: 'deny' };
-	});
+	// // Open urls in the user's browser
+	// mainWindow.webContents.setWindowOpenHandler((edata) => {
+	// 	shell.openExternal(edata.url);
+	// 	return { action: 'allow' };
+	// });
 
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
@@ -161,11 +168,6 @@ app.on('web-contents-created', (e, contents) => {
 		//     event.newGuest = new BrowserWindow(options)
 		//   }
 		// })
-		// open link with external browser in webview
-		contents.setWindowOpenHandler('new-window', (e, url) => {
-			e.preventDefault();
-			shell.openExternal(url);
-		});
 		// // set context menu in webview
 		// contextMenu({
 		//   window: contents,

@@ -18,8 +18,13 @@ body {
 
 :root {
 	--superprompt-height: 100px;
-	--titlebar-height: 0px; /* 20px */
+	--titlebar-height: 16px;
 	--actual-height: calc(100vh - var(--titlebar-height));
+}
+
+#titlebar {
+	height: calc(var(--titlebar-height) + 10px);
+	-webkit-app-region: drag;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,8 +40,6 @@ body {
 	/* resize: both;  */
 	width: 100%;
 	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
-	margin-top: 4px;
 	/* margin: 0 auto; */
 	position: relative;
 }
@@ -85,7 +88,7 @@ webview {
 	position: absolute;
 	left: 0;
 	width: 100%;
-	height: calc(100vh - var(--superprompt-height));
+	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
 	display: inline-flex !important;
 }
 
