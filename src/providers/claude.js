@@ -10,6 +10,10 @@ class Claude extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('div.ProseMirror')
+		if (!inputElement) {
+			console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+			return // not logged in yet;
+		}
     inputElement.innerHTML = \`${input}\`
 		}`);
 	}

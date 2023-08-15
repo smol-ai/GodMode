@@ -19,9 +19,17 @@ class Bing extends Provider {
 
 			// SERP Shadow DOM
 			var serpDOM = document.querySelector('.cib-serp-main');
+      if (!serpDOM) {
+        console.error('serpDOM for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+        return // not logged in yet;
+      }
 
 			// Action Bar Shadow DOM
 			var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
+      if (!inputDOM) {
+        console.error('inputDOM for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+        return // not logged in yet;
+      }
 
 			// Text Input Shadow DOM
 			var textInputDOM = inputDOM.shadowRoot.querySelector('cib-text-input');

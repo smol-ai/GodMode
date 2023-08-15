@@ -31,7 +31,6 @@ export default function Layout() {
 	const enabledProviders = paneList.map(
 		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
 	);
-	console.log({ enabledProviders, paneList });
 	const nonEnabledProviders = allProviders.filter(
 		(x) => !enabledProviders.includes(x)
 	);
@@ -149,11 +148,12 @@ export default function Layout() {
 		enterKeyHandler(event);
 	}
 	const sizes = updateSplitSizes(enabledProviders);
+	console.log({ enabledProviders, paneList, sizes });
 	return (
 		<div id="windowRef" ref={windowRef}>
 			<Split
 				// sizes={[10, ...sizes]}
-				sizes={[...sizes]}
+				sizes={sizes}
 				minSize={100}
 				expandToMin={false}
 				gutterSize={3}
@@ -188,9 +188,9 @@ export default function Layout() {
 - Switch windows: Cmd+1/2/3/A, or Resize windows: Cmd -/+, or Back/Fwd: Cmd H/L
 - New chat: Cmd+R or Right-click menubar icon for more options!"
 					/>
-					<div className="flex items-center justify-center p-4">
+					<div className="flex items-center justify-center p-4 space-x-2">
 						<button
-							className="flex items-center justify-center w-16 h-16 text-white transition bg-gray-600 shadow-inner hover:bg-gray-200"
+							className="flex items-center justify-center w-12 h-12 p-1 text-white transition bg-gray-600 rounded-lg shadow-inner hover:bg-gray-200"
 							id="btn"
 							type="submit"
 							title="cmd+enter to submit"

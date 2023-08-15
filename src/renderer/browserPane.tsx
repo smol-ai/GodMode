@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Menu, Listbox, Transition } from '@headlessui/react';
 import {
-	ChevronDownIcon,
+	Bars2Icon,
 	ChevronUpDownIcon,
 	CheckIcon,
 } from '@heroicons/react/20/solid';
@@ -60,10 +60,9 @@ export function BrowserPane({
 					<div className="flex flex-col justify-between">
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
-								<Menu.Button className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-									Options
-									<ChevronDownIcon
-										className="w-5 h-5 -mr-1 text-gray-400"
+								<Menu.Button className="inline-flex justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+									<Bars2Icon
+										className="w-4 h-4 text-gray-400"
 										aria-hidden="true"
 									/>
 								</Menu.Button>
@@ -78,12 +77,12 @@ export function BrowserPane({
 								leaveFrom="transform opacity-100 scale-100"
 								leaveTo="transform opacity-0 scale-95"
 							>
-								<Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-bottom-right bg-white divide-y divide-gray-100 rounded-md shadow-lg bottom-12 ring-1 ring-black ring-opacity-5 focus:outline-none">
+								<Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-bottom-right bg-white divide-y divide-gray-100 rounded-md shadow-lg bottom-10 ring-1 ring-black ring-opacity-5 focus:outline-none">
 									<div className="py-1">
 										<Menu.Item>
 											{() => (
 												<span className="block px-4 py-2 text-sm text-gray-700">
-													Drag to reorder
+													Drag to reorder, Click to hide
 												</span>
 											)}
 										</Menu.Item>
@@ -197,6 +196,23 @@ export function BrowserPane({
 										</Menu.Item>
 									</div>
 									<div className="py-1">
+										<Menu.Item>
+											{({ active }) => (
+												<a
+													href="https://github.com/smol-ai/menubar/issues/new"
+													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+													onClick={resetPaneList}
+												>
+													Share Feedback
+												</a>
+											)}
+										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
 												<button
