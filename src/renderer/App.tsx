@@ -17,6 +17,7 @@ import PerplexityLlama from '../providers/perplexity-llama.js';
 import Phind from '../providers/phind';
 import Smol from '../providers/smol';
 import Together from '../providers/together';
+import Vercel from 'providers/vercel';
 import './App.css';
 
 function updateSplitSizes(panes: any[], focalIndex = null) {
@@ -47,6 +48,7 @@ function Hello() {
     HuggingChat,
     // OobaBooga, // Can't Verify
     Smol,
+    Vercel,
   };
   const enabledProviders = getEnabledProviders(providers);
 
