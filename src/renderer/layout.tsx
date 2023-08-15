@@ -15,14 +15,14 @@ import { TitleBar } from './TitleBar';
 // @ts-ignore
 type paneInfo = { webviewId: string; shortName: string };
 const defaultPaneList = getEnabledProviders(
-	allProviders as ProviderInterface[]
+	allProviders as ProviderInterface[],
 ).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
 const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 	'paneList',
-	defaultPaneList
+	defaultPaneList,
 );
 
 export default function Layout() {
@@ -30,7 +30,7 @@ export default function Layout() {
 	const [paneList, setPaneList] = React.useState(storedPaneList);
 
 	const enabledProviders = paneList.map(
-		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
+		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!,
 	);
 
 	const [sizes, setSizes] = React.useState(updateSplitSizes(enabledProviders));
@@ -42,7 +42,7 @@ export default function Layout() {
 	const resetPaneList = () => setPaneList(defaultPaneList);
 
 	const nonEnabledProviders = allProviders.filter(
-		(x) => !enabledProviders.includes(x)
+		(x) => !enabledProviders.includes(x),
 	);
 
 	/*
@@ -71,7 +71,7 @@ export default function Layout() {
 	const formRef = React.useRef<HTMLDivElement>(null); // don't actually use a <form> because it will just reload on submit even if you preventdefault
 	const SuperPromptEnterKey = window.electron.electronStore.get(
 		'SuperPromptEnterKey',
-		false
+		false,
 	);
 
 	const paneShortcutKeys: Record<string, number | null> = {};
@@ -126,7 +126,7 @@ export default function Layout() {
 		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
 			const newSizes = updateSplitSizes(
 				enabledProviders,
-				paneShortcutKeys[event.key]
+				paneShortcutKeys[event.key],
 			);
 			setSizes([...newSizes]);
 			// event.preventDefault();
