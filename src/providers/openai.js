@@ -8,15 +8,17 @@ class OpenAI extends Provider {
 	static url = 'https://chat.openai.com/?model=gpt-4-code-interpreter'; // TODO - let people switch
 
 	static handleInput(input) {
+		const fullName = this.fullName;
+		console.log('fullName', this, fullName);
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
         if (!inputElement) {
           console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-          return // not logged in yet;
+        } else {
+          const inputEvent = new Event('input', { bubbles: true });
+          inputElement.value = \`${input}\`; // must be escaped backticks to support multiline
+          inputElement.dispatchEvent(inputEvent);
         }
-        const inputEvent = new Event('input', { bubbles: true });
-        inputElement.value = \`${input}\`; // must be escaped backticks to support multiline
-        inputElement.dispatchEvent(inputEvent);
       }`);
 	}
 

@@ -56,7 +56,7 @@ export function BrowserPane({
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="droppable">
-				{(provided, snapshot) => (
+				{(provided2, snapshot) => (
 					<div className="flex flex-col justify-between">
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
@@ -89,8 +89,8 @@ export function BrowserPane({
 									</div>
 									<div className="py-0">
 										<div
-											{...provided.droppableProps}
-											ref={provided.innerRef}
+											{...provided2.droppableProps}
+											ref={provided2.innerRef}
 											className={`w-full ${
 												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
 											}`}
@@ -158,7 +158,7 @@ export function BrowserPane({
 													}}
 												</Draggable>
 											))}
-											{provided.placeholder}
+											{provided2.placeholder}
 										</div>
 										<Menu.Item>
 											{({ active }) => (
