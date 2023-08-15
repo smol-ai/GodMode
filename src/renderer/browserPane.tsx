@@ -92,7 +92,7 @@ export function BrowserPane({
 											{...provided2.droppableProps}
 											ref={provided2.innerRef}
 											className={`w-full ${
-												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
+												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-white'
 											}`}
 										>
 											{paneList?.map((item, index) => (
@@ -106,8 +106,8 @@ export function BrowserPane({
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId,
-																),
+																		pane.webviewId !== item.webviewId
+																)
 															);
 														return (
 															<div
@@ -117,7 +117,7 @@ export function BrowserPane({
 																className={` user-select-none px-4 py-2 mb-2 text-sm flex group justify-between items-center ${
 																	snapshot.isDragging
 																		? 'bg-green-200'
-																		: 'bg-gray-200'
+																		: 'bg-gray-300'
 																}
 															`}
 																style={provided.draggableProps.style}
@@ -205,7 +205,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
@@ -221,7 +221,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>

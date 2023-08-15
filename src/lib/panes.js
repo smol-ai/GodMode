@@ -46,7 +46,7 @@ function drawPanes(providers) {
 		webview.id = provider.webviewId;
 		webview.src = provider.url;
 		// set allowpopups property on webview
-		webview.setAttribute('allowpopups', '');
+		webview.setAttribute('allowpopups', 'true');
 		webview.autosize = 'on';
 		webview.addEventListener('dom-ready', () => {
 			webview.setZoomLevel(-1); // Set initial zoom level here
