@@ -111,7 +111,6 @@ export default function Layout() {
 		if (focalIndex !== null) {
 			let sizes = new Array(panes.length).fill(0);
 			sizes[focalIndex] = remainingWidth;
-			console.debug('sizes', sizes)
 			return sizes;
 		} else {
 			// Evenly distribute remaining space among all panes
@@ -124,7 +123,6 @@ export default function Layout() {
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
-			console.debug('paneShortcutKeys', paneShortcutKeys[event.key]);
 			const newSizes = updateSplitSizes(enabledProviders, paneShortcutKeys[event.key]);
 			setSizes([...newSizes]);
 			// event.preventDefault();
@@ -164,7 +162,6 @@ export default function Layout() {
 		enterKeyHandler(event);
 	}
 
-	console.log({ enabledProviders, paneList, sizes });
 	return (
 		<div id="windowRef" ref={windowRef}>
 			<Split
