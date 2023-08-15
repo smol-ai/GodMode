@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
-	"main": "src/index.js",
+	"main": "src/main/main.ts",
 	"scripts": {
 		"build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
 		"build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.main.prod.ts",
@@ -118,8 +118,8 @@
 		"webpack-merge": "^5.9.0"
 	},
 	"build": {
-		"productName": "ElectronReact",
-		"appId": "org.erb.ElectronReact",
+		"productName": "God Mode",
+		"appId": "org.erb.GodMode",
 		"asar": true,
 		"asarUnpack": "**\\*.{node,dll}",
 		"files": [
@@ -193,6 +193,6 @@
 			"!**/**",
 			"src/main/**"
 		],
-		"logLevel": "quiet"
+		"logLevel": "verbose"
 	}
 }
