@@ -11,10 +11,10 @@ import './App.css';
 import { BrowserPane } from './browserPane';
 
 // @ts-ignore
-type paneInfo = { id: string; name: string };
+type paneInfo = { webviewId: string; shortName: string };
 const defaultPaneList = getEnabledProviders(allProviders).map((x) => ({
-	id: x.webviewId,
-	name: x.shortName,
+	webviewId: x.webviewId,
+	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
 const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 	'paneList',
@@ -28,9 +28,10 @@ export default function Layout() {
 		window.electron.electronStore.set('paneList', paneList);
 	}, [paneList]);
 	const resetPaneList = () => setPaneList(defaultPaneList);
-	const enabledProviders = paneList.map((x) =>
-		allProviders.find((y) => y.webviewId === x.id)
+	const enabledProviders = paneList.map(
+		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
 	);
+	console.log({ enabledProviders, paneList });
 	const nonEnabledProviders = allProviders.filter(
 		(x) => !enabledProviders.includes(x)
 	);

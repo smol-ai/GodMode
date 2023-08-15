@@ -1,6 +1,10 @@
 import { Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Menu, Listbox, Transition } from '@headlessui/react';
+import {
+	ChevronDownIcon,
+	ChevronUpDownIcon,
+	CheckIcon,
+} from '@heroicons/react/20/solid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // https://tailwindui.com/components/application-ui/elements/dropdowns
@@ -19,25 +23,18 @@ const reorder = (list, startIndex, endIndex) => {
 
 const grid = 2;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-	// some basic styles to make the items look a bit nicer
-	userSelect: 'none',
-	padding: grid * 2,
-	margin: `0 0 ${grid}px 0`,
-
-	// change background colour if dragging
-	background: isDragging ? 'lightgreen' : 'grey',
-
-	// styles we need to apply on draggables
-	...draggableStyle,
-});
-
 export function BrowserPane({
 	paneList,
 	setPaneList,
 	resetPaneList,
 	nonEnabledProviders,
 }) {
+	const nullProvider = {
+		webviewId: 'nullProvider',
+		shortName: 'Select a provider',
+		fullName: 'Select a provider',
+	};
+
 	function onDragEnd(result: {
 		source: { index: number };
 		destination: { index: number };
@@ -81,26 +78,36 @@ export function BrowserPane({
 								leaveFrom="transform opacity-100 scale-100"
 								leaveTo="transform opacity-0 scale-95"
 							>
-								<Menu.Items className="absolute z-10 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg right-16 bottom-4 ring-1 ring-black ring-opacity-5 focus:outline-none">
+								<Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-bottom-right bg-white divide-y divide-gray-100 rounded-md shadow-lg bottom-12 ring-1 ring-black ring-opacity-5 focus:outline-none">
 									<div className="py-1">
+										<Menu.Item>
+											{() => (
+												<span className="block px-4 py-2 text-sm text-gray-700">
+													Drag to reorder
+												</span>
+											)}
+										</Menu.Item>
+									</div>
+									<div className="py-0">
 										<div
 											{...provided.droppableProps}
 											ref={provided.innerRef}
-											className={`w-full p-1 ${
+											className={`w-full ${
 												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
 											}`}
 										>
 											{paneList?.map((item, index) => (
 												<Draggable
-													key={item.id}
-													draggableId={item.id}
+													key={item.webviewId}
+													draggableId={item.webviewId}
 													index={index}
 												>
 													{(provided, snapshot) => {
 														const hidePane = () =>
 															setPaneList(
 																paneList.filter(
-																	(pane: any) => pane.id !== item.id
+																	(pane: any) =>
+																		pane.webviewId !== item.webviewId
 																)
 															);
 														return (
@@ -108,7 +115,7 @@ export function BrowserPane({
 																ref={provided.innerRef}
 																{...provided.draggableProps}
 																{...provided.dragHandleProps}
-																className={` user-select-none p-4 mb-4 flex group justify-between items-center ${
+																className={` user-select-none px-4 py-2 mb-2 text-sm flex group justify-between items-center ${
 																	snapshot.isDragging
 																		? 'bg-green-200'
 																		: 'bg-gray-200'
@@ -116,7 +123,7 @@ export function BrowserPane({
 															`}
 																style={provided.draggableProps.style}
 															>
-																{item.name}
+																{item.shortName}
 																<button
 																	className="hidden w-4 h-4 group-hover:flex"
 																	onClick={hidePane}
@@ -134,12 +141,12 @@ export function BrowserPane({
 																	>
 																		<g
 																			id="SVGRepo_bgCarrier"
-																			stroke-width="0"
+																			strokeWidth="0"
 																		></g>
 																		<g
 																			id="SVGRepo_tracerCarrier"
-																			stroke-linecap="round"
-																			stroke-linejoin="round"
+																			strokeLinecap="round"
+																			strokeLinejoin="round"
 																		></g>
 																		<g id="SVGRepo_iconCarrier">
 																			{' '}
@@ -156,32 +163,36 @@ export function BrowserPane({
 										</div>
 										<Menu.Item>
 											{({ active }) => (
-												<a
-													href="#"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Share
-												</a>
-											)}
-										</Menu.Item>
-										<Menu.Item>
-											{({ active }) => (
-												<a
-													href="#"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Add to favorites
-												</a>
+												// <button
+												// 	// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
+												// 	className={classNames(
+												// 		active
+												// 			? 'bg-gray-100 text-gray-900'
+												// 			: 'text-gray-700',
+												// 		'block w-full px-4 py-2 text-sm'
+												// 	)}
+												// 	onClick={resetPaneList}
+												// >
+												// 	Add new provider
+												// </button>
+												<div className="px-4 pb-2">
+													<ListBox
+														selected={nullProvider}
+														selectList={[nullProvider, ...nonEnabledProviders]}
+														setSelected={(value: any) => {
+															console.log('setselected', value);
+															if (nullProvider.webviewId !== value.webviewId) {
+																setPaneList([
+																	...paneList,
+																	{
+																		webviewId: value.webviewId,
+																		shortName: value.shortName,
+																	},
+																]);
+															}
+														}}
+													/>
+												</div>
 											)}
 										</Menu.Item>
 									</div>
@@ -210,5 +221,78 @@ export function BrowserPane({
 				)}
 			</Droppable>
 		</DragDropContext>
+	);
+}
+
+// https://tailwindui.com/components/application-ui/forms/select-menus
+export default function ListBox({ selected, setSelected, selectList }) {
+	return (
+		<Listbox value={selected} onChange={setSelected}>
+			{({ open }) => (
+				<>
+					<Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">
+						Add new Provider
+					</Listbox.Label>
+					<div className="relative mt-2">
+						<Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+							<span className="block truncate">{selected.shortName}</span>
+							<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+								<ChevronUpDownIcon
+									className="w-5 h-5 text-gray-400"
+									aria-hidden="true"
+								/>
+							</span>
+						</Listbox.Button>
+
+						<Transition
+							show={open}
+							as={Fragment}
+							leave="transition ease-in duration-100"
+							leaveFrom="opacity-100"
+							leaveTo="opacity-0"
+						>
+							<Listbox.Options className="absolute right-0 z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg bottom-8 max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+								{selectList.map((listItem) => (
+									<Listbox.Option
+										key={listItem.webviewId}
+										className={({ active }) =>
+											classNames(
+												active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+												'relative cursor-default select-none py-2 pl-3 pr-9'
+											)
+										}
+										value={listItem}
+									>
+										{({ selected, active }) => (
+											<>
+												<span
+													className={classNames(
+														selected ? 'font-semibold' : 'font-normal',
+														'block truncate'
+													)}
+												>
+													{listItem.fullName}
+												</span>
+
+												{selected ? (
+													<span
+														className={classNames(
+															active ? 'text-white' : 'text-indigo-600',
+															'absolute inset-y-0 right-0 flex items-center pr-4'
+														)}
+													>
+														<CheckIcon className="w-5 h-5" aria-hidden="true" />
+													</span>
+												) : null}
+											</>
+										)}
+									</Listbox.Option>
+								))}
+							</Listbox.Options>
+						</Transition>
+					</div>
+				</>
+			)}
+		</Listbox>
 	);
 }
