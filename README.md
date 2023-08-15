@@ -105,7 +105,7 @@ If you want to build from source, you will need to clone the repo and open the p
    cd menubar
    npm install
    # On Windows, you may also need Squirrel - these are old instructions, we would love help to verify
-   # npm install electron-squirrel-startup 
+   # npm install electron-squirrel-startup
 
    npm run start # to run in development, locally
    ```
@@ -121,7 +121,7 @@ If you want to build from source, you will need to clone the repo and open the p
    # this is mostly for swyx to publish the official codesigned and notarized releases
    ```
 
-   The outputs will be located in the `/release/build` directory. 
+   The outputs will be located in the `/release/build` directory.
 
 ## windows/linux builds
 
