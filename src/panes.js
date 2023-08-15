@@ -53,8 +53,9 @@ function drawPanes(providers) {
 		});
 
 		// If the provider has a getUserAgent function, set the webview's useragent
-		if (provider.getUserAgent) {
-			webview.useragent = provider.getUserAgent();
+		const userAgent = provider.getUserAgent();
+		if (userAgent) {
+			webview.useragent = userAgent;
 		}
 
 		// Append the webview to the div, and the div to the container
