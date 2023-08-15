@@ -10,6 +10,10 @@ class Together extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('form textarea[placeholder*="Enter text here"]');
+		if (!inputElement) {
+			console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+			return // not logged in yet;
+		}
     var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
     nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
     var event = new Event('input', { bubbles: true});

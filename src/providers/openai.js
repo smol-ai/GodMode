@@ -10,6 +10,10 @@ class OpenAI extends Provider {
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
+        if (!inputElement) {
+          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+          return // not logged in yet;
+        }
         const inputEvent = new Event('input', { bubbles: true });
         inputElement.value = \`${input}\`; // must be escaped backticks to support multiline
         inputElement.dispatchEvent(inputEvent);

@@ -13,6 +13,10 @@ class Phind extends Provider {
         if (!inputElement) {
             inputElement = document.querySelector('textarea[placeholder*="Send message"]');
         }
+        if (!inputElement) {
+          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+          return // not logged in yet;
+        }
 
         var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
         var event = new Event('input', { bubbles: true});

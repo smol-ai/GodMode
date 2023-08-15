@@ -15,21 +15,16 @@ class OobaBooga extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`{
-        function simulateUserInput(element, text) {
-          const inputEvent = new Event('input', { bubbles: true });
-          element.focus();
-          element.value = text;
-          element.dispatchEvent(inputEvent);
+        var inputElement = document.querySelector('#main textarea');
+        if (!inputElement) {
+          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+          return // not logged in yet;
         }
-        try {
-          var inputElement = document.querySelector('#main textarea');
-          simulateUserInput(inputElement, \`${this.templateFn(input)}\`);
-        } catch (err) {
-          console.error(err);
-          console.error(err.toString());
-          console.log(\`${this.templateFn(input)}\`);
-          console.error(err);
-        }
+        const inputEvent = new Event('input', { bubbles: true });
+        inputElement.value = \`${this.templateFn(
+					input
+				)}\`; // must be escaped backticks to support multiline
+        inputElement.dispatchEvent(inputEvent);
       }`);
 	}
 
