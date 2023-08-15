@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class OobaBooga extends Provider {
 	static webviewId = 'webviewOoba';
 	static fullName = 'Local Models (OobaBooga)';
+	static shortName = 'Oobabooga';
 
 	static url = 'http://127.0.0.1:7860/';
 

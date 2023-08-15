@@ -8,26 +8,29 @@ import Split from 'react-split';
 import 'tailwindcss/tailwind.css';
 import { getEnabledProviders } from 'lib/utils';
 import './App.css';
+import { BrowserPane } from './browserPane';
 
-function updateSplitSizes(panes: any[], focalIndex = null) {
-	// Handle specific pane focus
-	if (focalIndex !== null) {
-		let sizes = new Array(panes.length).fill(0);
-		sizes[focalIndex] = 100 - 0 * (panes.length - 1);
-		return sizes;
-	}
-
-	// Evenly distribute remaining space among all panes
-	let remainingPercentage = 100 / panes.length;
-	let sizes = new Array(panes.length).fill(remainingPercentage);
-	return sizes;
-}
+// @ts-ignore
+type paneInfo = { id: string; name: string };
+const defaultPaneList = getEnabledProviders(allProviders).map((x) => ({
+	id: x.webviewId,
+	name: x.shortName,
+})); // in future we will have to disconnect the provider from the webview Id
+const storedPaneList: paneInfo[] = window.electron.electronStore.get(
+	'paneList',
+	defaultPaneList
+);
 
 export default function Layout() {
 	const [superprompt, setSuperprompt] = React.useState('');
-
-	// TODO: Manage enabled providers in a more robust way
-	const enabledProviders = getEnabledProviders(allProviders);
+	const [paneList, setPaneList] = React.useState(storedPaneList);
+	React.useEffect(() => {
+		window.electron.electronStore.set('paneList', paneList);
+	}, [paneList]);
+	const resetPaneList = () => setPaneList(defaultPaneList);
+	const enabledProviders = paneList.map((x) =>
+		allProviders.find((y) => y.webviewId === x.id)
+	);
 
 	/*
 	 * Apply provider-specific CSS and custom paste behavior
@@ -57,6 +60,13 @@ export default function Layout() {
 		'SuperPromptEnterKey',
 		false
 	);
+	const paneStates: Record<string, number | null> = {};
+	for (let i = 0; i < enabledProviders.length; i++) {
+		paneStates[`${i + 1}`] = i;
+	}
+	paneStates['a'] = null;
+	paneStates['A'] = null;
+
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		const isEnter = event.key === 'Enter';
@@ -75,21 +85,81 @@ export default function Layout() {
 		//   event.preventDefault();
 		// }
 	}
+
+	const windowRef = React.useRef<HTMLDivElement>(null);
+	function updateSplitSizes(panes: any[], focalIndex: number | null = null) {
+		// const clientWidth = windowRef.current?.clientWidth!;
+		// const remainingWidth = ((clientWidth - 100) / clientWidth) * 100;
+		const remainingWidth = 100;
+		// Handle specific pane focus
+		if (focalIndex !== null) {
+			let sizes = new Array(panes.length).fill(0);
+			sizes[focalIndex] = remainingWidth - 0 * (panes.length - 1);
+			return sizes;
+		}
+
+		// Evenly distribute remaining space among all panes
+		let remainingPercentage = remainingWidth / panes.length;
+		let sizes = new Array(panes.length).fill(remainingPercentage);
+		return sizes;
+	}
+
+	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
+		if (isCmdOrCtrl && event.key in paneStates) {
+			updateSplitSizes(enabledProviders, paneStates[event.key]);
+			// event.preventDefault();
+		} else if (
+			(isCmdOrCtrl && event.key === '+') ||
+			(isCmdOrCtrl && event.key === '=')
+		) {
+			// Increase zoom level with Cmd/Ctrl + '+' or '='
+			enabledProviders.forEach((provider) => {
+				provider
+					.getWebview()
+					// @ts-ignore
+					.setZoomLevel(provider.getWebview().getZoomLevel() + 1);
+			});
+		} else if (isCmdOrCtrl && event.key === '-') {
+			// Decrease zoom level with Cmd/Ctrl + '-'
+			enabledProviders.forEach((provider) => {
+				provider
+					.getWebview() // @ts-ignore
+					.setZoomLevel(provider.getWebview().getZoomLevel() - 1);
+			});
+		} else if (
+			event.shiftKey &&
+			event.metaKey &&
+			(event.key === 'L' || event.key === 'l')
+		) {
+			// Toggle dark mode with Cmd/Ctrl + Shift + L
+			let isDarkMode = window.electron.electronStore.get('isDarkMode', false);
+			isDarkMode = !isDarkMode;
+			window.electron.electronStore.set('isDarkMode', isDarkMode);
+
+			enabledProviders.forEach((provider) => {
+				provider.handleDarkMode(isDarkMode);
+			});
+		}
+
+		enterKeyHandler(event);
+	}
 	const sizes = updateSplitSizes(enabledProviders);
 	return (
-		<div>
+		<div id="windowRef" ref={windowRef}>
 			<Split
-				sizes={[...sizes]}
+				sizes={[10, ...sizes]}
 				minSize={100}
 				expandToMin={false}
 				gutterSize={3}
 				gutterAlign="center"
-				snapOffset={30}
+				// snapOffset={30}
 				dragInterval={1}
 				direction="horizontal"
 				// cursor="col-resize"
 				className="flex"
 			>
+				<BrowserPane {...{ paneList, setPaneList, resetPaneList }} />
 				{enabledProviders.map((provider, index) => (
 					<Pane provider={provider} key={index} />
 				))}
@@ -106,7 +176,7 @@ export default function Layout() {
 						id="prompt"
 						value={superprompt}
 						onChange={(e) => setSuperprompt(e.target.value)}
-						onKeyDown={enterKeyHandler}
+						onKeyDown={onKeyDown}
 						name="prompt"
 						placeholder="Enter a superprompt here.
 - Quick Open: Cmd+G or Submit: Cmd/Ctrl+Enter (customizable in menu)

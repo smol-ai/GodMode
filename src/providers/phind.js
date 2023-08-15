@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class Phind extends Provider {
 	static webviewId = 'webviewPhind';
 	static fullName = 'Phind';
+	static shortName = 'Phind';
 
 	static url = 'https://www.phind.com/';
 

@@ -39,6 +39,9 @@ ipcMain.on('electron-store-get', async (event, val, def) => {
 ipcMain.on('electron-store-set', async (event, property, val) => {
 	store.set(property, val);
 });
+ipcMain.on('reload-browser', async (event, property, val) => {
+	mainWindow?.reload();
+});
 
 if (process.env.NODE_ENV === 'production') {
 	const sourceMapSupport = require('source-map-support');

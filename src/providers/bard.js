@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class Bard extends Provider {
 	static webviewId = 'webviewBARD';
 	static fullName = 'Google Bard';
+	static shortName = 'Bard';
 
 	static url = 'https://bard.google.com';
 

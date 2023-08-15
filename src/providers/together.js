@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class Together extends Provider {
 	static webviewId = 'webviewTOGETHER';
 	static fullName = 'Together (RedPajama, StarCoder, Falcon, etc)';
+	static shortName = 'Together';
 
 	static url = 'https://api.together.xyz/playground/chat';
 

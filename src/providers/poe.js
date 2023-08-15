@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class Poe extends Provider {
 	static webviewId = 'webviewPoe';
 	static fullName = 'Quora Poe';
+	static shortName = 'Poe';
 
 	static url = 'https://poe.com/';
 

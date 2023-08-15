@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class OpenAI extends Provider {
 	static webviewId = 'webviewOAI';
 	static fullName = 'OpenAI ChatGPT';
+	static shortName = 'ChatGPT';
 
 	static url = 'https://chat.openai.com/?model=gpt-4-code-interpreter'; // TODO - let people switch
 

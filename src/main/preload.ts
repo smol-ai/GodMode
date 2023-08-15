@@ -33,6 +33,11 @@ const electronHandler = {
 		},
 		// Other method you want to add like has(), reset(), etc.
 	},
+	browserWindow: {
+		reload() {
+			ipcRenderer.send('reload-browser');
+		},
+	},
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

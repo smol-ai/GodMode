@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class Claude extends Provider {
 	static webviewId = 'webviewCLAUDE';
 	static fullName = 'Anthropic Claude';
+	static shortName = 'Claude1';
 
 	static url = 'https://console.anthropic.com/chat/new';
 

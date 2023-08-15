@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class Vercel extends Provider {
 	static webviewId = 'webviewVercelAI';
 	static fullName = 'Vercel AI Chatbot';
+	static shortName = 'Vercel';
 
 	static url = 'https://chat.vercel.ai/';
 

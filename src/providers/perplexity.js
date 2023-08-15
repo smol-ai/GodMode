@@ -3,6 +3,7 @@ const Provider = require('./provider');
 class Perplexity extends Provider {
 	static webviewId = 'webviewPerplexity';
 	static fullName = 'Perplexity';
+	static shortName = 'Perplexity';
 
 	static url = 'https://www.perplexity.ai/';
 
