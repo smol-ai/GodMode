@@ -33,6 +33,8 @@
 	],
 	"license": "MIT",
 	"dependencies": {
+		"@headlessui/react": "^1.7.16",
+		"@heroicons/react": "^2.0.18",
 		"electron-debug": "^3.2.0",
 		"electron-log": "^4.4.8",
 		"electron-store": "^8.1.0",

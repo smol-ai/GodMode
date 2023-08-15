@@ -31,6 +31,9 @@ export default function Layout() {
 	const enabledProviders = paneList.map((x) =>
 		allProviders.find((y) => y.webviewId === x.id)
 	);
+	const nonEnabledProviders = allProviders.filter(
+		(x) => !enabledProviders.includes(x)
+	);
 
 	/*
 	 * Apply provider-specific CSS and custom paste behavior
@@ -148,7 +151,8 @@ export default function Layout() {
 	return (
 		<div id="windowRef" ref={windowRef}>
 			<Split
-				sizes={[10, ...sizes]}
+				// sizes={[10, ...sizes]}
+				sizes={[...sizes]}
 				minSize={100}
 				expandToMin={false}
 				gutterSize={3}
@@ -159,7 +163,6 @@ export default function Layout() {
 				// cursor="col-resize"
 				className="flex"
 			>
-				<BrowserPane {...{ paneList, setPaneList, resetPaneList }} />
 				{enabledProviders.map((provider, index) => (
 					<Pane provider={provider} key={index} />
 				))}
@@ -173,6 +176,7 @@ export default function Layout() {
 				<div id="form-wrapper">
 					<textarea
 						rows={4}
+						className="resize-none"
 						id="prompt"
 						value={superprompt}
 						onChange={(e) => setSuperprompt(e.target.value)}
@@ -183,22 +187,37 @@ export default function Layout() {
 - Switch windows: Cmd+1/2/3/A, or Resize windows: Cmd -/+, or Back/Fwd: Cmd H/L
 - New chat: Cmd+R or Right-click menubar icon for more options!"
 					/>
-					<button id="btn" type="submit" title="cmd+enter to submit">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth="1.5"
-							stroke="currentColor"
-							className="w-6 h-6"
+					<div className="flex items-center justify-center p-4">
+						<button
+							className="flex items-center justify-center w-16 h-16 text-white transition bg-gray-600 shadow-inner hover:bg-gray-200"
+							id="btn"
+							type="submit"
+							title="cmd+enter to submit"
 						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-							/>
-						</svg>
-					</button>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="currentColor"
+								className="w-6 h-6"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+								/>
+							</svg>
+						</button>
+						<BrowserPane
+							{...{
+								paneList,
+								setPaneList,
+								resetPaneList,
+								nonEnabledProviders,
+							}}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
