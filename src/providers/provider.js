@@ -9,6 +9,8 @@ class Provider {
 		return document.getElementById(this.webviewId);
 	}
 
+	static url = '';
+
 	static paneId() {
 		return `${this.name.toLowerCase()}Pane`;
 	}
