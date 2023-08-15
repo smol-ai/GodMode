@@ -8,7 +8,7 @@ class Vercel extends Provider {
 	static url = 'https://chat.vercel.ai/';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message."]'); // can be "Ask anything" or "Ask follow-up"
         if (!inputElement) {

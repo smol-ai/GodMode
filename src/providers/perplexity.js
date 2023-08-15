@@ -8,7 +8,7 @@ class Perplexity extends Provider {
 	static url = 'https://www.perplexity.ai/';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
         if (!inputElement) {

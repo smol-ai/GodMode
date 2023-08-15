@@ -8,7 +8,7 @@ class Together extends Provider {
 	static url = 'https://api.together.xyz/playground/chat';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('form textarea[placeholder*="Enter text here"]');
 		if (!inputElement) {

@@ -8,7 +8,7 @@ class OpenAI extends Provider {
 	static url = 'https://chat.openai.com/?model=gpt-4-code-interpreter'; // TODO - let people switch
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		console.log('fullName', this, fullName);
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');

@@ -8,7 +8,7 @@ class Phind extends Provider {
 	static url = 'https://www.phind.com/';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Describe your task in detail. What are you stuck on"]');
         if (!inputElement) {

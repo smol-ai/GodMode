@@ -8,7 +8,7 @@ class Bing extends Provider {
 	static url = 'https://bing.com/chat';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
 			// Simulate user input
 			function simulateUserInput(element, text) {

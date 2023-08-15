@@ -8,7 +8,7 @@ class SmolTalk extends Provider {
 	static url = 'https://smoltalk.vercel.app/';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
 		var inputElement = document.querySelector('#smol-inputbox')
 		if (!inputElement) {

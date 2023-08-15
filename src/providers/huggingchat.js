@@ -8,7 +8,7 @@ class HuggingChat extends Provider {
 	static url = 'https://huggingface.co/chat/';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
         if (!inputElement) {

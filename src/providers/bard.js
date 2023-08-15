@@ -8,7 +8,7 @@ class Bard extends Provider {
 	static url = 'https://bard.google.com';
 
 	static handleInput(input) {
-    const fullName = this.fullName;
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
       var inputElement = document.querySelector("#mat-input-0");
       if (!inputElement) {
