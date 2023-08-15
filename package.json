@@ -118,7 +118,7 @@
 		"webpack-merge": "^5.9.0"
 	},
 	"build": {
-		"productName": "God Mode",
+		"productName": "GodMode",
 		"appId": "org.erb.GodMode",
 		"asar": true,
 		"asarUnpack": "**\\*.{node,dll}",
