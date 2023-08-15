@@ -9,7 +9,7 @@
 		"build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
 		"build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.main.prod.ts",
 		"build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.prod.ts",
-		"postinstall": "ts-node ./scripts/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.dev.dll.ts",
+		"postinstall": "ts-node scripts/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.dev.dll.ts",
 		"lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
 		"package": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --publish never",
 		"rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
@@ -185,7 +185,7 @@
 		"url": "https://opencollective.com/electron-react-boilerplate-594"
 	},
 	"devEngines": {
-		"node": ">=14.x",
+		"node": ">=18.x",
 		"npm": ">=7.x"
 	},
 	"electronmon": {
