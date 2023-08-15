@@ -54,7 +54,7 @@ body {
 	@apply flex w-screen;
 }
 
-#form textarea {
+# {
 	@apply w-full h-full px-4 py-2 overflow-y-auto font-mono text-sm transition-colors bg-gray-600 border-0 shadow-inner outline-none focus:bg-gray-200;
 }
 

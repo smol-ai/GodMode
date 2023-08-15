@@ -56,7 +56,7 @@ export function BrowserPane({
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="droppable">
-				{(provided, snapshot) => (
+				{(provided2, snapshot) => (
 					<div className="flex flex-col justify-between">
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
@@ -89,8 +89,8 @@ export function BrowserPane({
 									</div>
 									<div className="py-0">
 										<div
-											{...provided.droppableProps}
-											ref={provided.innerRef}
+											{...provided2.droppableProps}
+											ref={provided2.innerRef}
 											className={`w-full ${
 												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
 											}`}
@@ -106,8 +106,8 @@ export function BrowserPane({
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId,
-																),
+																		pane.webviewId !== item.webviewId
+																)
 															);
 														return (
 															<div
@@ -158,7 +158,7 @@ export function BrowserPane({
 													}}
 												</Draggable>
 											))}
-											{provided.placeholder}
+											{provided2.placeholder}
 										</div>
 										<Menu.Item>
 											{({ active }) => (
@@ -205,7 +205,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
@@ -221,7 +221,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>

@@ -17,14 +17,16 @@ class OobaBooga extends Provider {
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('#main textarea');
         if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-          return // not logged in yet;
+          console.error('inputElement for ${
+						this.fullName
+					} doesnt exist, have you logged in or are you on the right page?')
+        } else {
+          const inputEvent = new Event('input', { bubbles: true });
+          inputElement.value = \`${this.templateFn(
+						input
+					)}\`; // must be escaped backticks to support multiline
+          inputElement.dispatchEvent(inputEvent);
         }
-        const inputEvent = new Event('input', { bubbles: true });
-        inputElement.value = \`${this.templateFn(
-					input,
-				)}\`; // must be escaped backticks to support multiline
-        inputElement.dispatchEvent(inputEvent);
       }`);
 	}
 

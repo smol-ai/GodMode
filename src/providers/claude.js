@@ -8,13 +8,15 @@ class Claude extends Provider {
 	static url = 'https://console.anthropic.com/chat/new';
 
 	static handleInput(input) {
+
+    const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('div.ProseMirror')
 		if (!inputElement) {
 			console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-			return // not logged in yet;
+		} else {
+			inputElement.innerHTML = \`${input}\`
 		}
-    inputElement.innerHTML = \`${input}\`
 		}`);
 	}
 
