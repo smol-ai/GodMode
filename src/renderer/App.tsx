@@ -20,7 +20,6 @@ import Together from '../providers/together';
 import Vercel from 'providers/vercel';
 import Poe from 'providers/poe';
 import './App.css';
-import { ipcRenderer } from 'electron';
 
 function updateSplitSizes(panes: any[], focalIndex = null) {
   // Handle specific pane focus
@@ -54,18 +53,6 @@ function Hello() {
     Poe,
   };
   const enabledProviders = getEnabledProviders(providers);
-
-  React.useEffect(() => {
-    const handleGuestViewError = () => {
-      console.error('Guest view error, reloading window');
-      window.location.reload();
-    };
-
-    ipcRenderer.on('guest-view-error', handleGuestViewError);
-    return () => {
-      ipcRenderer.removeListener('guest-view-error', handleGuestViewError);
-    }
-  }, []);
 
   React.useEffect(() => {
     enabledProviders.forEach((provider) => {
