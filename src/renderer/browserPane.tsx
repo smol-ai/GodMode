@@ -106,8 +106,8 @@ export function BrowserPane({
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId
-																)
+																		pane.webviewId !== item.webviewId,
+																),
 															);
 														return (
 															<div
@@ -205,7 +205,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
+														'block px-4 py-2 text-sm',
 													)}
 													onClick={resetPaneList}
 												>
@@ -221,7 +221,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm'
+														'block px-4 py-2 text-sm',
 													)}
 													onClick={resetPaneList}
 												>
