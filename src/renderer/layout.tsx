@@ -9,10 +9,11 @@ import 'tailwindcss/tailwind.css';
 import { getEnabledProviders } from 'lib/utils';
 import './App.css';
 import { BrowserPane } from './browserPane';
+import { ProviderInterface } from 'lib/types';
 
 // @ts-ignore
 type paneInfo = { webviewId: string; shortName: string };
-const defaultPaneList = getEnabledProviders(allProviders).map((x) => ({
+const defaultPaneList = getEnabledProviders(allProviders as ProviderInterface[]).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
@@ -24,13 +25,21 @@ const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 export default function Layout() {
 	const [superprompt, setSuperprompt] = React.useState('');
 	const [paneList, setPaneList] = React.useState(storedPaneList);
-	React.useEffect(() => {
-		window.electron.electronStore.set('paneList', paneList);
-	}, [paneList]);
-	const resetPaneList = () => setPaneList(defaultPaneList);
+
 	const enabledProviders = paneList.map(
 		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!,
 	);
+
+
+	const [sizes, setSizes] = React.useState(updateSplitSizes(enabledProviders));
+
+	React.useEffect(() => {
+		window.electron.electronStore.set('paneList', paneList);
+	}, [paneList]);
+
+	const resetPaneList = () => setPaneList(defaultPaneList);
+
+
 	const nonEnabledProviders = allProviders.filter(
 		(x) => !enabledProviders.includes(x),
 	);
@@ -63,12 +72,15 @@ export default function Layout() {
 		'SuperPromptEnterKey',
 		false,
 	);
-	const paneStates: Record<string, number | null> = {};
+
+	const paneShortcutKeys: Record<string, number | null> = {};
 	for (let i = 0; i < enabledProviders.length; i++) {
-		paneStates[`${i + 1}`] = i;
+		paneShortcutKeys[`${i + 1}`] = i;
 	}
-	paneStates['a'] = null;
-	paneStates['A'] = null;
+	paneShortcutKeys['a'] = null;
+	paneShortcutKeys['A'] = null;
+
+	console.warn('paneShortcutKeys', paneShortcutKeys);
 
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
@@ -81,7 +93,7 @@ export default function Layout() {
 			// formRef.current?.submit();
 			enabledProviders.forEach((provider) => {
 				// Call provider-specific CSS handling and custom paste setup
-				provider.handleSubmit(superprompt);
+				provider.handleSubmit();
 			});
 		}
 		// if (isEnter) {
@@ -90,6 +102,7 @@ export default function Layout() {
 	}
 
 	const windowRef = React.useRef<HTMLDivElement>(null);
+
 	function updateSplitSizes(panes: any[], focalIndex: number | null = null) {
 		// const clientWidth = windowRef.current?.clientWidth!;
 		// const remainingWidth = ((clientWidth - 100) / clientWidth) * 100;
@@ -97,20 +110,21 @@ export default function Layout() {
 		// Handle specific pane focus
 		if (focalIndex !== null) {
 			let sizes = new Array(panes.length).fill(0);
-			sizes[focalIndex] = remainingWidth - 0 * (panes.length - 1);
+			sizes[focalIndex] = remainingWidth;
+			return sizes;
+		} else {
+			// Evenly distribute remaining space among all panes
+			let remainingPercentage = remainingWidth / panes.length;
+			let sizes = new Array(panes.length).fill(remainingPercentage);
 			return sizes;
 		}
-
-		// Evenly distribute remaining space among all panes
-		let remainingPercentage = remainingWidth / panes.length;
-		let sizes = new Array(panes.length).fill(remainingPercentage);
-		return sizes;
 	}
 
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
-		if (isCmdOrCtrl && event.key in paneStates) {
-			updateSplitSizes(enabledProviders, paneStates[event.key]);
+		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
+			const newSizes = updateSplitSizes(enabledProviders, paneShortcutKeys[event.key]);
+			setSizes([...newSizes]);
 			// event.preventDefault();
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
@@ -147,14 +161,13 @@ export default function Layout() {
 
 		enterKeyHandler(event);
 	}
-	const sizes = updateSplitSizes(enabledProviders);
-	console.log({ enabledProviders, paneList, sizes });
+
 	return (
 		<div id="windowRef" ref={windowRef}>
 			<Split
 				// sizes={[10, ...sizes]}
 				sizes={sizes}
-				minSize={100}
+				minSize={0}
 				expandToMin={false}
 				gutterSize={3}
 				gutterAlign="center"
