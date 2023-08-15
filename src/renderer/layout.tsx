@@ -13,7 +13,9 @@ import { ProviderInterface } from 'lib/types';
 
 // @ts-ignore
 type paneInfo = { webviewId: string; shortName: string };
-const defaultPaneList = getEnabledProviders(allProviders as ProviderInterface[]).map((x) => ({
+const defaultPaneList = getEnabledProviders(
+	allProviders as ProviderInterface[],
+).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
@@ -30,7 +32,6 @@ export default function Layout() {
 		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!,
 	);
 
-
 	const [sizes, setSizes] = React.useState(updateSplitSizes(enabledProviders));
 
 	React.useEffect(() => {
@@ -38,7 +39,6 @@ export default function Layout() {
 	}, [paneList]);
 
 	const resetPaneList = () => setPaneList(defaultPaneList);
-
 
 	const nonEnabledProviders = allProviders.filter(
 		(x) => !enabledProviders.includes(x),
@@ -123,7 +123,10 @@ export default function Layout() {
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
-			const newSizes = updateSplitSizes(enabledProviders, paneShortcutKeys[event.key]);
+			const newSizes = updateSplitSizes(
+				enabledProviders,
+				paneShortcutKeys[event.key],
+			);
 			setSizes([...newSizes]);
 			// event.preventDefault();
 		} else if (
