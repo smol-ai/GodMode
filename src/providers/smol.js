@@ -7,7 +7,7 @@ class SmolTalk extends Provider {
 	static url = 'https://smoltalk.vercel.app/';
 
 	static handleInput(input) {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
 		var inputElement = document.querySelector('#smol-inputbox')
 		function simulateUserInput(element, text) {
 			var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
@@ -18,11 +18,11 @@ class SmolTalk extends Provider {
 		}
 
 		simulateUserInput(inputElement, \`${input}\`);
-	`);
+	}`);
 	}
 
 	static clearCookies() {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
       const cookies = document.cookie.split(";");
 
       for (let i = 0; i < cookies.length; i++) {
@@ -31,18 +31,19 @@ class SmolTalk extends Provider {
           const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
           document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
       }
-      `);
+		}`);
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
 
     var btn = document.querySelector('#smol-submitbtn');
 
     btn.focus();
     btn.setAttribute("aria-disabled", "false"); // doesnt work alone
     btn.disabled = false;
-    btn.click()`);
+    btn.click()
+	}`);
 	}
 
 	static handleCss() {

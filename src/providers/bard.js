@@ -18,12 +18,12 @@ class Bard extends Provider {
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
         var btn = document.querySelector("button[aria-label*='Send message']");
         btn.setAttribute("aria-disabled", "false"); // doesnt work alone
         btn.focus();
         btn.click()
-      `);
+    }`);
 	}
 
 	static handleCss() {
@@ -70,20 +70,20 @@ class Bard extends Provider {
 		window.electron.electronStore.set('isDarkMode', isDarkMode);
 
 		if (isDarkMode) {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().executeJavaScript(`{
         document.querySelector('body').classList.add('dark-theme');
         document.querySelector('body').classList.remove('light-theme');
-      `);
+      }`);
 		} else {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().executeJavaScript(`{
         document.querySelector('body').classList.add('light-theme');
         document.querySelector('body').classList.remove('dark-theme');
-      `);
+      }`);
 		}
 	}
 
 	static isEnabled() {
-		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, true);
 	}
 }
 

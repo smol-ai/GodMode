@@ -1,9 +1,11 @@
 // const { ipcRenderer } = require('electron');
+// const log = require('electron-log');
 
 class Provider {
 	static webviewId = '';
 
 	static getWebview() {
+		// log('Provider.getWebview()', document.getElementById(this.webviewId));
 		return document.getElementById(this.webviewId);
 	}
 
@@ -13,7 +15,7 @@ class Provider {
 
 	static setupCustomPasteBehavior() {
 		this.getWebview().addEventListener('dom-ready', () => {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().executeJavaScript(`{
 					document.addEventListener('paste', (event) => {
 					event.preventDefault();
 					var text = event.clipboardData.getData('text');
@@ -37,7 +39,7 @@ class Provider {
 					activeElement.value = activeElement.value.slice(0, start) + text + activeElement.value.slice(end);
 					activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
 					});
-			`);
+				}`);
 		});
 	}
 
@@ -57,15 +59,15 @@ class Provider {
 	static handleDarkMode(isDarkMode) {
 		// Implement dark or light mode using prodiver-specific code
 		if (isDarkMode) {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().executeJavaScript(`{
 				document.documentElement.classList.add('dark');
 				document.documentElement.classList.remove('light');
-			`);
+			}`);
 		} else {
-			this.getWebview().executeJavaScript(`
+			this.getWebview().executeJavaScript(`{
 				document.documentElement.classList.add('light');
 				document.documentElement.classList.remove('dark');
-			`);
+			}`);
 		}
 	}
 

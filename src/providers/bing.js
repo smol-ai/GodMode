@@ -35,23 +35,23 @@ class Bing extends Provider {
 	}
 
 	static handleSubmit() {
-	// 	this.getWebview().executeJavaScript(`{
-	// 	// Access SERP Shadow DOM
-	// 	var serpDOM = document.querySelector('.cib-serp-main');
+		this.getWebview().executeJavaScript(`{
+		// Access SERP Shadow DOM
+		var serpDOM = document.querySelector('.cib-serp-main');
 
-	// 	// Inner Input Shadow DOM
-	// 	var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
+		// Inner Input Shadow DOM
+		var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
 
-	// 	// Submit Button
-	// 	var submitButton = inputDOM.shadowRoot.querySelector('div.submit button.primary');
-	// 	submitButton.click();
+		// Submit Button
+		var submitButton = inputDOM.shadowRoot.querySelector('div.submit button.primary');
+		submitButton.click();
 
-	// 	submitButton.focus();
-	// 	setTimeout(() => {
-	// 		submitButton.click();
-	// 	}, 100)
-  // }
-	// 	`);
+		submitButton.focus();
+		setTimeout(() => {
+			submitButton.click();
+		}, 100)
+  }
+		`);
 	}
 
 	/** Bing requires MS Edge user agent. */
@@ -133,7 +133,7 @@ class Bing extends Provider {
 			`);
 		} else {
 			this.getWebview().executeJavaScript(`{
-				document.getElementById("rdiolight").click();
+				document?.getElementById("rdiolight").click();
       }
 			`);
 		}

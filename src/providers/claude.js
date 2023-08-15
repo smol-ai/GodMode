@@ -8,17 +8,19 @@ class Claude extends Provider {
 	static url = 'https://console.anthropic.com/chat/new';
 
 	static handleInput(input) {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('div.ProseMirror')
-    inputElement.innerHTML = \`${input}\``);
+    inputElement.innerHTML = \`${input}\`
+		}`);
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
     var btn = document.querySelector('div.group.grid.p-3 button:has(svg)'); // YES we are using the has selector!!!!
     btn.focus();
     btn.disabled = false;
-    btn.click()`);
+    btn.click()
+	}`);
 	}
 
 	static handleCss() {

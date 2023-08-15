@@ -72,7 +72,7 @@ class Claude2 extends Provider {
 	}
 
 	static isEnabled() {
-		return window.electron.electronStore.get(`${this.webviewId}Enabled`, true);
+		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
 	}
 }
 

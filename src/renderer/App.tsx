@@ -1,23 +1,23 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 // import icon from '../../assets/icon.svg';
 // https://electron-react-boilerplate.js.org/docs/styling#tailwind-integration
+import React from 'react';
+import Split from 'react-split';
 import 'tailwindcss/tailwind.css';
 import { getEnabledProviders } from 'utils';
-import './App.css';
-import OpenAi from '../providers/openai';
 import Bard from '../providers/bard';
 import Bing from '../providers/bing';
 import Claude from '../providers/claude';
 import Claude2 from '../providers/claude2';
-import Together from '../providers/together';
-import Perplexity from '../providers/perplexity';
-import Phind from '../providers/phind';
-import PerplexityLlama from '../providers/perplexity-llama.js';
 import HuggingChat from '../providers/huggingchat';
 import OobaBooga from '../providers/oobabooga';
+import OpenAi from '../providers/openai';
+import Perplexity from '../providers/perplexity';
+import PerplexityLlama from '../providers/perplexity-llama.js';
+import Phind from '../providers/phind';
 import Smol from '../providers/smol';
-import React, { useState } from 'react';
-import Split from 'react-split';
+import Together from '../providers/together';
+import './App.css';
 
 function updateSplitSizes(panes: any[], focalIndex = null) {
   // Handle specific pane focus
@@ -38,17 +38,18 @@ function Hello() {
     OpenAi,
     Bard,
     Bing,
-    // Claude,
+    // Claude, // Can't Verify
     Claude2,
-    // Together,
-    // Perplexity,
-    // Phind,
-    // PerplexityLlama,
-    // HuggingChat,
-    // OobaBooga,
-    // Smol,
+    Together,
+    Perplexity,
+    // Phind, // Broken
+    PerplexityLlama,
+    HuggingChat,
+    // OobaBooga, // Can't Verify
+    Smol,
   };
   const enabledProviders = getEnabledProviders(providers);
+
   React.useEffect(() => {
     enabledProviders.forEach((provider) => {
       // Call provider-specific CSS handling and custom paste setup
@@ -56,12 +57,15 @@ function Hello() {
       provider.setupCustomPasteBehavior();
     });
   }, [enabledProviders]);
+
   const [superprompt, setSuperprompt] = React.useState('');
+
   React.useEffect(() => {
     if (superprompt) {
       enabledProviders.forEach((provider) => {
         // Call provider-specific CSS handling and custom paste setup
         try {
+          console.debug(`${provider.paneId()} settling...`)
           provider.handleInput(superprompt);
         } catch (err) {
           console.error('error settling ' + provider.paneId(), err);
@@ -104,7 +108,7 @@ function Hello() {
   return (
     <div>
       <Split
-        sizes={[30, ...sizes]}
+        sizes={[...sizes]}
         minSize={100}
         expandToMin={false}
         gutterSize={3}
@@ -115,9 +119,9 @@ function Hello() {
         // cursor="col-resize"
         className="flex"
       >
-        <div>
+        {/* <div>
           <h1> panel </h1>
-        </div>
+        </div> */}
         {enabledProviders.map((provider) => (
           <div key={provider.paneId()} className="page darwin">
             <webview

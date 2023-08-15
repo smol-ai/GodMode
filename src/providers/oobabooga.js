@@ -9,11 +9,11 @@ class OobaBooga extends Provider {
 	// todo: let user customize their preferred template.
 	static templateFn = (input) => `Common sense questions and answers
 
-  Question: ${input}
+  Question: \`${input}\`
   Factual answer:`;
 
 	static handleInput(input) {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
         function simulateUserInput(element, text) {
           const inputEvent = new Event('input', { bubbles: true });
           element.focus();
@@ -29,16 +29,16 @@ class OobaBooga extends Provider {
           console.log(\`${this.templateFn(input)}\`);
           console.error(err);
         }
-      `);
+      }`);
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
+		this.getWebview().executeJavaScript(`{
         var btn = document.querySelector("button.primary")
         btn.focus();
         btn.disabled = false;
         btn.click();
-      `);
+    }`);
 	}
 
 	static handleCss() {

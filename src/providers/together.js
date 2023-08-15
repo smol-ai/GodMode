@@ -7,13 +7,13 @@ class Together extends Provider {
   static url = 'https://api.together.xyz/playground/chat';
 
   static handleInput(input) {
-    this.getWebview().executeJavaScript(`
+    this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('form textarea[placeholder*="Enter text here"]');
     var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
     nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
     var event = new Event('input', { bubbles: true});
     inputElement.dispatchEvent(event);
-    `);
+    }`);
   }
 
   // inputElement.focus();
@@ -32,11 +32,12 @@ class Together extends Provider {
   // }, 100);
 
   static handleSubmit() {
-    this.getWebview().executeJavaScript(`
+    this.getWebview().executeJavaScript(`{
     var btn = document.querySelector('form button:has(svg)'); // YES we are using the has selector!!!!
     btn.focus();
     btn.disabled = false;
-    btn.click()`);
+    btn.click()
+  }`);
   }
 
   static handleCss() {
