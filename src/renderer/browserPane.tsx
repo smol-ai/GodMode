@@ -92,7 +92,7 @@ export function BrowserPane({
 											{...provided2.droppableProps}
 											ref={provided2.innerRef}
 											className={`w-full ${
-												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
+												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-white'
 											}`}
 										>
 											{paneList?.map((item, index) => (
@@ -102,13 +102,15 @@ export function BrowserPane({
 													index={index}
 												>
 													{(provided, snapshot) => {
-														const hidePane = () =>
+														const hidePane = () => {
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
 																		pane.webviewId !== item.webviewId,
 																),
 															);
+															window.electron.browserWindow.reload();
+														};
 														return (
 															<div
 																ref={provided.innerRef}
@@ -117,7 +119,7 @@ export function BrowserPane({
 																className={` user-select-none px-4 py-2 mb-2 text-sm flex group justify-between items-center ${
 																	snapshot.isDragging
 																		? 'bg-green-200'
-																		: 'bg-gray-200'
+																		: 'bg-gray-300'
 																}
 															`}
 																style={provided.draggableProps.style}
@@ -162,24 +164,11 @@ export function BrowserPane({
 										</div>
 										<Menu.Item>
 											{({ active }) => (
-												// <button
-												// 	// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
-												// 	className={classNames(
-												// 		active
-												// 			? 'bg-gray-100 text-gray-900'
-												// 			: 'text-gray-700',
-												// 		'block w-full px-4 py-2 text-sm'
-												// 	)}
-												// 	onClick={resetPaneList}
-												// >
-												// 	Add new provider
-												// </button>
 												<div className="px-4 pb-2">
 													<ListBox
 														selected={nullProvider}
 														selectList={[nullProvider, ...nonEnabledProviders]}
 														setSelected={(value: any) => {
-															console.log('setselected', value);
 															if (nullProvider.webviewId !== value.webviewId) {
 																setPaneList([
 																	...paneList,
@@ -188,6 +177,7 @@ export function BrowserPane({
 																		shortName: value.shortName,
 																	},
 																]);
+																window.electron.browserWindow.reload();
 															}
 														}}
 													/>

@@ -10,6 +10,7 @@ import { getEnabledProviders } from 'lib/utils';
 import './App.css';
 import { BrowserPane } from './browserPane';
 import { ProviderInterface } from 'lib/types';
+import { TitleBar } from './TitleBar';
 
 // @ts-ignore
 type paneInfo = { webviewId: string; shortName: string };
@@ -166,7 +167,8 @@ export default function Layout() {
 	}
 
 	return (
-		<div id="windowRef" ref={windowRef}>
+		<div id="windowRef" className="flex flex-col" ref={windowRef}>
+			<TitleBar />
 			<Split
 				// sizes={[10, ...sizes]}
 				sizes={sizes}
