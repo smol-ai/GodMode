@@ -29,19 +29,27 @@ class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 store.reset();
+
 ipcMain.on('ipc-example', async (event, arg) => {
 	const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
 	console.log(msgTemplate(arg));
 	event.reply('ipc-example', msgTemplate('pong'));
 });
+
 ipcMain.on('electron-store-get', async (event, val, def) => {
 	event.returnValue = store.get(val, def);
 });
+
 ipcMain.on('electron-store-set', async (event, property, val) => {
 	store.set(property, val);
 });
+
 ipcMain.on('reload-browser', async (event, property, val) => {
 	mainWindow?.reload();
+});
+
+ipcMain.on('open-settings-window', () => {
+  createSettingsWindow();
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -68,6 +76,28 @@ const installExtensions = async () => {
 		)
 		.catch(console.log);
 };
+
+/* ========================================================================== */
+/* Settings Window                                                            */
+/* ========================================================================== */
+
+let settingsWindow: BrowserWindow | null = null;
+
+function createSettingsWindow() {
+  settingsWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  settingsWindow.loadFile('../settings/settings.html');
+  settingsWindow.on('closed', () => {
+    settingsWindow = null;
+  });
+}
+
+/* End Settings Window ------------------------------------------------------ */
 
 const createWindow = async () => {
 	if (isDebug) {
