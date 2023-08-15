@@ -94,7 +94,7 @@ app.on('ready', () => {
 			height: 750,
 		},
 		tray,
-		showOnAllWorkspaces: false,
+		showOnAllWorkspaces: true,
 		preloadWindow: true,
 		showDockIcon: true,
 		icon: image,
