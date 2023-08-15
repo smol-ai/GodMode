@@ -45,7 +45,7 @@ export function BrowserPane({
 		const reorderedItems = reorder(
 			paneList,
 			result.source.index,
-			result.destination.index
+			result.destination.index,
 		);
 		setPaneList(reorderedItems);
 		window.electron.browserWindow.reload();
@@ -106,8 +106,8 @@ export function BrowserPane({
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId
-																)
+																		pane.webviewId !== item.webviewId,
+																),
 															);
 														return (
 															<div
@@ -205,7 +205,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
+														'block px-4 py-2 text-sm',
 													)}
 													onClick={resetPaneList}
 												>
@@ -221,7 +221,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm'
+														'block px-4 py-2 text-sm',
 													)}
 													onClick={resetPaneList}
 												>
@@ -274,7 +274,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 										className={({ active }) =>
 											classNames(
 												active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-												'relative cursor-default select-none py-2 pl-3 pr-9'
+												'relative cursor-default select-none py-2 pl-3 pr-9',
 											)
 										}
 										value={listItem}
@@ -284,7 +284,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 												<span
 													className={classNames(
 														selected ? 'font-semibold' : 'font-normal',
-														'block truncate'
+														'block truncate',
 													)}
 												>
 													{listItem.fullName}
@@ -294,7 +294,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 													<span
 														className={classNames(
 															active ? 'text-white' : 'text-indigo-600',
-															'absolute inset-y-0 right-0 flex items-center pr-4'
+															'absolute inset-y-0 right-0 flex items-center pr-4',
 														)}
 													>
 														<CheckIcon className="w-5 h-5" aria-hidden="true" />
