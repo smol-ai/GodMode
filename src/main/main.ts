@@ -9,7 +9,8 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, screen, ipcMain } from 'electron';
+
+import { app, BrowserWindow, shell, screen, ipcMain, globalShortcut } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Store from 'electron-store';
@@ -29,19 +30,27 @@ class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 store.reset();
+
 ipcMain.on('ipc-example', async (event, arg) => {
 	const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
 	console.log(msgTemplate(arg));
 	event.reply('ipc-example', msgTemplate('pong'));
 });
+
 ipcMain.on('electron-store-get', async (event, val, def) => {
 	event.returnValue = store.get(val, def);
 });
+
 ipcMain.on('electron-store-set', async (event, property, val) => {
 	store.set(property, val);
 });
+
 ipcMain.on('reload-browser', async (event, property, val) => {
 	mainWindow?.reload();
+});
+
+ipcMain.on('open-settings-window', () => {
+  createSettingsWindow();
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -203,10 +212,32 @@ app
 	.whenReady()
 	.then(() => {
 		createWindow();
+
+		// Register global shortcut (CommandOrControl+Shift+G) to show the app
+		const ret = globalShortcut.register('CommandOrControl+Shift+G', () => {
+			if (mainWindow) {
+				if (mainWindow.isMinimized()) {
+					mainWindow.restore();
+				}
+				mainWindow.focus();
+				mainWindow.show();
+			}
+		});
+
+		if (!ret) {
+			console.log('Global shortcut registration failed');
+		}
+
 		app.on('activate', () => {
+
 			// On macOS it's common to re-create a window in the app when the
 			// dock icon is clicked and there are no other windows open.
 			if (mainWindow === null) createWindow();
 		});
 	})
 	.catch(console.log);
+
+app.on('will-quit', () => {
+	// Unregister the global shortcut
+	globalShortcut.unregisterAll();
+});
