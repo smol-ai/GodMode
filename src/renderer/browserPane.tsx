@@ -102,13 +102,15 @@ export function BrowserPane({
 													index={index}
 												>
 													{(provided, snapshot) => {
-														const hidePane = () =>
+														const hidePane = () => {
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId,
-																),
+																		pane.webviewId !== item.webviewId
+																)
 															);
+															window.electron.browserWindow.reload();
+														};
 														return (
 															<div
 																ref={provided.innerRef}
@@ -162,24 +164,11 @@ export function BrowserPane({
 										</div>
 										<Menu.Item>
 											{({ active }) => (
-												// <button
-												// 	// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
-												// 	className={classNames(
-												// 		active
-												// 			? 'bg-gray-100 text-gray-900'
-												// 			: 'text-gray-700',
-												// 		'block w-full px-4 py-2 text-sm'
-												// 	)}
-												// 	onClick={resetPaneList}
-												// >
-												// 	Add new provider
-												// </button>
 												<div className="px-4 pb-2">
 													<ListBox
 														selected={nullProvider}
 														selectList={[nullProvider, ...nonEnabledProviders]}
 														setSelected={(value: any) => {
-															console.log('setselected', value);
 															if (nullProvider.webviewId !== value.webviewId) {
 																setPaneList([
 																	...paneList,
@@ -188,6 +177,7 @@ export function BrowserPane({
 																		shortName: value.shortName,
 																	},
 																]);
+																window.electron.browserWindow.reload();
 															}
 														}}
 													/>
@@ -205,7 +195,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
@@ -221,7 +211,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
