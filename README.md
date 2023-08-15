@@ -1,8 +1,8 @@
-# 👼 smol menubar
+# godmode rewrite
 
-This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT (defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!!), Claude 2, Perplexity.ai, Bing and more (see below) with a single keyboard shortcut (Cmd+Shift+G).
+started with https://github.com/electron-react-boilerplate/electron-react-boilerplate.git
 
-> we also support Bard, Phind, Together.ai, and local/GGML models like LLaMA and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) but hide by default bc they aren't as good!
+and ported over just a bit of the provider code. it seems to work.
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
 
