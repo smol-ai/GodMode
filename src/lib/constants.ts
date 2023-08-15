@@ -14,19 +14,18 @@ import Vercel from 'providers/vercel';
 import Poe from 'providers/poe';
 
 export const allProviders = [
-  OpenAi,
-  Bard,
-  Bing,
-  // Claude, // Can't Verify
-  Claude2,
-  Together,
-  Perplexity,
-  // Phind, // Broken
-  PerplexityLlama,
-  HuggingChat,
-  // OobaBooga, // Can't Verify
-  Smol,
-  Vercel,
-  Poe,
+	OpenAi,
+	Bard,
+	Bing,
+	// Claude, // Can't Verify
+	Claude2,
+	Together,
+	Perplexity,
+	// Phind, // Broken
+	PerplexityLlama,
+	HuggingChat,
+	// OobaBooga, // Can't Verify
+	Smol,
+	Vercel,
+	Poe,
 ];
-

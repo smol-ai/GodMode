@@ -21,7 +21,7 @@
 		"build:old": "npm run make",
 		"buildAndSign": "NODE_ENV=sign npm run make",
 		"publish": "electron-forge publish --arch arm64,x64",
-		"format": "prettier '**/*.js' --write"
+		"format": "prettier '**/*.{js,jsx,ts,tsx}' --write"
 	},
 	"config": {
 		"forge": "./forge.config.js"

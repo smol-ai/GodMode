@@ -6,11 +6,11 @@ import './App.css';
 import Layout from './layout';
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />} />
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Layout />} />
+			</Routes>
+		</Router>
+	);
 }
