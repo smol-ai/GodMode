@@ -86,10 +86,12 @@ const createWindow = async () => {
 
 	mainWindow = new BrowserWindow({
 		show: false,
+		// frame: false,
+		titleBarStyle: 'hidden',
 		width: width - 100,
 		height: height - 100,
 		icon: getAssetPath('icon.png'),
-		alwaysOnTop: true,
+		// alwaysOnTop: true,
 		webPreferences: {
 			webviewTag: true,
 			nodeIntegration: true,
