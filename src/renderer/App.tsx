@@ -18,7 +18,9 @@ import Phind from '../providers/phind';
 import Smol from '../providers/smol';
 import Together from '../providers/together';
 import Vercel from 'providers/vercel';
+import Poe from 'providers/poe';
 import './App.css';
+import { ipcRenderer } from 'electron';
 
 function updateSplitSizes(panes: any[], focalIndex = null) {
   // Handle specific pane focus
@@ -49,8 +51,21 @@ function Hello() {
     // OobaBooga, // Can't Verify
     Smol,
     Vercel,
+    Poe,
   };
   const enabledProviders = getEnabledProviders(providers);
+
+  React.useEffect(() => {
+    const handleGuestViewError = () => {
+      console.error('Guest view error, reloading window');
+      window.location.reload();
+    };
+
+    ipcRenderer.on('guest-view-error', handleGuestViewError);
+    return () => {
+      ipcRenderer.removeListener('guest-view-error', handleGuestViewError);
+    }
+  }, []);
 
   React.useEffect(() => {
     enabledProviders.forEach((provider) => {
@@ -67,7 +82,6 @@ function Hello() {
       enabledProviders.forEach((provider) => {
         // Call provider-specific CSS handling and custom paste setup
         try {
-          console.debug(`${provider.paneId()} settling...`)
           provider.handleInput(superprompt);
         } catch (err) {
           console.error('error settling ' + provider.paneId(), err);
