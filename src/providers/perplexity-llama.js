@@ -8,7 +8,7 @@ class PerplexityLlama extends Provider {
 
 	static handleInput(input) {
 		try {
-		this.getWebview().executeJavaScript(`{
+			this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
         var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
         nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
@@ -16,14 +16,14 @@ class PerplexityLlama extends Provider {
         var event = new Event('input', { bubbles: true});
         inputElement.dispatchEvent(event);
 		}`);
-	} catch (e) {
-		console.debug('Error in PerplexityLlama.handleInput():', e);
-	}
+		} catch (e) {
+			console.debug('Error in PerplexityLlama.handleInput():', e);
+		}
 	}
 
 	static handleSubmit() {
 		try {
-		this.getWebview().executeJavaScript(`{
+			this.getWebview().executeJavaScript(`{
         var buttons = Array.from(document.querySelectorAll('button.bg-super'));
         var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 
@@ -32,25 +32,24 @@ class PerplexityLlama extends Provider {
         button.click();
 		}
       `);
-
 		} catch (e) {
 			console.debug('Error in PerplexityLlama.handleSubmit():', e);
+		}
 	}
-}
 
 	static handleCss() {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
 			try {
-			setTimeout(() => {
-				this.getWebview().executeJavaScript(`{
+				setTimeout(() => {
+					this.getWebview().executeJavaScript(`{
           // Add Dark Mode
           document.documentElement.classList.add('dark');
 				}`);
-			}, 100);
-		} catch (e) {
-			console.debug('Error in PerplexityLlama.handleCss():', e);
-		}
+				}, 100);
+			} catch (e) {
+				console.debug('Error in PerplexityLlama.handleCss():', e);
+			}
 			// Hide the "Try asking" segment
 			setTimeout(() => {
 				this.getWebview().insertCSS(`

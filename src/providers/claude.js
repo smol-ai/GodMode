@@ -1,4 +1,3 @@
-
 const Provider = require('./provider');
 
 class Claude extends Provider {

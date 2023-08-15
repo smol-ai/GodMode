@@ -1,4 +1,3 @@
-
 const Provider = require('./provider');
 
 class Bing extends Provider {
@@ -117,7 +116,7 @@ class Bing extends Provider {
 			// 		conversationDOM.querySelector('.fade.top').remove();
 			// 		conversationDOM.querySelector('.fade.bottom').remove();
 
-      //   }
+			//   }
 			// 	`);
 			// }, 1000);
 		});

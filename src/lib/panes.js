@@ -90,7 +90,7 @@ function updateSplitSizes(panes, splitInstance, focalIndex = null) {
 	// Evenly distribute remaining space among all panes
 	let remainingPercentage = 100 - minPercentage * panes.length;
 	let sizes = panes.map(
-		() => minPercentage + remainingPercentage / panes.length,
+		() => minPercentage + remainingPercentage / panes.length
 	);
 
 	console.log('sizes', sizes);
