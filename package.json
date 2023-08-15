@@ -122,7 +122,7 @@
 	},
 	"build": {
 		"productName": "GodMode",
-		"appId": "org.erb.GodMode",
+		"appId": "org.smol.GodMode",
 		"asar": true,
 		"asarUnpack": "**\\*.{node,dll}",
 		"files": [
@@ -130,7 +130,7 @@
 			"node_modules",
 			"package.json"
 		],
-		"afterSign": ".erb/scripts/notarize.js",
+		"afterSign": "scripts/scripts/notarize.js",
 		"mac": {
 			"target": {
 				"target": "default",
