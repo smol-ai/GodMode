@@ -1,8 +1,8 @@
 # GodMode - the smol AI Chat Browser
 
-This browser only does 1 thing:
+This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT, Claude 2, Perplexity.ai, Bing and more (see below) **with a single keyboard shortcut (Cmd+Shift+G)**.
 
-![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
+![image](https://github.com/smol-ai/menubar/assets/6764957/90f4bab4-e406-4507-b37e-8c8d80d18f15)
 
 ([click for video demo](https://twitter.com/swyx/status/1678944036135260160))
 
@@ -21,7 +21,7 @@ Yes and no:
 
 | Provider (default in **bold**)                                                          | Notes                                                                                                                                        |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ChatGPT**                                                                             | Defaults to GPT 4 Code Interpreter                                                                                                           |
+| **ChatGPT**                                                                             | Defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!                                                                                                           |
 | **Claude 2**                                                                            | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | **HuggingChat**                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
 | **Perplexity**                                                                          | Search + Chat                                                                                                                                |
