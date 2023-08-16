@@ -1,19 +1,19 @@
-import { Fragment } from 'react';
-import { Menu, Listbox, Transition } from '@headlessui/react';
+import { Listbox, Menu, Transition } from '@headlessui/react';
 import {
 	Bars2Icon,
-	ChevronUpDownIcon,
 	CheckIcon,
+	ChevronUpDownIcon,
 } from '@heroicons/react/20/solid';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Fragment } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 // https://tailwindui.com/components/application-ui/elements/dropdowns
-function classNames(...classes) {
+function classNames(...classes: any[]) {
 	return classes.filter(Boolean).join(' ');
 }
 
 // a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
+const reorder = (list: any[], startIndex: number, endIndex: number) => {
 	const result = Array.from(list);
 	const [removed] = result.splice(startIndex, 1);
 	result.splice(endIndex, 0, removed);
@@ -28,11 +28,15 @@ export function BrowserPane({
 	setPaneList,
 	resetPaneList,
 	nonEnabledProviders,
-}) {
+}: any) {
 	const nullProvider = {
 		webviewId: 'nullProvider',
 		shortName: 'Select a provider',
 		fullName: 'Select a provider',
+	};
+
+	const signIn = () => {
+		window.electron.auth.openSignIn();
 	};
 
 	function onDragEnd(result: {
@@ -45,7 +49,7 @@ export function BrowserPane({
 		const reorderedItems = reorder(
 			paneList,
 			result.source.index,
-			result.destination.index,
+			result.destination.index
 		);
 		setPaneList(reorderedItems);
 		window.electron.browserWindow.reload();
@@ -95,19 +99,19 @@ export function BrowserPane({
 												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
 											}`}
 										>
-											{paneList?.map((item, index) => (
+											{paneList?.map((item: any, index: number) => (
 												<Draggable
 													key={item.webviewId}
 													draggableId={item.webviewId}
 													index={index}
 												>
-													{(provided, snapshot) => {
+													{(provided: any, snapshot: any) => {
 														const hidePane = () =>
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId,
-																),
+																		pane.webviewId !== item.webviewId
+																)
 															);
 														return (
 															<div
@@ -198,16 +202,32 @@ export function BrowserPane({
 									<div className="py-1">
 										<Menu.Item>
 											{({ active }) => (
-												<a
-													href="https://github.com/smol-ai/menubar/issues/new"
+												<button
+													onClick={signIn}
 													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
 													className={classNames(
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm w-full text-left'
 													)}
-													onClick={resetPaneList}
+												>
+													Sign in
+												</button>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
+												<a
+													href="https://github.com/smol-ai/menubar/issues/new"
+													target="_blank"
+													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
 												>
 													Share Feedback
 												</a>
@@ -221,7 +241,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm',
+														'px-4 py-2 text-sm text-left block w-full'
 													)}
 													onClick={resetPaneList}
 												>
@@ -274,7 +294,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 										className={({ active }) =>
 											classNames(
 												active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-												'relative cursor-default select-none py-2 pl-3 pr-9',
+												'relative cursor-default select-none py-2 pl-3 pr-9'
 											)
 										}
 										value={listItem}
@@ -284,7 +304,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 												<span
 													className={classNames(
 														selected ? 'font-semibold' : 'font-normal',
-														'block truncate',
+														'block truncate'
 													)}
 												>
 													{listItem.fullName}
@@ -294,7 +314,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 													<span
 														className={classNames(
 															active ? 'text-white' : 'text-indigo-600',
-															'absolute inset-y-0 right-0 flex items-center pr-4',
+															'absolute inset-y-0 right-0 flex items-center pr-4'
 														)}
 													>
 														<CheckIcon className="w-5 h-5" aria-hidden="true" />

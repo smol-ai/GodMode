@@ -8,15 +8,23 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import {
+	BrowserWindow,
+	BrowserWindowConstructorOptions as WindowOptions,
+	app,
+	ipcMain,
+	shell,
+} from 'electron';
 import log from 'electron-log';
 import Store from 'electron-store';
+import { autoUpdater } from 'electron-updater';
+import path from 'path';
+
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
 let store = new Store();
+let windows = [];
 
 class AppUpdater {
 	constructor() {
@@ -43,6 +51,20 @@ ipcMain.on('electron-store-set', async (event, property, val) => {
 ipcMain.on('reload-browser', async (event, property, val) => {
 	mainWindow?.reload();
 });
+ipcMain.on('open-sign-in', (event, arg) => {
+	openPopup('auth');
+});
+
+// const signInWithGithub = () => {
+// 	var options = {
+// 		client_id: 'your_id',
+// 		client_secret: 'your_secret',
+// 		scopes: ['...'], // Scopes limit access for OAuth tokens.
+// 	};
+// 	var githubUrl = 'https://github.com/login/oauth/authorize?';
+// 	var authUrl =
+// 		githubUrl + 'client_id=' + options.client_id + '&scope=' + options.scopes;
+// };
 
 if (process.env.NODE_ENV === 'production') {
 	const sourceMapSupport = require('source-map-support');
@@ -64,7 +86,7 @@ const installExtensions = async () => {
 	return installer
 		.default(
 			extensions.map((name) => installer[name]),
-			forceDownload,
+			forceDownload
 		)
 		.catch(console.log);
 };
@@ -96,6 +118,9 @@ const createWindow = async () => {
 	});
 
 	mainWindow.loadURL(resolveHtmlPath('index.html'));
+	// mainWindow.loadFile(
+	// 	...createFileRoute(join(__dirname, '../renderer/index.html'), 'main')
+	// );
 
 	mainWindow.on('ready-to-show', () => {
 		if (!mainWindow) {
@@ -124,6 +149,28 @@ const createWindow = async () => {
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
 	new AppUpdater();
+};
+
+const openPopup = async (route: string = '') => {
+	const popupWindow = new BrowserWindow({
+		closable: true,
+		// alwaysOnTop: true,
+		webPreferences: {
+			nodeIntegration: true,
+			webSecurity: false,
+			preload: app.isPackaged
+				? path.join(__dirname, 'preload.js')
+				: path.join(__dirname, '../../scripts/dll/preload.js'),
+		},
+	});
+
+	windows.push(popupWindow);
+
+	popupWindow.loadURL(resolveHtmlPath('index.html') + '#' + route);
+
+	popupWindow.once('ready-to-show', () => {
+		popupWindow.show();
+	});
 };
 
 /**

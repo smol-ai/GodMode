@@ -38,6 +38,11 @@ const electronHandler = {
 			ipcRenderer.send('reload-browser');
 		},
 	},
+	auth: {
+		openSignIn() {
+			ipcRenderer.send('open-sign-in');
+		},
+	},
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

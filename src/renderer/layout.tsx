@@ -1,12 +1,11 @@
-import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 // import icon from '../../assets/icon.svg';
 // https://electron-react-boilerplate.js.org/docs/styling#tailwind-integration
 import Pane from 'components/pane';
 import { allProviders } from 'lib/constants';
+import { getEnabledProviders } from 'lib/utils';
 import React from 'react';
 import Split from 'react-split';
 import 'tailwindcss/tailwind.css';
-import { getEnabledProviders } from 'lib/utils';
 import './App.css';
 import { BrowserPane } from './browserPane';
 
@@ -18,7 +17,7 @@ const defaultPaneList = getEnabledProviders(allProviders).map((x) => ({
 })); // in future we will have to disconnect the provider from the webview Id
 const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 	'paneList',
-	defaultPaneList,
+	defaultPaneList
 );
 
 export default function Layout() {
@@ -29,10 +28,10 @@ export default function Layout() {
 	}, [paneList]);
 	const resetPaneList = () => setPaneList(defaultPaneList);
 	const enabledProviders = paneList.map(
-		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!,
+		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
 	);
 	const nonEnabledProviders = allProviders.filter(
-		(x) => !enabledProviders.includes(x),
+		(x) => !enabledProviders.includes(x)
 	);
 
 	/*
@@ -46,7 +45,7 @@ export default function Layout() {
 	}, [enabledProviders]);
 
 	React.useEffect(() => {
-		if (superprompt) {
+		if (superprompt !== undefined && superprompt !== null) {
 			enabledProviders.forEach((provider) => {
 				// Call provider-specific CSS handling and custom paste setup
 				try {
@@ -61,7 +60,7 @@ export default function Layout() {
 	const formRef = React.useRef<HTMLDivElement>(null); // don't actually use a <form> because it will just reload on submit even if you preventdefault
 	const SuperPromptEnterKey = window.electron.electronStore.get(
 		'SuperPromptEnterKey',
-		false,
+		false
 	);
 	const paneStates: Record<string, number | null> = {};
 	for (let i = 0; i < enabledProviders.length; i++) {
