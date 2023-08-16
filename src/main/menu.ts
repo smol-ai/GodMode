@@ -4,11 +4,16 @@ import {
 	shell,
 	BrowserWindow,
 	MenuItemConstructorOptions,
+	ipcRenderer
 } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 	selector?: string;
 	submenu?: DarwinMenuItemConstructorOptions[] | Menu;
+}
+
+function openSettingsWindow() {
+  ipcRenderer.send('open-settings-window');
 }
 
 export default class MenuBuilder {

@@ -8,6 +8,7 @@ class Bing extends Provider {
 	static url = 'https://bing.com/chat';
 
 	static handleInput(input) {
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
 			// Simulate user input
 			function simulateUserInput(element, text) {
@@ -21,14 +22,12 @@ class Bing extends Provider {
 			var serpDOM = document.querySelector('.cib-serp-main');
       if (!serpDOM) {
         console.error('serpDOM for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        return // not logged in yet;
       }
 
 			// Action Bar Shadow DOM
 			var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
       if (!inputDOM) {
         console.error('inputDOM for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        return // not logged in yet;
       }
 
 			// Text Input Shadow DOM
@@ -76,6 +75,8 @@ class Bing extends Provider {
 				html, body {
 					overflow: hidden;
 					scrollbar-width: none;
+					zoom: 80%;
+					font-size: small;
 				}
 				header {
 					display: none !important;

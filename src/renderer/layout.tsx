@@ -10,6 +10,7 @@ import { getEnabledProviders } from 'lib/utils';
 import './App.css';
 import { BrowserPane } from './browserPane';
 import { ProviderInterface } from 'lib/types';
+import { TitleBar } from './TitleBar';
 
 // @ts-ignore
 type paneInfo = { webviewId: string; shortName: string };
@@ -28,8 +29,17 @@ export default function Layout() {
 	const [superprompt, setSuperprompt] = React.useState('');
 	const [paneList, setPaneList] = React.useState(storedPaneList);
 
+
+	const originalAlwaysOnTop = window.electron.browserWindow.getAlwaysOnTop();
+	const [isAlwaysOnTop, setisAlwaysOnTop] = React.useState(originalAlwaysOnTop);
+	const toggleIsAlwaysOnTop = () => {
+		const newstate = window.electron.browserWindow.getAlwaysOnTop();
+		setisAlwaysOnTop(!newstate);
+		window.electron.browserWindow.setAlwaysOnTop(!newstate);
+	};
+
 	const enabledProviders = paneList.map(
-		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!,
+		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
 	);
 
 	const [sizes, setSizes] = React.useState(updateSplitSizes(enabledProviders));
@@ -41,7 +51,7 @@ export default function Layout() {
 	const resetPaneList = () => setPaneList(defaultPaneList);
 
 	const nonEnabledProviders = allProviders.filter(
-		(x) => !enabledProviders.includes(x),
+		(x) => !enabledProviders.includes(x)
 	);
 
 	/*
@@ -70,14 +80,13 @@ export default function Layout() {
 	const formRef = React.useRef<HTMLDivElement>(null); // don't actually use a <form> because it will just reload on submit even if you preventdefault
 	const SuperPromptEnterKey = window.electron.electronStore.get(
 		'SuperPromptEnterKey',
-		false,
+		false
 	);
 
 	const paneShortcutKeys: Record<string, number | null> = {};
 	for (let i = 0; i < enabledProviders.length; i++) {
 		paneShortcutKeys[`${i + 1}`] = i;
 	}
-	paneShortcutKeys['a'] = null;
 	paneShortcutKeys['A'] = null;
 
 	console.warn('paneShortcutKeys', paneShortcutKeys);
@@ -86,10 +95,8 @@ export default function Layout() {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		const isEnter = event.key === 'Enter';
 
-		// console.log({ SuperPromptEnterKey, isEnter, isCmdOrCtrl });
 		if ((SuperPromptEnterKey && isEnter) || (isCmdOrCtrl && isEnter)) {
 			event.preventDefault();
-			console.log('superprompt!');
 			// formRef.current?.submit();
 			enabledProviders.forEach((provider) => {
 				// Call provider-specific CSS handling and custom paste setup
@@ -125,10 +132,12 @@ export default function Layout() {
 		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
 			const newSizes = updateSplitSizes(
 				enabledProviders,
-				paneShortcutKeys[event.key],
+				paneShortcutKeys[event.key]
 			);
-			setSizes([...newSizes]);
-			// event.preventDefault();
+			setSizes(newSizes);
+			if (paneShortcutKeys[event.key] === null) {
+				window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
+			}
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
 			(isCmdOrCtrl && event.key === '=')
@@ -147,6 +156,8 @@ export default function Layout() {
 					.getWebview() // @ts-ignore
 					.setZoomLevel(provider.getWebview().getZoomLevel() - 1);
 			});
+		} else if (isCmdOrCtrl && event.key === 'p') {
+			toggleIsAlwaysOnTop();
 		} else if (
 			event.shiftKey &&
 			event.metaKey &&
@@ -164,11 +175,10 @@ export default function Layout() {
 
 		enterKeyHandler(event);
 	}
-
 	return (
-		<div id="windowRef" ref={windowRef}>
+		<div id="windowRef" className="flex flex-col" ref={windowRef}>
+			<TitleBar {...{ isAlwaysOnTop, toggleIsAlwaysOnTop }} />
 			<Split
-				// sizes={[10, ...sizes]}
 				sizes={sizes}
 				minSize={0}
 				expandToMin={false}
@@ -200,9 +210,9 @@ export default function Layout() {
 						onKeyDown={onKeyDown}
 						name="prompt"
 						placeholder="Enter a superprompt here.
-- Quick Open: Cmd+G or Submit: Cmd/Ctrl+Enter (customizable in menu)
-- Switch windows: Cmd+1/2/3/A, or Resize windows: Cmd -/+, or Back/Fwd: Cmd H/L
-- New chat: Cmd+R or Right-click menubar icon for more options!"
+- Quick Open: Cmd+G or Submit: Cmd/Ctrl+Enter
+- Switch windows: Cmd+1/2/3/etc, or Resize/Pin windows: Cmd -/+/p, or Back/Fwd: Cmd H/L
+- New chat: Cmd+R or Reset windows evenly: Cmd+Shift+A"
 					/>
 					<div className="flex items-center justify-center p-4 space-x-2">
 						<button
@@ -232,6 +242,8 @@ export default function Layout() {
 								setPaneList,
 								resetPaneList,
 								nonEnabledProviders,
+								isAlwaysOnTop,
+								toggleIsAlwaysOnTop,
 							}}
 						/>
 					</div>

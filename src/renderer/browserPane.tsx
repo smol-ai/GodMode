@@ -1,10 +1,11 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Menu, Listbox, Transition } from '@headlessui/react';
 import {
 	Bars2Icon,
 	ChevronUpDownIcon,
 	CheckIcon,
 } from '@heroicons/react/20/solid';
+import { BookmarkIcon, BookmarkSlashIcon } from '@heroicons/react/20/solid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // https://tailwindui.com/components/application-ui/elements/dropdowns
@@ -28,6 +29,8 @@ export function BrowserPane({
 	setPaneList,
 	resetPaneList,
 	nonEnabledProviders,
+	isAlwaysOnTop,
+	toggleIsAlwaysOnTop,
 }) {
 	const nullProvider = {
 		webviewId: 'nullProvider',
@@ -45,18 +48,17 @@ export function BrowserPane({
 		const reorderedItems = reorder(
 			paneList,
 			result.source.index,
-			result.destination.index,
+			result.destination.index
 		);
 		setPaneList(reorderedItems);
 		window.electron.browserWindow.reload();
 	}
-
 	// Normally you would want to split things out into separate components.
 	// But in this example everything is just done in one place for simplicity
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="droppable">
-				{(provided, snapshot) => (
+				{(provided2, snapshot) => (
 					<div className="flex flex-col justify-between">
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
@@ -89,10 +91,10 @@ export function BrowserPane({
 									</div>
 									<div className="py-0">
 										<div
-											{...provided.droppableProps}
-											ref={provided.innerRef}
+											{...provided2.droppableProps}
+											ref={provided2.innerRef}
 											className={`w-full ${
-												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
+												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-white'
 											}`}
 										>
 											{paneList?.map((item, index) => (
@@ -102,13 +104,15 @@ export function BrowserPane({
 													index={index}
 												>
 													{(provided, snapshot) => {
-														const hidePane = () =>
+														const hidePane = () => {
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId,
-																),
+																		pane.webviewId !== item.webviewId
+																)
 															);
+															window.electron.browserWindow.reload();
+														};
 														return (
 															<div
 																ref={provided.innerRef}
@@ -117,7 +121,7 @@ export function BrowserPane({
 																className={` user-select-none px-4 py-2 mb-2 text-sm flex group justify-between items-center ${
 																	snapshot.isDragging
 																		? 'bg-green-200'
-																		: 'bg-gray-200'
+																		: 'bg-gray-300'
 																}
 															`}
 																style={provided.draggableProps.style}
@@ -158,28 +162,15 @@ export function BrowserPane({
 													}}
 												</Draggable>
 											))}
-											{provided.placeholder}
+											{provided2.placeholder}
 										</div>
 										<Menu.Item>
 											{({ active }) => (
-												// <button
-												// 	// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
-												// 	className={classNames(
-												// 		active
-												// 			? 'bg-gray-100 text-gray-900'
-												// 			: 'text-gray-700',
-												// 		'block w-full px-4 py-2 text-sm'
-												// 	)}
-												// 	onClick={resetPaneList}
-												// >
-												// 	Add new provider
-												// </button>
 												<div className="px-4 pb-2">
 													<ListBox
 														selected={nullProvider}
 														selectList={[nullProvider, ...nonEnabledProviders]}
 														setSelected={(value: any) => {
-															console.log('setselected', value);
 															if (nullProvider.webviewId !== value.webviewId) {
 																setPaneList([
 																	...paneList,
@@ -188,6 +179,7 @@ export function BrowserPane({
 																		shortName: value.shortName,
 																	},
 																]);
+																window.electron.browserWindow.reload();
 															}
 														}}
 													/>
@@ -198,6 +190,26 @@ export function BrowserPane({
 									<div className="py-1">
 										<Menu.Item>
 											{({ active }) => (
+												<button
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+													onClick={toggleIsAlwaysOnTop}
+												>
+													{isAlwaysOnTop ? (
+														<BookmarkIcon className="inline w-4 h-4 text-green-700" />
+													) : (
+														<BookmarkSlashIcon className="inline w-4 h-4" />
+													)}{' '}
+													Toggle Always on Top
+												</button>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
 												<a
 													href="https://github.com/smol-ai/menubar/issues/new"
 													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
@@ -205,7 +217,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
@@ -221,7 +233,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
@@ -274,7 +286,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 										className={({ active }) =>
 											classNames(
 												active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-												'relative cursor-default select-none py-2 pl-3 pr-9',
+												'relative cursor-default select-none py-2 pl-3 pr-9'
 											)
 										}
 										value={listItem}
@@ -284,7 +296,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 												<span
 													className={classNames(
 														selected ? 'font-semibold' : 'font-normal',
-														'block truncate',
+														'block truncate'
 													)}
 												>
 													{listItem.fullName}
@@ -294,7 +306,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 													<span
 														className={classNames(
 															active ? 'text-white' : 'text-indigo-600',
-															'absolute inset-y-0 right-0 flex items-center pr-4',
+															'absolute inset-y-0 right-0 flex items-center pr-4'
 														)}
 													>
 														<CheckIcon className="w-5 h-5" aria-hidden="true" />
