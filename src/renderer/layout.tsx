@@ -135,7 +135,9 @@ export default function Layout() {
 				paneShortcutKeys[event.key]
 			);
 			setSizes(newSizes);
-			window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
+			if (paneShortcutKeys[event.key] === null) {
+				window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
+			}
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
 			(isCmdOrCtrl && event.key === '=')
