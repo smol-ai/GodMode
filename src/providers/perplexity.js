@@ -8,13 +8,18 @@ class Perplexity extends Provider {
 	static url = 'https://www.perplexity.ai/';
 
 	static handleInput(input) {
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
-        var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
-        nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-
-        var event = new Event('input', { bubbles: true});
-        inputElement.dispatchEvent(event);
+        if (!inputElement) {
+          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+        } else {
+          var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+          nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
+  
+          var event = new Event('input', { bubbles: true});
+          inputElement.dispatchEvent(event);
+        }
       `);
 	}
 
@@ -50,6 +55,11 @@ class Perplexity extends Provider {
 			// Hide the "Try asking" segment
 			setTimeout(() => {
 				this.getWebview().insertCSS(`
+        body {
+					zoom: 80%;
+					font-size: small;
+        }
+
         .mt-lg {
           display: none;
         }

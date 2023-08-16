@@ -8,12 +8,17 @@ class Together extends Provider {
 	static url = 'https://api.together.xyz/playground/chat';
 
 	static handleInput(input) {
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('form textarea[placeholder*="Enter text here"]');
-    var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
-    nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-    var event = new Event('input', { bubbles: true});
-    inputElement.dispatchEvent(event);
+		if (!inputElement) {
+			console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+		} else {
+			var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+			nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
+			var event = new Event('input', { bubbles: true});
+			inputElement.dispatchEvent(event);
+		}
     }`);
 	}
 

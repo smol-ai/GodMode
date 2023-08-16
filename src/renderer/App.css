@@ -18,8 +18,17 @@ body {
 
 :root {
 	--superprompt-height: 100px;
-	--titlebar-height: 0px; /* 20px */
+	--titlebar-height: 16px;
 	--actual-height: calc(100vh - var(--titlebar-height));
+}
+
+#titlebar {
+	height: calc(var(--titlebar-height) + 10px);
+	-webkit-app-region: drag;
+}
+
+#titlebar button {
+	-webkit-app-region: no-drag;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,8 +44,6 @@ body {
 	/* resize: both;  */
 	width: 100%;
 	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
-	margin-top: 4px;
 	/* margin: 0 auto; */
 	position: relative;
 }
@@ -55,7 +62,7 @@ body {
 }
 
 #form textarea {
-	@apply w-11/12 h-full px-4 py-2 overflow-y-auto font-mono text-sm transition-colors bg-gray-600 border-0 shadow-inner outline-none focus:bg-gray-200;
+	@apply w-full h-full px-4 py-2 overflow-y-auto font-mono text-sm transition-colors bg-gray-600 border-0 shadow-inner outline-none focus:bg-gray-200;
 }
 
 #form svg {
@@ -85,7 +92,7 @@ webview {
 	position: absolute;
 	left: 0;
 	width: 100%;
-	height: calc(100vh - var(--superprompt-height));
+	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
 	display: inline-flex !important;
 }
 

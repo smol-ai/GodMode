@@ -8,15 +8,16 @@ class HuggingChat extends Provider {
 	static url = 'https://huggingface.co/chat/';
 
 	static handleInput(input) {
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`
-        function simulateUserInput(element, text) {
-          const inputEvent = new Event('input', { bubbles: true });
-          element.focus();
-          element.value = text;
-          element.dispatchEvent(inputEvent);
-        }
         var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
-        simulateUserInput(inputElement, \`${input}\`);
+        if (!inputElement) {
+          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+        } else {
+          const inputEvent = new Event('input', { bubbles: true });
+          inputElement.value = \`${input}\`; // must be escaped backticks to support multiline
+          inputElement.dispatchEvent(inputEvent);
+        }
       `);
 	}
 

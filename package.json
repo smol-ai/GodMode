@@ -17,10 +17,6 @@
 		"start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
 		"start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.preload.dev.ts",
 		"start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./scripts/configs/webpack.config.renderer.dev.ts",
-		"test": "jest",
-		"build:old": "npm run make",
-		"buildAndSign": "NODE_ENV=sign npm run make",
-		"publish": "electron-forge publish --arch arm64,x64",
 		"format": "prettier '**/*.{js,jsx,ts,tsx}' --write"
 	},
 	"config": {
@@ -82,10 +78,10 @@
 		"electronmon": "^2.0.2",
 		"eslint": "^8.42.0",
 		"eslint-config-airbnb-base": "^15.0.0",
-		"eslint-config-erb": "^4.0.6",
+		"eslint-config-erb": "^0.3.0",
 		"eslint-import-resolver-typescript": "^3.5.5",
 		"eslint-import-resolver-webpack": "^0.13.2",
-		"eslint-plugin-compat": "^4.1.4",
+		"eslint-plugin-compat": "^3.5.1",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-jest": "^27.2.1",
 		"eslint-plugin-jsx-a11y": "^6.7.1",
@@ -123,7 +119,7 @@
 	},
 	"build": {
 		"productName": "GodMode",
-		"appId": "org.erb.GodMode",
+		"appId": "org.smol.GodMode",
 		"asar": true,
 		"asarUnpack": "**\\*.{node,dll}",
 		"files": [
@@ -131,7 +127,7 @@
 			"node_modules",
 			"package.json"
 		],
-		"afterSign": ".erb/scripts/notarize.js",
+		"afterSign": "scripts/scripts/notarize.js",
 		"mac": {
 			"target": {
 				"target": "default",
@@ -181,12 +177,9 @@
 		],
 		"publish": {
 			"provider": "github",
-			"owner": "electron-react-boilerplate",
-			"repo": "electron-react-boilerplate"
+			"owner": "smol-ai",
+			"repo": "menubar"
 		}
-	},
-	"collective": {
-		"url": "https://opencollective.com/electron-react-boilerplate-594"
 	},
 	"devEngines": {
 		"node": ">=18.x",

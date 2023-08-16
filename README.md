@@ -1,10 +1,8 @@
-# godmode rewrite
+# GodMode - the smol AI Chat Browser
 
-started with https://github.com/electron-react-boilerplate/electron-react-boilerplate.git
+This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT, Claude 2, Perplexity.ai, Bing and more (see below) **with a single keyboard shortcut (Cmd+Shift+G)**.
 
-and ported over just a bit of the provider code. it seems to work.
-
-![image](https://github.com/smol-ai/menubar/assets/6764957/0cc8f90a-b7eb-447c-808a-6883654dcad4)
+![image](https://github.com/smol-ai/menubar/assets/6764957/90f4bab4-e406-4507-b37e-8c8d80d18f15)
 
 ([click for video demo](https://twitter.com/swyx/status/1678944036135260160))
 
@@ -23,7 +21,7 @@ Yes and no:
 
 | Provider (default in **bold**)                                                          | Notes                                                                                                                                        |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ChatGPT**                                                                             | Defaults to GPT 4 Code Interpreter                                                                                                           |
+| **ChatGPT**                                                                             | Defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!                                                                                                           |
 | **Claude 2**                                                                            | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
 | **HuggingChat**                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
 | **Perplexity**                                                                          | Search + Chat                                                                                                                                |
@@ -49,11 +47,13 @@ Yes and no:
   - `Cmd+Shift+L` to toggle light/dark mode (not customizable for now)
   - Remember you can customize further by building from source!
 
-- **Window Resizing**:
+- **Window Resizing and Rearranging**:
 
   - Resize the window by clicking and dragging.
   - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
     - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
+  - open up the panel on the bottom right to reorder panes or reset them to default
+  - `Cmd p` to pin the window Always on Top (or not)
 
 - **Model Toggle**:
 
@@ -106,47 +106,30 @@ If you want to build from source, you will need to clone the repo and open the p
    git clone https://github.com/smol-ai/menubar.git
    cd menubar
    npm install
-   # On Windows, you may also need Squirrel:
+   # On Windows, you may also need Squirrel - these are old instructions, we would love help to verify
    # npm install electron-squirrel-startup
+
+   npm run start # to run in development, locally
    ```
 
 2. Generate binaries:
 
    ```bash
-   npm run make # or npm run build. # npm run buildAndSign is for swyx to publish the official codesigned and notarized releases
+   npm run package # https://electron-react-boilerplate.js.org/docs/packaging
+   # ts-node scripts/clean.js dist clears the webpackPaths.distPath, webpackPaths.buildPath, webpackPaths.dllPath
+   # npm run build outputs to  /release/app/dist/main
+   # electron-builder build --publish never builds and code signs the app.
+
+   # this is mostly for swyx to publish the official codesigned and notarized releases
    ```
 
-   The outputs will be located in the `/out/make` directory. Note that it will start minimized in your taskbar; you'll need to click the icon to use it:
-
-![image](https://github.com/smol-ai/menubar/assets/6764957/76c1f545-d32b-4a0b-a89c-1d68fc45fc72)
-
-![image](images/minimized.jpg)
+   The outputs will be located in the `/release/build` directory.
 
 ## windows/linux builds
 
 by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"! and someone to help make this work on Arch Linux)
 
-for Windows i think you can run
-
-```bash
-electron-forge make --platform=win32 --arch=ia32,x64
-```
-
-and it might work? (Update: [confirmed](https://github.com/smol-ai/menubar/issues/79) works).
-
-## why use/make this?
-
-Google [dropped its waitlist for Bard recently](https://www.theverge.com/2023/5/10/23718066/google-bard-ai-features-waitlist-dark-mode-visual-search-io), so now there is some reason to try it out.
-
-People have bad first impressions on Bard, but in May 2023 it has been receiving some positive feedback:
-
-- https://twitter.com/masadfrost/status/1655802654927507457?s=46&t=90xQ8sGy63D2OtiaoGJuww
-
-- https://twitter.com/amasad/status/1657510601202221056?s=46&t=90xQ8sGy63D2OtiaoGJuww
-
-these folks aren't neutral, but its clear of course that Bard will be better for some things than others, and we might as well lower the barrier for trying them out.
-
-then anthropic dropped 100k context, and at that point i was convinced i need to be A/B testing all 3 to get the benefits/get an intuition of what they each are best at.
+Please let usknow if you hvave windows/linux instructions.
 
 ## Related project
 

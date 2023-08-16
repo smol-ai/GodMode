@@ -8,17 +8,22 @@ class Phind extends Provider {
 	static url = 'https://www.phind.com/';
 
 	static handleInput(input) {
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Describe your task in detail. What are you stuck on"]');
         if (!inputElement) {
             inputElement = document.querySelector('textarea[placeholder*="Send message"]');
         }
+        if (!inputElement) {
+          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+        } else {
+          var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+          var event = new Event('input', { bubbles: true});
+  
+          nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
+          inputElement.dispatchEvent(event);
+        }
 
-        var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
-        var event = new Event('input', { bubbles: true});
-
-        nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-        inputElement.dispatchEvent(event);
       }`);
 	}
 

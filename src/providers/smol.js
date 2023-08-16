@@ -8,17 +8,20 @@ class SmolTalk extends Provider {
 	static url = 'https://smoltalk.vercel.app/';
 
 	static handleInput(input) {
+		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
 		var inputElement = document.querySelector('#smol-inputbox')
-		function simulateUserInput(element, text) {
+		if (!inputElement) {
+			console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
+		} else {
+			const inputEvent = new Event('input', { bubbles: true });
+			inputElement.dispatchEvent(inputEvent);
 			var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 			var event = new Event('input', { bubbles: true});
-
-			nativeTextAreaValueSetter.call(inputElement, text);
+	
+			nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
 			inputElement.dispatchEvent(event);
 		}
-
-		simulateUserInput(inputElement, \`${input}\`);
 	}`);
 	}
 

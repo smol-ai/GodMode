@@ -1,6 +1,8 @@
 import { Listbox, Menu, Transition } from '@headlessui/react';
 import {
 	Bars2Icon,
+	BookmarkIcon,
+	BookmarkSlashIcon,
 	CheckIcon,
 	ChevronUpDownIcon,
 } from '@heroicons/react/20/solid';
@@ -28,7 +30,9 @@ export function BrowserPane({
 	setPaneList,
 	resetPaneList,
 	nonEnabledProviders,
-}: any) {
+	isAlwaysOnTop,
+	toggleIsAlwaysOnTop,
+}) {
 	const nullProvider = {
 		webviewId: 'nullProvider',
 		shortName: 'Select a provider',
@@ -54,13 +58,12 @@ export function BrowserPane({
 		setPaneList(reorderedItems);
 		window.electron.browserWindow.reload();
 	}
-
 	// Normally you would want to split things out into separate components.
 	// But in this example everything is just done in one place for simplicity
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="droppable">
-				{(provided, snapshot) => (
+				{(provided2, snapshot) => (
 					<div className="flex flex-col justify-between">
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
@@ -93,10 +96,10 @@ export function BrowserPane({
 									</div>
 									<div className="py-0">
 										<div
-											{...provided.droppableProps}
-											ref={provided.innerRef}
+											{...provided2.droppableProps}
+											ref={provided2.innerRef}
 											className={`w-full ${
-												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-gray-200'
+												snapshot.isDraggingOver ? 'bg-blue-200' : 'bg-white'
 											}`}
 										>
 											{paneList?.map((item: any, index: number) => (
@@ -105,14 +108,16 @@ export function BrowserPane({
 													draggableId={item.webviewId}
 													index={index}
 												>
-													{(provided: any, snapshot: any) => {
-														const hidePane = () =>
+													{(provided, snapshot) => {
+														const hidePane = () => {
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
 																		pane.webviewId !== item.webviewId
 																)
 															);
+															window.electron.browserWindow.reload();
+														};
 														return (
 															<div
 																ref={provided.innerRef}
@@ -121,7 +126,7 @@ export function BrowserPane({
 																className={` user-select-none px-4 py-2 mb-2 text-sm flex group justify-between items-center ${
 																	snapshot.isDragging
 																		? 'bg-green-200'
-																		: 'bg-gray-200'
+																		: 'bg-gray-300'
 																}
 															`}
 																style={provided.draggableProps.style}
@@ -162,28 +167,15 @@ export function BrowserPane({
 													}}
 												</Draggable>
 											))}
-											{provided.placeholder}
+											{provided2.placeholder}
 										</div>
 										<Menu.Item>
 											{({ active }) => (
-												// <button
-												// 	// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
-												// 	className={classNames(
-												// 		active
-												// 			? 'bg-gray-100 text-gray-900'
-												// 			: 'text-gray-700',
-												// 		'block w-full px-4 py-2 text-sm'
-												// 	)}
-												// 	onClick={resetPaneList}
-												// >
-												// 	Add new provider
-												// </button>
 												<div className="px-4 pb-2">
 													<ListBox
 														selected={nullProvider}
 														selectList={[nullProvider, ...nonEnabledProviders]}
 														setSelected={(value: any) => {
-															console.log('setselected', value);
 															if (nullProvider.webviewId !== value.webviewId) {
 																setPaneList([
 																	...paneList,
@@ -192,6 +184,7 @@ export function BrowserPane({
 																		shortName: value.shortName,
 																	},
 																]);
+																window.electron.browserWindow.reload();
 															}
 														}}
 													/>
@@ -200,6 +193,26 @@ export function BrowserPane({
 										</Menu.Item>
 									</div>
 									<div className="py-1">
+										<Menu.Item>
+											{({ active }) => (
+												<button
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+													onClick={toggleIsAlwaysOnTop}
+												>
+													{isAlwaysOnTop ? (
+														<BookmarkIcon className="inline w-4 h-4 text-green-700" />
+													) : (
+														<BookmarkSlashIcon className="inline w-4 h-4" />
+													)}{' '}
+													Toggle Always on Top
+												</button>
+											)}
+										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
 												<button

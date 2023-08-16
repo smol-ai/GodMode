@@ -8,10 +8,14 @@ import Split from 'react-split';
 import 'tailwindcss/tailwind.css';
 import './App.css';
 import { BrowserPane } from './browserPane';
+import { ProviderInterface } from 'lib/types';
+import { TitleBar } from './TitleBar';
 
 // @ts-ignore
 type paneInfo = { webviewId: string; shortName: string };
-const defaultPaneList = getEnabledProviders(allProviders).map((x) => ({
+const defaultPaneList = getEnabledProviders(
+	allProviders as ProviderInterface[]
+).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
@@ -23,13 +27,27 @@ const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 export default function Layout() {
 	const [superprompt, setSuperprompt] = React.useState('');
 	const [paneList, setPaneList] = React.useState(storedPaneList);
-	React.useEffect(() => {
-		window.electron.electronStore.set('paneList', paneList);
-	}, [paneList]);
-	const resetPaneList = () => setPaneList(defaultPaneList);
+
+	const originalAlwaysOnTop = window.electron.browserWindow.getAlwaysOnTop();
+	const [isAlwaysOnTop, setisAlwaysOnTop] = React.useState(originalAlwaysOnTop);
+	const toggleIsAlwaysOnTop = () => {
+		const newstate = window.electron.browserWindow.getAlwaysOnTop();
+		setisAlwaysOnTop(!newstate);
+		window.electron.browserWindow.setAlwaysOnTop(!newstate);
+	};
+
 	const enabledProviders = paneList.map(
 		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
 	);
+
+	const [sizes, setSizes] = React.useState(updateSplitSizes(enabledProviders));
+
+	React.useEffect(() => {
+		window.electron.electronStore.set('paneList', paneList);
+	}, [paneList]);
+
+	const resetPaneList = () => setPaneList(defaultPaneList);
+
 	const nonEnabledProviders = allProviders.filter(
 		(x) => !enabledProviders.includes(x)
 	);
@@ -45,15 +63,17 @@ export default function Layout() {
 	}, [enabledProviders]);
 
 	React.useEffect(() => {
-		if (superprompt !== undefined && superprompt !== null) {
-			enabledProviders.forEach((provider) => {
-				// Call provider-specific CSS handling and custom paste setup
-				try {
-					provider.handleInput(superprompt);
-				} catch (err) {
-					console.error('error settling ' + provider.paneId(), err);
-				}
-			});
+		if (superprompt) {
+			setTimeout(() => {
+				enabledProviders.forEach((provider) => {
+					// Call provider-specific CSS handling and custom paste setup
+					try {
+						provider.handleInput(superprompt);
+					} catch (err) {
+						console.error('error settling ' + provider.paneId(), err);
+					}
+				});
+			}, 0);
 		}
 	}, [enabledProviders, superprompt]);
 
@@ -62,25 +82,25 @@ export default function Layout() {
 		'SuperPromptEnterKey',
 		false
 	);
-	const paneStates: Record<string, number | null> = {};
+
+	const paneShortcutKeys: Record<string, number | null> = {};
 	for (let i = 0; i < enabledProviders.length; i++) {
-		paneStates[`${i + 1}`] = i;
+		paneShortcutKeys[`${i + 1}`] = i;
 	}
-	paneStates['a'] = null;
-	paneStates['A'] = null;
+	paneShortcutKeys['A'] = null;
+
+	console.warn('paneShortcutKeys', paneShortcutKeys);
 
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		const isEnter = event.key === 'Enter';
 
-		// console.log({ SuperPromptEnterKey, isEnter, isCmdOrCtrl });
 		if ((SuperPromptEnterKey && isEnter) || (isCmdOrCtrl && isEnter)) {
 			event.preventDefault();
-			console.log('superprompt!');
 			// formRef.current?.submit();
 			enabledProviders.forEach((provider) => {
 				// Call provider-specific CSS handling and custom paste setup
-				provider.handleSubmit(superprompt);
+				provider.handleSubmit();
 			});
 		}
 		// if (isEnter) {
@@ -89,6 +109,7 @@ export default function Layout() {
 	}
 
 	const windowRef = React.useRef<HTMLDivElement>(null);
+
 	function updateSplitSizes(panes: any[], focalIndex: number | null = null) {
 		// const clientWidth = windowRef.current?.clientWidth!;
 		// const remainingWidth = ((clientWidth - 100) / clientWidth) * 100;
@@ -96,21 +117,27 @@ export default function Layout() {
 		// Handle specific pane focus
 		if (focalIndex !== null) {
 			let sizes = new Array(panes.length).fill(0);
-			sizes[focalIndex] = remainingWidth - 0 * (panes.length - 1);
+			sizes[focalIndex] = remainingWidth;
+			return sizes;
+		} else {
+			// Evenly distribute remaining space among all panes
+			let remainingPercentage = remainingWidth / panes.length;
+			let sizes = new Array(panes.length).fill(remainingPercentage);
 			return sizes;
 		}
-
-		// Evenly distribute remaining space among all panes
-		let remainingPercentage = remainingWidth / panes.length;
-		let sizes = new Array(panes.length).fill(remainingPercentage);
-		return sizes;
 	}
 
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
-		if (isCmdOrCtrl && event.key in paneStates) {
-			updateSplitSizes(enabledProviders, paneStates[event.key]);
-			// event.preventDefault();
+		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
+			const newSizes = updateSplitSizes(
+				enabledProviders,
+				paneShortcutKeys[event.key]
+			);
+			setSizes(newSizes);
+			if (paneShortcutKeys[event.key] === null) {
+				window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
+			}
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
 			(isCmdOrCtrl && event.key === '=')
@@ -129,6 +156,8 @@ export default function Layout() {
 					.getWebview() // @ts-ignore
 					.setZoomLevel(provider.getWebview().getZoomLevel() - 1);
 			});
+		} else if (isCmdOrCtrl && event.key === 'p') {
+			toggleIsAlwaysOnTop();
 		} else if (
 			event.shiftKey &&
 			event.metaKey &&
@@ -146,14 +175,12 @@ export default function Layout() {
 
 		enterKeyHandler(event);
 	}
-	const sizes = updateSplitSizes(enabledProviders);
-	console.log({ enabledProviders, paneList, sizes });
 	return (
-		<div id="windowRef" ref={windowRef}>
+		<div id="windowRef" className="flex flex-col" ref={windowRef}>
+			<TitleBar {...{ isAlwaysOnTop, toggleIsAlwaysOnTop }} />
 			<Split
-				// sizes={[10, ...sizes]}
 				sizes={sizes}
-				minSize={100}
+				minSize={0}
 				expandToMin={false}
 				gutterSize={3}
 				gutterAlign="center"
@@ -183,9 +210,9 @@ export default function Layout() {
 						onKeyDown={onKeyDown}
 						name="prompt"
 						placeholder="Enter a superprompt here.
-- Quick Open: Cmd+G or Submit: Cmd/Ctrl+Enter (customizable in menu)
-- Switch windows: Cmd+1/2/3/A, or Resize windows: Cmd -/+, or Back/Fwd: Cmd H/L
-- New chat: Cmd+R or Right-click menubar icon for more options!"
+- Quick Open: Cmd+G or Submit: Cmd/Ctrl+Enter
+- Switch windows: Cmd+1/2/3/etc, or Resize/Pin windows: Cmd -/+/p, or Back/Fwd: Cmd H/L
+- New chat: Cmd+R or Reset windows evenly: Cmd+Shift+A"
 					/>
 					<div className="flex items-center justify-center p-4 space-x-2">
 						<button
@@ -215,6 +242,8 @@ export default function Layout() {
 								setPaneList,
 								resetPaneList,
 								nonEnabledProviders,
+								isAlwaysOnTop,
+								toggleIsAlwaysOnTop,
 							}}
 						/>
 					</div>

@@ -37,6 +37,13 @@ const electronHandler = {
 		reload() {
 			ipcRenderer.send('reload-browser');
 		},
+		getAlwaysOnTop() {
+			const x = ipcRenderer.sendSync('get-always-on-top');
+			return x;
+		},
+		setAlwaysOnTop(val: any) {
+			ipcRenderer.send('set-always-on-top', val);
+		},
 	},
 	auth: {
 		openSignIn() {

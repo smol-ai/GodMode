@@ -90,6 +90,8 @@ typings/
 # Electron-Forge
 out/
 forge.config.js
+release/
+scripts/dll
 
 # First run flag
 first-run.flag

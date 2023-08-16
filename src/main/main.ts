@@ -8,17 +8,13 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import {
-	BrowserWindow,
-	BrowserWindowConstructorOptions as WindowOptions,
-	app,
-	ipcMain,
-	shell,
-} from 'electron';
+import { BrowserWindow, app, ipcMain } from 'electron';
+import path from 'path';
+
+import { globalShortcut, screen } from 'electron';
 import log from 'electron-log';
 import Store from 'electron-store';
 import { autoUpdater } from 'electron-updater';
-import path from 'path';
 
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -37,17 +33,21 @@ class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 store.reset();
+
 ipcMain.on('ipc-example', async (event, arg) => {
 	const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
 	console.log(msgTemplate(arg));
 	event.reply('ipc-example', msgTemplate('pong'));
 });
-ipcMain.on('electron-store-get', async (event, val, def) => {
-	event.returnValue = store.get(val, def);
+
+ipcMain.on('electron-store-get', async (event, val, defaultVal) => {
+	event.returnValue = store.get(val, defaultVal);
 });
+
 ipcMain.on('electron-store-set', async (event, property, val) => {
 	store.set(property, val);
 });
+
 ipcMain.on('reload-browser', async (event, property, val) => {
 	mainWindow?.reload();
 });
@@ -65,6 +65,18 @@ ipcMain.on('open-sign-in', (event, arg) => {
 // 	var authUrl =
 // 		githubUrl + 'client_id=' + options.client_id + '&scope=' + options.scopes;
 // };
+
+ipcMain.on('set-always-on-top', async (event, newVal) => {
+	mainWindow?.setAlwaysOnTop(newVal);
+});
+ipcMain.on('get-always-on-top', async (event, property, val) => {
+	const bool = mainWindow?.isAlwaysOnTop();
+	event.returnValue = bool;
+});
+
+ipcMain.on('open-settings-window', () => {
+	// createSettingsWindow();
+});
 
 if (process.env.NODE_ENV === 'production') {
 	const sourceMapSupport = require('source-map-support');
@@ -104,13 +116,19 @@ const createWindow = async () => {
 		return path.join(RESOURCES_PATH, ...paths);
 	};
 
+	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
 	mainWindow = new BrowserWindow({
 		show: false,
-		width: 1024,
-		height: 728,
+		// frame: false,
+		titleBarStyle: 'hidden',
+		width: width - 100,
+		height: height - 100,
 		icon: getAssetPath('icon.png'),
+		// alwaysOnTop: true,
 		webPreferences: {
 			webviewTag: true,
+			nodeIntegration: true,
 			preload: app.isPackaged
 				? path.join(__dirname, 'preload.js')
 				: path.join(__dirname, '../../scripts/dll/preload.js'),
@@ -140,11 +158,11 @@ const createWindow = async () => {
 	const menuBuilder = new MenuBuilder(mainWindow);
 	menuBuilder.buildMenu();
 
-	// Open urls in the user's browser
-	mainWindow.webContents.setWindowOpenHandler((edata) => {
-		shell.openExternal(edata.url);
-		return { action: 'deny' };
-	});
+	// // Open urls in the user's browser
+	// mainWindow.webContents.setWindowOpenHandler((edata) => {
+	// 	shell.openExternal(edata.url);
+	// 	return { action: 'allow' };
+	// });
 
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
@@ -200,11 +218,6 @@ app.on('web-contents-created', (e, contents) => {
 		//     event.newGuest = new BrowserWindow(options)
 		//   }
 		// })
-		// open link with external browser in webview
-		contents.setWindowOpenHandler('new-window', (e, url) => {
-			e.preventDefault();
-			shell.openExternal(url);
-		});
 		// // set context menu in webview
 		// contextMenu({
 		//   window: contents,
@@ -249,6 +262,22 @@ app
 	.whenReady()
 	.then(() => {
 		createWindow();
+
+		// Register global shortcut (CommandOrControl+Shift+G) to show the app
+		const ret = globalShortcut.register('CommandOrControl+Shift+G', () => {
+			if (mainWindow) {
+				if (mainWindow.isMinimized()) {
+					mainWindow.restore();
+				}
+				mainWindow.focus();
+				mainWindow.show();
+			}
+		});
+
+		if (!ret) {
+			console.log('Global shortcut registration failed');
+		}
+
 		app.on('activate', () => {
 			// On macOS it's common to re-create a window in the app when the
 			// dock icon is clicked and there are no other windows open.
@@ -256,3 +285,8 @@ app
 		});
 	})
 	.catch(console.log);
+
+app.on('will-quit', () => {
+	// Unregister the global shortcut
+	globalShortcut.unregisterAll();
+});
