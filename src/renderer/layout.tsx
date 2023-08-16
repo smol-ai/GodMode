@@ -78,7 +78,6 @@ export default function Layout() {
 	for (let i = 0; i < enabledProviders.length; i++) {
 		paneShortcutKeys[`${i + 1}`] = i;
 	}
-	paneShortcutKeys['a'] = null;
 	paneShortcutKeys['A'] = null;
 
 	console.warn('paneShortcutKeys', paneShortcutKeys);
@@ -87,10 +86,8 @@ export default function Layout() {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		const isEnter = event.key === 'Enter';
 
-		// console.log({ SuperPromptEnterKey, isEnter, isCmdOrCtrl });
 		if ((SuperPromptEnterKey && isEnter) || (isCmdOrCtrl && isEnter)) {
 			event.preventDefault();
-			console.log('superprompt!');
 			// formRef.current?.submit();
 			enabledProviders.forEach((provider) => {
 				// Call provider-specific CSS handling and custom paste setup
@@ -126,10 +123,10 @@ export default function Layout() {
 		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
 			const newSizes = updateSplitSizes(
 				enabledProviders,
-				paneShortcutKeys[event.key],
+				paneShortcutKeys[event.key]
 			);
-			setSizes([...newSizes]);
-			// event.preventDefault();
+			setSizes(newSizes);
+			window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
 			(isCmdOrCtrl && event.key === '=')
@@ -170,7 +167,6 @@ export default function Layout() {
 		<div id="windowRef" className="flex flex-col" ref={windowRef}>
 			<TitleBar />
 			<Split
-				// sizes={[10, ...sizes]}
 				sizes={sizes}
 				minSize={0}
 				expandToMin={false}
@@ -203,8 +199,8 @@ export default function Layout() {
 						name="prompt"
 						placeholder="Enter a superprompt here.
 - Quick Open: Cmd+G or Submit: Cmd/Ctrl+Enter (customizable in menu)
-- Switch windows: Cmd+1/2/3/A, or Resize windows: Cmd -/+, or Back/Fwd: Cmd H/L
-- New chat: Cmd+R or Right-click menubar icon for more options!"
+- Switch windows: Cmd+1/2/3/etc, or Resize windows: Cmd -/+, or Back/Fwd: Cmd H/L
+- New chat: Cmd+R or Reset windows evenly: Cmd+Shift+A"
 					/>
 					<div className="flex items-center justify-center p-4 space-x-2">
 						<button

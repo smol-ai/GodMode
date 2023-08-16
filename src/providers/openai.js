@@ -9,7 +9,6 @@ class OpenAI extends Provider {
 
 	static handleInput(input) {
 		const fullName = this.fullName;
-		console.log('fullName', this, fullName);
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
         if (!inputElement) {
