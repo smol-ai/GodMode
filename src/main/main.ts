@@ -95,6 +95,12 @@ const createWindow = async () => {
 		},
 	});
 
+	const nativeImage = require('electron').nativeImage;
+	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'))
+
+	app.dock.setIcon(dockIcon);
+	app.name = 'God Mode';
+
 	mainWindow.loadURL(resolveHtmlPath('index.html'));
 
 	mainWindow.on('ready-to-show', () => {
@@ -125,6 +131,8 @@ const createWindow = async () => {
 	// eslint-disable-next-line
 	new AppUpdater();
 };
+
+
 
 /**
  * Add event listeners...
