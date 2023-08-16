@@ -57,9 +57,9 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 	event.returnValue = bool;
 });
 
-ipcMain.on('open-settings-window', () => {
-  createSettingsWindow();
-});
+// ipcMain.on('open-settings-window', () => {
+//   createSettingsWindow();
+// });
 
 if (process.env.NODE_ENV === 'production') {
 	const sourceMapSupport = require('source-map-support');

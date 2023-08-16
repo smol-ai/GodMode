@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "./ui/dialog";
+} from "./ui/dialog";
 
 export default function ShortcutMenu() {
     return (

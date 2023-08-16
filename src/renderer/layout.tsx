@@ -87,7 +87,6 @@ export default function Layout() {
 	for (let i = 0; i < enabledProviders.length; i++) {
 		paneShortcutKeys[`${i + 1}`] = i;
 	}
-	paneShortcutKeys['A'] = null;
 
 	console.warn('paneShortcutKeys', paneShortcutKeys);
 
@@ -115,7 +114,7 @@ export default function Layout() {
 		// const remainingWidth = ((clientWidth - 100) / clientWidth) * 100;
 		const remainingWidth = 100;
 		// Handle specific pane focus
-		if (focalIndex !== null) {
+		if (focalIndex !== null || focalIndex === 'A') {
 			let sizes = new Array(panes.length).fill(0);
 			sizes[focalIndex] = remainingWidth;
 			return sizes;
@@ -129,7 +128,9 @@ export default function Layout() {
 
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
-		if (isCmdOrCtrl && event.key in paneShortcutKeys) {
+		const isShift = event.shiftKey;
+		console.debug('keydown', event.key, isCmdOrCtrl, event);
+		if (isCmdOrCtrl && !isShift && event.key in paneShortcutKeys) {
 			const newSizes = updateSplitSizes(
 				enabledProviders,
 				paneShortcutKeys[event.key]
@@ -138,6 +139,8 @@ export default function Layout() {
 			if (paneShortcutKeys[event.key] === null) {
 				window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
 			}
+		} else if (isCmdOrCtrl && isShift && event.key === 'a') {
+			window.electron.browserWindow.reload();
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
 			(isCmdOrCtrl && event.key === '=')
@@ -191,7 +194,7 @@ export default function Layout() {
 				className="flex"
 			>
 				{enabledProviders.map((provider, index) => (
-					<Pane provider={provider} key={index} />
+					<Pane provider={provider as ProviderInterface} key={index} />
 				))}
 			</Split>
 			<div
