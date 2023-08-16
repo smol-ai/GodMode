@@ -37,8 +37,8 @@ ipcMain.on('ipc-example', async (event, arg) => {
 	event.reply('ipc-example', msgTemplate('pong'));
 });
 
-ipcMain.on('electron-store-get', async (event, val, def) => {
-	event.returnValue = store.get(val, def);
+ipcMain.on('electron-store-get', async (event, val, defaultVal) => {
+	event.returnValue = store.get(val, defaultVal);
 });
 
 ipcMain.on('electron-store-set', async (event, property, val) => {
@@ -47,6 +47,14 @@ ipcMain.on('electron-store-set', async (event, property, val) => {
 
 ipcMain.on('reload-browser', async (event, property, val) => {
 	mainWindow?.reload();
+});
+
+ipcMain.on('set-always-on-top', async (event, newVal) => {
+	mainWindow?.setAlwaysOnTop(newVal);
+});
+ipcMain.on('get-always-on-top', async (event, property, val) => {
+	const bool = mainWindow?.isAlwaysOnTop();
+	event.returnValue = bool;
 });
 
 ipcMain.on('open-settings-window', () => {

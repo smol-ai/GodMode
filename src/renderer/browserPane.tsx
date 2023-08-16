@@ -1,10 +1,11 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Menu, Listbox, Transition } from '@headlessui/react';
 import {
 	Bars2Icon,
 	ChevronUpDownIcon,
 	CheckIcon,
 } from '@heroicons/react/20/solid';
+import { BookmarkIcon, BookmarkSlashIcon } from '@heroicons/react/20/solid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // https://tailwindui.com/components/application-ui/elements/dropdowns
@@ -28,6 +29,8 @@ export function BrowserPane({
 	setPaneList,
 	resetPaneList,
 	nonEnabledProviders,
+	isAlwaysOnTop,
+	toggleIsAlwaysOnTop,
 }) {
 	const nullProvider = {
 		webviewId: 'nullProvider',
@@ -45,12 +48,11 @@ export function BrowserPane({
 		const reorderedItems = reorder(
 			paneList,
 			result.source.index,
-			result.destination.index,
+			result.destination.index
 		);
 		setPaneList(reorderedItems);
 		window.electron.browserWindow.reload();
 	}
-
 	// Normally you would want to split things out into separate components.
 	// But in this example everything is just done in one place for simplicity
 	return (
@@ -106,8 +108,8 @@ export function BrowserPane({
 															setPaneList(
 																paneList.filter(
 																	(pane: any) =>
-																		pane.webviewId !== item.webviewId,
-																),
+																		pane.webviewId !== item.webviewId
+																)
 															);
 															window.electron.browserWindow.reload();
 														};
@@ -188,6 +190,26 @@ export function BrowserPane({
 									<div className="py-1">
 										<Menu.Item>
 											{({ active }) => (
+												<button
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+													onClick={toggleIsAlwaysOnTop}
+												>
+													{isAlwaysOnTop ? (
+														<BookmarkIcon className="inline w-4 h-4 text-green-700" />
+													) : (
+														<BookmarkSlashIcon className="inline w-4 h-4" />
+													)}{' '}
+													Toggle Always on Top
+												</button>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
 												<a
 													href="https://github.com/smol-ai/menubar/issues/new"
 													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
@@ -195,7 +217,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
@@ -211,7 +233,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-red-900'
 															: 'text-red-700',
-														'block px-4 py-2 text-sm',
+														'block px-4 py-2 text-sm'
 													)}
 													onClick={resetPaneList}
 												>
@@ -264,7 +286,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 										className={({ active }) =>
 											classNames(
 												active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-												'relative cursor-default select-none py-2 pl-3 pr-9',
+												'relative cursor-default select-none py-2 pl-3 pr-9'
 											)
 										}
 										value={listItem}
@@ -274,7 +296,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 												<span
 													className={classNames(
 														selected ? 'font-semibold' : 'font-normal',
-														'block truncate',
+														'block truncate'
 													)}
 												>
 													{listItem.fullName}
@@ -284,7 +306,7 @@ export default function ListBox({ selected, setSelected, selectList }) {
 													<span
 														className={classNames(
 															active ? 'text-white' : 'text-indigo-600',
-															'absolute inset-y-0 right-0 flex items-center pr-4',
+															'absolute inset-y-0 right-0 flex items-center pr-4'
 														)}
 													>
 														<CheckIcon className="w-5 h-5" aria-hidden="true" />

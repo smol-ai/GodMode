@@ -27,6 +27,10 @@ body {
 	-webkit-app-region: drag;
 }
 
+#titlebar button {
+	-webkit-app-region: no-drag;
+}
+
 @media (prefers-color-scheme: dark) {
 	.myarrow:before {
 		border-color: transparent transparent #343541 transparent !important;

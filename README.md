@@ -47,11 +47,13 @@ Yes and no:
   - `Cmd+Shift+L` to toggle light/dark mode (not customizable for now)
   - Remember you can customize further by building from source!
 
-- **Window Resizing**:
+- **Window Resizing and Rearranging**:
 
   - Resize the window by clicking and dragging.
   - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
     - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
+  - open up the panel on the bottom right to reorder panes or reset them to default
+  - `Cmd p` to pin the window Always on Top (or not)
 
 - **Model Toggle**:
 
