@@ -55,6 +55,11 @@ class Perplexity extends Provider {
 			// Hide the "Try asking" segment
 			setTimeout(() => {
 				this.getWebview().insertCSS(`
+        body {
+					zoom: 80%;
+					font-size: small;
+        }
+
         .mt-lg {
           display: none;
         }

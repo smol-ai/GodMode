@@ -75,6 +75,8 @@ class Bing extends Provider {
 				html, body {
 					overflow: hidden;
 					scrollbar-width: none;
+					zoom: 80%;
+					font-size: small;
 				}
 				header {
 					display: none !important;
