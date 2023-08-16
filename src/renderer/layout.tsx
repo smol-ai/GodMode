@@ -11,24 +11,26 @@ import './App.css';
 import { BrowserPane } from './browserPane';
 import { ProviderInterface } from 'lib/types';
 import { TitleBar } from './TitleBar';
+import BrowserProvider from 'components/browserPane';
 
 // @ts-ignore
 type paneInfo = { webviewId: string; shortName: string };
 const defaultPaneList = getEnabledProviders(
-	allProviders as ProviderInterface[],
+	allProviders as ProviderInterface[]
 ).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
 const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 	'paneList',
-	defaultPaneList,
+	defaultPaneList
 );
 
 export default function Layout() {
 	const [superprompt, setSuperprompt] = React.useState('');
 	const [paneList, setPaneList] = React.useState(storedPaneList);
 
+	const [url, setUrl] = React.useState('https://example.com');
 
 	const originalAlwaysOnTop = window.electron.browserWindow.getAlwaysOnTop();
 	const [isAlwaysOnTop, setisAlwaysOnTop] = React.useState(originalAlwaysOnTop);
@@ -176,22 +178,25 @@ export default function Layout() {
 	return (
 		<div id="windowRef" className="flex flex-col" ref={windowRef}>
 			<TitleBar {...{ isAlwaysOnTop, toggleIsAlwaysOnTop }} />
-			<Split
-				sizes={sizes}
-				minSize={0}
-				expandToMin={false}
-				gutterSize={3}
-				gutterAlign="center"
-				// snapOffset={30}
-				dragInterval={1}
-				direction="horizontal"
-				// cursor="col-resize"
-				className="flex"
-			>
-				{enabledProviders.map((provider, index) => (
-					<Pane provider={provider} key={index} />
-				))}
-			</Split>
+			<div className="flex">
+				<Split
+					sizes={sizes}
+					minSize={0}
+					expandToMin={false}
+					gutterSize={5}
+					gutterAlign="center"
+					// snapOffset={30}
+					dragInterval={1}
+					direction="horizontal"
+					// cursor="col-resize"
+					className="flex flex-1"
+				>
+					{enabledProviders.map((provider, index) => (
+						<Pane provider={provider} key={index} />
+					))}
+				</Split>
+				<BrowserProvider url={url} setUrl={setUrl} />
+			</div>
 			<div
 				ref={formRef}
 				id="form"
