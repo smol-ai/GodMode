@@ -17,10 +17,6 @@
 		"start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
 		"start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.preload.dev.ts",
 		"start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./scripts/configs/webpack.config.renderer.dev.ts",
-		"test": "jest",
-		"build:old": "npm run make",
-		"buildAndSign": "NODE_ENV=sign npm run make",
-		"publish": "electron-forge publish --arch arm64,x64",
 		"format": "prettier '**/*.{js,jsx,ts,tsx}' --write"
 	},
 	"config": {
@@ -180,12 +176,9 @@
 		],
 		"publish": {
 			"provider": "github",
-			"owner": "electron-react-boilerplate",
-			"repo": "electron-react-boilerplate"
+			"owner": "smol-ai",
+			"repo": "menubar"
 		}
-	},
-	"collective": {
-		"url": "https://opencollective.com/electron-react-boilerplate-594"
 	},
 	"devEngines": {
 		"node": ">=18.x",
