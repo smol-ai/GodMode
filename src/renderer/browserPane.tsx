@@ -202,7 +202,7 @@ export function BrowserPane({
 										</Menu.Item>
 									</div>
 									<div className="py-1">
-									<Menu.Item>
+										<Menu.Item>
 											{({ active }) => (
 												<button
 													className={classNames(
@@ -242,6 +242,7 @@ export function BrowserPane({
 											{({ active }) => (
 												<a
 													href="https://github.com/smol-ai/menubar/issues/new"
+													target="_blank"
 													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
 													className={classNames(
 														active
@@ -249,7 +250,6 @@ export function BrowserPane({
 															: 'text-gray-700',
 														'px-4 py-2 text-sm w-full flex justify-start'
 													)}
-													onClick={resetPaneList}
 												>
 													Share Feedback
 												</a>
