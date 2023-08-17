@@ -11,9 +11,10 @@ import './App.css';
 import { BrowserPane } from './browserPane';
 import { ProviderInterface } from 'lib/types';
 import { TitleBar } from './TitleBar';
+import SettingsMenu from './components/settings';
 
 // @ts-ignore
-type paneInfo = { webviewId: string; shortName: string };
+export type paneInfo = { webviewId: string; shortName: string };
 const defaultPaneList = getEnabledProviders(
 	allProviders as ProviderInterface[],
 ).map((x) => ({
@@ -28,7 +29,7 @@ const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 export default function Layout() {
 	const [superprompt, setSuperprompt] = React.useState('');
 	const [paneList, setPaneList] = React.useState(storedPaneList);
-
+	const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
 
 	const originalAlwaysOnTop = window.electron.browserWindow.getAlwaysOnTop();
 	const [isAlwaysOnTop, setisAlwaysOnTop] = React.useState(originalAlwaysOnTop);
@@ -50,7 +51,7 @@ export default function Layout() {
 
 	const resetPaneList = () => setPaneList(defaultPaneList);
 
-	const nonEnabledProviders = allProviders.filter(
+	const nonEnabledProviders: ProviderInterface[] = allProviders.filter(
 		(x) => !enabledProviders.includes(x)
 	);
 
@@ -181,6 +182,7 @@ export default function Layout() {
 	return (
 		<div id="windowRef" className="flex flex-col" ref={windowRef}>
 			<TitleBar {...{ isAlwaysOnTop, toggleIsAlwaysOnTop }} />
+			<SettingsMenu open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 			<Split
 				sizes={sizes}
 				minSize={0}
@@ -247,6 +249,9 @@ export default function Layout() {
 								nonEnabledProviders,
 								isAlwaysOnTop,
 								toggleIsAlwaysOnTop,
+								isSettingsOpen,
+								setIsSettingsOpen
+
 							}}
 						/>
 					</div>

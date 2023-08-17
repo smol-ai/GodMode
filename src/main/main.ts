@@ -57,6 +57,14 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 	event.returnValue = bool;
 });
 
+/*
+ * Return the user's device platform (macOS, Windows, Linux) for use in
+ * keyboard shortcuts and other platform-specific features in the renderer.
+ */
+ipcMain.handle('get-platform', () => {
+	return process.platform;
+});
+
 // ipcMain.on('open-settings-window', () => {
 //   createSettingsWindow();
 // });
@@ -85,6 +93,7 @@ const installExtensions = async () => {
 		)
 		.catch(console.log);
 };
+
 
 const createWindow = async () => {
 	if (isDebug) {
@@ -141,6 +150,8 @@ const createWindow = async () => {
 		mainWindow = null;
 	});
 
+
+
 	const menuBuilder = new MenuBuilder(mainWindow);
 	menuBuilder.buildMenu();
 
@@ -154,8 +165,6 @@ const createWindow = async () => {
 	// eslint-disable-next-line
 	new AppUpdater();
 };
-
-
 
 /**
  * Add event listeners...
@@ -225,33 +234,88 @@ app.on('web-contents-created', (e, contents) => {
 });
 
 app
-	.whenReady()
-	.then(() => {
-		createWindow();
+.whenReady()
+.then(() => {
+	createWindow();
+	app.on('activate', () => {
 
-		// Register global shortcut (CommandOrControl+Shift+G) to show the app
-		const ret = globalShortcut.register('CommandOrControl+Shift+G', () => {
-			if (mainWindow) {
-				if (mainWindow.isMinimized()) {
-					mainWindow.restore();
-				}
-				mainWindow.focus();
-				mainWindow.show();
-			}
-		});
+		// On macOS it's common to re-create a window in the app when the
+		// dock icon is clicked and there are no other windows open.
+		if (mainWindow === null) createWindow();
+	});
+})
+.catch(console.log);
 
-		if (!ret) {
-			console.log('Global shortcut registration failed');
+/* ========================================================================== */
+/* Global Shortcut Logic                                                      */
+/* ========================================================================== */
+
+/*
+ * Fetch global shortcut from electron store, or default if none is set
+ */
+const quickOpenDefaultShortcut = store.get('quickOpenShortcut', 'CommandOrControl+Shift+G');
+
+/*
+ * Update the global shortcut to one provided
+ */
+function changeGlobalShortcut(newShortcut: string) {
+	globalShortcut.unregisterAll();
+	store.delete('quickOpenShortcut');
+
+	store.set('quickOpenShortcut', newShortcut);
+	globalShortcut.register(newShortcut, quickOpen);
+}
+
+/*
+ * Open and focus the main window
+ */
+function quickOpen() {
+	if (mainWindow) {
+		if (mainWindow.isMinimized()) {
+			mainWindow.restore();
 		}
+		mainWindow.focus();
+		mainWindow.show();
+	}
+}
 
-		app.on('activate', () => {
+/*
+ * Reply to renderer process with the global shortcut
+ */
+ipcMain.handle('get-global-shortcut', (event) => {
+	return store.get('quickOpenShortcut', 'CommandOrControl+Shift+G');
+});
 
-			// On macOS it's common to re-create a window in the app when the
-			// dock icon is clicked and there are no other windows open.
-			if (mainWindow === null) createWindow();
-		});
-	})
-	.catch(console.log);
+/*
+ * Set the global shortcut to one provided
+ */
+ipcMain.handle('set-global-shortcut', (event, shortcut: string) => {
+	if (!shortcut) return false;
+	console.log('set-global-shortcut', shortcut)
+	changeGlobalShortcut(shortcut);
+	return true;
+});
+
+
+app.on('ready', () => {
+
+	/*
+	 * Register global shortcut on app ready
+	 */
+	if (quickOpenDefaultShortcut) {
+		globalShortcut.register(quickOpenDefaultShortcut as string, quickOpen);
+	}
+
+	/*
+	 * Re-register global shortcut when it is changed in settings
+	 * and unregister the old one
+	 */
+	store.onDidChange('quickOpenShortcut', (newValue: unknown, oldValue: unknown) => {
+		if (newValue === oldValue) return;
+		changeGlobalShortcut(newValue as string);
+	});
+
+});
 
 app.on('will-quit', () => {
 	// Unregister the global shortcut

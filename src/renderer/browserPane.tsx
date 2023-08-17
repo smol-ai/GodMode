@@ -4,9 +4,12 @@ import {
 	Bars2Icon,
 	ChevronUpDownIcon,
 	CheckIcon,
+	Cog6ToothIcon
 } from '@heroicons/react/20/solid';
 import { BookmarkIcon, BookmarkSlashIcon } from '@heroicons/react/20/solid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { type paneInfo } from './layout';
+import { ProviderInterface } from 'lib/types';
 
 // https://tailwindui.com/components/application-ui/elements/dropdowns
 function classNames(...classes) {
@@ -31,6 +34,17 @@ export function BrowserPane({
 	nonEnabledProviders,
 	isAlwaysOnTop,
 	toggleIsAlwaysOnTop,
+	isSettingsOpen,
+	setIsSettingsOpen
+} : {
+	paneList: paneInfo[];
+	setPaneList: (paneList: paneInfo[]) => void;
+	resetPaneList: () => void;
+	nonEnabledProviders: ProviderInterface[];
+	isAlwaysOnTop: boolean;
+	toggleIsAlwaysOnTop: () => void;
+	isSettingsOpen: boolean;
+	setIsSettingsOpen: (isSettingsOpen: boolean) => void;
 }) {
 	const nullProvider = {
 		webviewId: 'nullProvider',
@@ -188,6 +202,22 @@ export function BrowserPane({
 										</Menu.Item>
 									</div>
 									<div className="py-1">
+									<Menu.Item>
+											{({ active }) => (
+												<button
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'px-4 py-2 text-sm w-full flex justify-start items-center'
+													)}
+													onClick={() => setIsSettingsOpen(true)}
+												>
+													<Cog6ToothIcon className="inline w-4 h-4 mr-2" />
+													Settings
+												</button>
+											)}
+										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
 												<button
@@ -195,14 +225,14 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
+														'px-4 py-2 text-sm w-full flex justify-start'
 													)}
 													onClick={toggleIsAlwaysOnTop}
 												>
 													{isAlwaysOnTop ? (
-														<BookmarkIcon className="inline w-4 h-4 text-green-700" />
+														<BookmarkIcon className="inline w-4 h-4 mr-2 text-green-700" />
 													) : (
-														<BookmarkSlashIcon className="inline w-4 h-4" />
+														<BookmarkSlashIcon className="inline w-4 h-4 mr-2" />
 													)}{' '}
 													Toggle Always on Top
 												</button>
@@ -217,7 +247,7 @@ export function BrowserPane({
 														active
 															? 'bg-gray-100 text-gray-900'
 															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
+														'px-4 py-2 text-sm w-full flex justify-start'
 													)}
 													onClick={resetPaneList}
 												>

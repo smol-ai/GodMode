@@ -17,3 +17,16 @@ export interface ProviderInterface {
 	isEnabled(): boolean;
 	setEnabled(enabled: boolean): void;
 }
+
+export interface Settings {
+	getGlobalShortcut: () => string;
+	setGlobalShortcut: (shortcut: string) => boolean;
+	getPlatform: () => string;
+}
+
+// Tell typescript that the window object has a property called settings
+declare global {
+	interface Window {
+		settings: Settings;
+	}
+}

@@ -49,4 +49,19 @@ const electronHandler = {
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
 
+contextBridge.exposeInMainWorld('settings', {
+	getGlobalShortcut: () => {
+		return ipcRenderer.invoke('get-global-shortcut');
+	},
+	setGlobalShortcut: (event: KeyboardEvent, shortcut: string) => {
+		return ipcRenderer.invoke('set-global-shortcut', shortcut);
+	},
+	getPlatform: () => {
+		return ipcRenderer.invoke('get-platform');
+	},
+});
+
 export type ElectronHandler = typeof electronHandler;
+
+
+
