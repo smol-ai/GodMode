@@ -47,7 +47,8 @@
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.11.2",
 		"react-split": "^2.0.14",
-		"tailwind-merge": "^1.14.0"
+		"tailwind-merge": "^1.14.0",
+		"vex-js": "^4.1.0"
 	},
 	"repository": {
 		"type": "git",

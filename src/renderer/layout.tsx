@@ -12,18 +12,30 @@ import { BrowserPane } from './browserPane';
 import { ProviderInterface } from 'lib/types';
 import { TitleBar } from './TitleBar';
 import SettingsMenu from './components/settings';
+import { promptCritic, promptImprover } from './promptImprover';
+// @ts-ignore
+import vex from 'vex-js';
+
+// Main css
+import 'vex-js/dist/css/vex.css';
+
+// Themes (Import all themes you want to use here)
+import 'vex-js/dist/css/vex-theme-default.css';
+import 'vex-js/dist/css/vex-theme-os.css';
+vex.registerPlugin(require('vex-dialog'));
+vex.defaultOptions.className = 'vex-theme-os';
 
 // @ts-ignore
 export type paneInfo = { webviewId: string; shortName: string };
 const defaultPaneList = getEnabledProviders(
-	allProviders as ProviderInterface[],
+	allProviders as ProviderInterface[]
 ).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
 const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 	'paneList',
-	defaultPaneList,
+	defaultPaneList
 );
 
 export default function Layout() {
@@ -40,7 +52,7 @@ export default function Layout() {
 	};
 
 	const enabledProviders = paneList.map(
-		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!,
+		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
 	);
 
 	const [sizes, setSizes] = React.useState(updateSplitSizes(enabledProviders));
@@ -52,7 +64,7 @@ export default function Layout() {
 	const resetPaneList = () => setPaneList(defaultPaneList);
 
 	const nonEnabledProviders: ProviderInterface[] = allProviders.filter(
-		(x) => !enabledProviders.includes(x),
+		(x) => !enabledProviders.includes(x)
 	);
 
 	/*
@@ -81,7 +93,7 @@ export default function Layout() {
 	const formRef = React.useRef<HTMLDivElement>(null); // don't actually use a <form> because it will just reload on submit even if you preventdefault
 	const SuperPromptEnterKey = window.electron.electronStore.get(
 		'SuperPromptEnterKey',
-		false,
+		false
 	);
 
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -233,6 +245,54 @@ export default function Layout() {
 - New chat: Cmd+R or Reset windows evenly: Cmd+Shift+A"
 					/>
 					<div className="flex items-center justify-center p-4 space-x-2">
+						<button
+							className="flex items-center justify-center w-12 h-12 p-1 text-white transition bg-gray-600 rounded-lg shadow-inner hover:bg-gray-200"
+							id="btn"
+							type="button"
+							onClick={async () => {
+								var llama2response = window.electron.browserWindow.promptLlama2(
+									promptCritic(superprompt)
+								);
+								console.log('stage 1 response', llama2response);
+								llama2response = await new Promise((res) =>
+									vex.dialog.prompt({
+										message: 'PromptCritic analysis: ' + llama2response,
+										placeholder: `what you'd like to change about your prompt`,
+										callback: res,
+									})
+								);
+								if (llama2response === null) return;
+								console.log('stage 2 response', llama2response);
+								llama2response = window.electron.browserWindow.promptLlama2(
+									promptImprover(superprompt, llama2response)
+								);
+								console.log('stage 3 response', llama2response);
+								var accept = await new Promise((res) =>
+									vex.dialog.prompt({
+										message: 'llama2 says: ' + llama2response,
+										callback: res,
+									})
+								);
+								if (accept) {
+									setSuperprompt(llama2response);
+								}
+							}}
+						>
+							<svg
+								width="15"
+								height="15"
+								viewBox="0 0 15 15"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM7.50003 4C7.77617 4 8.00003 4.22386 8.00003 4.5V7H10.5C10.7762 7 11 7.22386 11 7.5C11 7.77614 10.7762 8 10.5 8H8.00003V10.5C8.00003 10.7761 7.77617 11 7.50003 11C7.22389 11 7.00003 10.7761 7.00003 10.5V8H4.50003C4.22389 8 4.00003 7.77614 4.00003 7.5C4.00003 7.22386 4.22389 7 4.50003 7H7.00003V4.5C7.00003 4.22386 7.22389 4 7.50003 4Z"
+									fill="currentColor"
+									fillRule="evenodd"
+									clipRule="evenodd"
+								></path>
+							</svg>
+						</button>
 						<button
 							className="flex items-center justify-center w-12 h-12 p-1 text-white transition bg-gray-600 rounded-lg shadow-inner hover:bg-gray-200"
 							id="btn"

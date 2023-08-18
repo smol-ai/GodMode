@@ -44,6 +44,10 @@ const electronHandler = {
 		setAlwaysOnTop(val: any) {
 			ipcRenderer.send('set-always-on-top', val);
 		},
+		promptLlama2(prompt: string) {
+			const x = ipcRenderer.sendSync('prompt-llama2', prompt);
+			return x;
+		},
 	},
 };
 
