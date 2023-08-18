@@ -123,6 +123,7 @@ const createWindow = async () => {
 		titleBarStyle: 'hidden',
 		width: width - 100,
 		height: height - 100,
+		skipTaskbar: true,
 		icon: getAssetPath('icon.png'),
 		// alwaysOnTop: true,
 		webPreferences: {
@@ -133,6 +134,7 @@ const createWindow = async () => {
 				: path.join(__dirname, '../../scripts/dll/preload.js'),
 		},
 	});
+	// mainWindow.setWindowButtonVisibility(false) // hide traffic lights, discourage people from closing
 
 	const nativeImage = require('electron').nativeImage;
 	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'));
@@ -179,9 +181,21 @@ app.on('window-all-closed', () => {
 	// Respect the OSX convention of having the application in memory even
 	// after all windows have been closed
 	if (process.platform !== 'darwin') {
-		app.quit();
+		if (mainWindow) {
+			// trying to fix https://github.com/smol-ai/GodMode/issues/133 but it doesnt work yet
+			mainWindow.hide();
+		}
 	}
 });
+
+// trying to fix https://github.com/smol-ai/GodMode/issues/133 but it doesnt work yet
+app.on('before-quit', event => {
+  event.preventDefault();
+	if (mainWindow) {
+		mainWindow.hide();
+	}
+})
+
 
 app.on('web-contents-created', (e, contents) => {
 	if (contents.getType() == 'webview') {
@@ -293,7 +307,7 @@ function quickOpen() {
  * Reply to renderer process with the global shortcut
  */
 ipcMain.handle('get-global-shortcut', (event) => {
-	return store.get('quickOpenShortcut', 'Shift+Super+G');
+	return store.get('quickOpenShortcut', 'CmdOrCtrl+Shift+G');
 });
 
 /*
