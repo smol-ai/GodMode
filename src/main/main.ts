@@ -276,6 +276,10 @@ function quickOpen() {
 		}
 		mainWindow.focus();
 		mainWindow.show();
+		// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
+		mainWindow.webContents.executeJavaScript(
+			`{document.querySelector('#prompt')?.focus()}`
+		);
 	}
 }
 

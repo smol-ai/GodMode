@@ -66,6 +66,7 @@ class Perplexity extends Provider {
 		    `);
 			}, 100);
 		});
+		// this.getWebview().setZoomLevel(this.getWebview().getZoomLevel() - 2);
 	}
 
 	static isEnabled() {

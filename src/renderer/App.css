@@ -15,16 +15,37 @@ body {
 	margin: 0;
 	overflow: hidden;
 }
+#root {
+	height: 100vh;
+}
 
 :root {
-	--superprompt-height: 100px;
-	--titlebar-height: 16px;
+	--superprompt-height: 4rem;
+	--titlebar-height: 26px;
+	--powerbar-height: 2rem;
+	--allverticalheight: calc(var(--titlebar-height) + var(--powerbar-height) + var(--superprompt-height));
 	--actual-height: calc(100vh - var(--titlebar-height));
 }
 
 #titlebar {
-	height: calc(var(--titlebar-height) + 10px);
+	height: calc(var(--titlebar-height));
 	-webkit-app-region: drag;
+}
+
+.powerbar {
+	/* height: var(--powerbar-height) */
+	position: absolute;
+	z-index: 10;
+	left: calc(50% - 3rem);
+	@apply bg-white/50 rounded-b-lg
+}
+.powerbar:hover {
+  backdrop-filter: blur(10px);
+	background: #fff;
+	animation: blur 1s linear 0s infinite;
+  /* box-shadow: 
+    0 0 60px 30px rgba(255, 255, 255, 0.8), 
+    0 0 100px 60px rgba(255, 255, 255, 0.5); */
 }
 
 #titlebar button {
@@ -43,9 +64,18 @@ body {
 	/* disabled because its quite buggy */
 	/* resize: both;  */
 	width: 100%;
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
+	height: calc(100vh - var(--titlebar-height) - var(--superprompt-height) - 2rem);
 	/* margin: 0 auto; */
 	position: relative;
+}
+
+webview {
+	/* overflow: hidden; */
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: calc(100vh - var(--titlebar-height) - var(--superprompt-height) - 2rem);
+	display: inline-flex !important;
 }
 
 /* .flex {
@@ -87,14 +117,6 @@ body {
 	@apply p-2 mr-4 font-mono text-white bg-gray-700 rounded hover:bg-gray-500;
 }
 
-webview {
-	/* overflow: hidden; */
-	position: absolute;
-	left: 0;
-	width: 100%;
-	height: calc(100vh - var(--superprompt-height) - var(--titlebar-height));
-	display: inline-flex !important;
-}
 
 .gutter {
 	background-color: #a9a9a9;
