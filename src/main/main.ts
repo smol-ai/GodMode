@@ -17,6 +17,7 @@ import {
 	screen,
 	ipcMain,
 	globalShortcut,
+	Event,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -97,7 +98,7 @@ const installExtensions = async () => {
 	return installer
 		.default(
 			extensions.map((name) => installer[name]),
-			forceDownload
+			forceDownload,
 		)
 		.catch(console.log);
 };
@@ -153,8 +154,9 @@ const createWindow = async () => {
 		}
 	});
 
-	mainWindow.on('closed', () => {
-		mainWindow = null;
+	mainWindow.on('close', (event: Event) => {
+		event?.preventDefault();
+		mainWindow?.hide();
 	});
 
 	const menuBuilder = new MenuBuilder(mainWindow);
@@ -259,11 +261,11 @@ app
  */
 const quickOpenDefaultShortcut = store.get(
 	'quickOpenShortcut',
-	'CommandOrControl+Shift+G'
+	'CommandOrControl+Shift+G',
 ) as string;
 
 console.log(quickOpenDefaultShortcut);
-console.log(isValidShortcut(quickOpenDefaultShortcut))
+console.log(isValidShortcut(quickOpenDefaultShortcut));
 /*
  * Update the global shortcut to one provided
  */
@@ -278,15 +280,15 @@ function changeGlobalShortcut(newShortcut: string) {
  * Open and focus the main window
  */
 function quickOpen() {
-	if (mainWindow) {
+	if (mainWindow && !mainWindow.isDestroyed()) {
 		if (mainWindow.isMinimized()) {
 			mainWindow.restore();
 		}
-		mainWindow.focus();
 		mainWindow.show();
+		mainWindow.focus();
 		// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
 		mainWindow.webContents.executeJavaScript(
-			`{document.querySelector('#prompt')?.focus()}`
+			`{document.querySelector('#prompt')?.focus()}`,
 		);
 	}
 }
@@ -325,7 +327,7 @@ app.on('ready', () => {
 		(newValue: unknown, oldValue: unknown) => {
 			if (newValue === oldValue) return;
 			changeGlobalShortcut(newValue as string);
-		}
+		},
 	);
 });
 

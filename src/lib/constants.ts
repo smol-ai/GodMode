@@ -6,6 +6,7 @@ import HuggingChat from '../providers/huggingchat';
 import OobaBooga from '../providers/oobabooga';
 import OpenAi from '../providers/openai';
 import Perplexity from '../providers/perplexity';
+import YouChat from '../providers/you';
 import PerplexityLlama from '../providers/perplexity-llama.js';
 import Phind from '../providers/phind';
 import Smol from '../providers/smol';
@@ -20,6 +21,7 @@ export const allProviders = [
 	// Claude, // Can't Verify
 	Claude2,
 	Together,
+	YouChat,
 	Perplexity,
 	// Phind, // Broken
 	PerplexityLlama,
