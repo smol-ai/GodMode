@@ -77,7 +77,7 @@ export function isValidShortcut(...keys: (string | string[])[]): boolean {
 	let shiftCount = 0; // Track the count of shift keys
 
 	const shortcut = keys.flatMap((value) =>
-		typeof value === 'string' ? value.split('+') : value.flat()
+		typeof value === 'string' ? value.split('+') : value.flat(),
 	);
 
 	shortcut.forEach((key) => {

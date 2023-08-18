@@ -99,7 +99,7 @@ function recordShortcut(event) {
 		interimShift = false;
 		isRecording = false;
 		window.settings?.setQuickOpenShortcut?.(
-			convertTokensToAccelerator(shortcut)
+			convertTokensToAccelerator(shortcut),
 		);
 	}
 

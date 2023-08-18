@@ -10,7 +10,7 @@ const appPackageJsonPath = path.join(
 	__dirname,
 	'../../release',
 	'app',
-	'package.json'
+	'package.json',
 );
 const appPackageJson = require(appPackageJsonPath);
 
@@ -21,5 +21,5 @@ appPackageJson.version = rootPackageJson.version;
 fs.writeFileSync(appPackageJsonPath, JSON.stringify(appPackageJson, null, 2));
 
 console.log(
-	`Copied version ${appPackageJson.version} from root package.json to release/app/package.json`
+	`Copied version ${appPackageJson.version} from root package.json to release/app/package.json`,
 );
