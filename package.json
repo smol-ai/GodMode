@@ -1,12 +1,13 @@
 {
 	"name": "godmode",
 	"productName": "GodMode",
-	"version": "1.0.0",
+	"version": "1.0.0-beta.1",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
 	"main": "src/main/main.ts",
 	"scripts": {
-		"build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
+		"build": "concurrently \"npm run build:main\" \"npm run build:renderer\" \"npm run build:copy\"",
+		"build:copy": "node scripts/scripts/copy-version-number.js",
 		"build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.main.prod.ts",
 		"build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.prod.ts",
 		"postinstall": "ts-node scripts/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.dev.dll.ts",

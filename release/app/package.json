@@ -1,18 +1,18 @@
 {
-	"name": "GodMode",
-	"version": "1.0.0-beta.0",
-	"description": "A foundation for scalable desktop apps",
-	"license": "MIT",
-	"author": {
-		"name": "Electron React Boilerplate Maintainers",
-		"email": "electronreactboilerplate@gmail.com",
-		"url": "https://github.com/electron-react-boilerplate"
-	},
-	"main": "./dist/main/main.js",
-	"scripts": {
-		"rebuild": "node -r ts-node/register ../../scripts/scripts/electron-rebuild.js",
-		"postinstall": "npm run rebuild && npm run link-modules",
-		"link-modules": "node -r ts-node/register ../../scripts/scripts/link-modules.ts"
-	},
-	"dependencies": {}
+  "name": "GodMode",
+  "version": "1.0.0-beta.1",
+  "description": "A foundation for scalable desktop apps",
+  "license": "MIT",
+  "author": {
+    "name": "Electron React Boilerplate Maintainers",
+    "email": "electronreactboilerplate@gmail.com",
+    "url": "https://github.com/electron-react-boilerplate"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../scripts/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../scripts/scripts/link-modules.ts"
+  },
+  "dependencies": {}
 }
