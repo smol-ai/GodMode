@@ -32,10 +32,10 @@ export default function SettingsMenu({
 		let workingShortcut = shortcut;
 		const { key } = event;
 
-		const fetchPlatform = async () => {
-			const platform = await settings.getPlatform();
-			return platform;
-		};
+		// const fetchPlatform = async () => {
+		// 	const platform = await settings.getPlatform();
+		// 	return platform;
+		// };
 
 		const pressedKey = modifierKeys.has(key as ShortcutKey)
 			? convertModifierKey(key as ShortcutKey)
@@ -47,22 +47,20 @@ export default function SettingsMenu({
 		if (isValidShortcut(workingShortcut)) {
 			pressedKeys.clear();
 			setIsRecording(false);
-			console.debug('SETTINGS VIEW 🔵 set valid shortcut');
+
 			setValidShortcut([...workingShortcut]);
 		}
 
 		setShortcut([...workingShortcut]);
 	}
-	console.debug('SETTINGS VIEW 🔵 validShortcut', validShortcut);
+
 	function keyUp(event: KeyboardEvent) {
         event.preventDefault();
 		// if (!isRecording) return;
         const { key } = event;
         if (modifierKeys.has(key as ShortcutKey)) {
-            console.debug('SETTINGS VIEW 🔵 keyUp modifier key', key, convertModifierKey(key as ShortcutKey))
             pressedKeys.delete(convertModifierKey(key as ShortcutKey));
         } else {
-            console.debug('SETTINGS VIEW 🔵 keyUp key', key, convertKeyCode(event.code));
             pressedKeys.delete(convertKeyCode(event.code));
         }
         if (key === 'Escape') setIsRecording(false);
@@ -92,27 +90,28 @@ export default function SettingsMenu({
 		if (!isValidShortcut(validShortcut)) return;
 		const updateShortcut = async (shortcut: string[]) => {
 			const newShortcut = shortcut.join('+');
-			console.debug(
-				'SETTINGS VIEW 🔵 setGlobalShortcut newShortcut',
-				newShortcut,
-				typeof newShortcut
-			);
 			const sc = await settings.setGlobalShortcut(newShortcut);
-			console.debug('SETTINGS VIEW 🔵 setGlobalShortcut sc', sc);
+            setValidShortcut([]);
 		};
-		if (isValidShortcut(validShortcut)) updateShortcut(validShortcut);
+		updateShortcut(validShortcut);
 	}, [validShortcut]);
 
 	// Turn on key listeners when recording shortcuts
 	useEffect(() => {
-		if (isRecording) {
+		if (isRecording && validShortcut.length === 0) {
+            console.log('inside recording')
 			window.addEventListener('keydown', recordShortcut);
 			window.addEventListener('keyup', keyUp);
 		} else {
+            console.log('inside not recording')
 			window.removeEventListener('keydown', recordShortcut);
 			window.removeEventListener('keyup', keyUp);
 		}
-	}, [isRecording]);
+        return () => {
+			window.removeEventListener('keydown', recordShortcut);
+			window.removeEventListener('keyup', keyUp);
+        }
+	}, [isRecording, validShortcut]);
 
 	// Turn off recording when the dialog is closed
 	useEffect(() => {

@@ -256,8 +256,6 @@ app
  */
 store.delete('quickOpenShortcut');
 const quickOpenDefaultShortcut = store.get('quickOpenShortcut', 'CommandOrControl+Shift+G') as string;
-console.log('MAIN 🟢 quickOpenDefaultShortcut', quickOpenDefaultShortcut)
-console.log('MAIN 🟢 quickOpenDefaultShortcut type', typeof quickOpenDefaultShortcut);
 /*
  * Update the global shortcut to one provided
  */
@@ -292,7 +290,6 @@ ipcMain.handle('get-global-shortcut', (event) => {
  * Set the global shortcut to one provided
  */
 ipcMain.handle('set-global-shortcut', async (event, shortcut: string) => {
-	console.log('MAIN 🟢 set-global-shortcut shortcut', shortcut)
 	if (!shortcut) return false;
 	changeGlobalShortcut(shortcut);
 	return true;
@@ -306,12 +303,10 @@ app.on('ready', () => {
 	 */
 	if (isValidShortcut(quickOpenDefaultShortcut)){
 
-		console.log('MAIN 🟢 globalShortcut.register', quickOpenDefaultShortcut)
-		console.log('MAIN 🟢 globalShortcut.isRegistered', globalShortcut);
 	} else {
 		store.set('quickOpenShortcut', 'CommandOrControl+Shift+G')
 		globalShortcut.register('CommandOrControl+Shift+G', quickOpen);
-		console.log('MAIN 🟢 globalShortcut.register', 'CommandOrControl+Shift+G')
+
 	}
 
 	/*
