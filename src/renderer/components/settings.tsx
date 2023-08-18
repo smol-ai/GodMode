@@ -140,13 +140,24 @@ export default function SettingsMenu({
 						</div>
 					))}
 				</div>
-				<Button
-					onClick={() => setIsRecording(!isRecording)}
-					variant="outline"
-					className=""
-				>
-					{isRecording ? 'Recording...' : 'Record shortcut'}
-				</Button>
+                {isRecording ? (
+                    <Button
+                        onClick={() => setIsRecording(!isRecording)}
+                        variant="outline"
+                        className="text-red-500"
+                    >
+                        Recording...
+                    </Button>
+                ) : (
+                    <Button
+                        onClick={() => setIsRecording(!isRecording)}
+                        variant="outline"
+                        className=""
+                    >
+                        Record shortcut
+                    </Button>
+                )}
+
 			</DialogContent>
 		</Dialog>
 	);
