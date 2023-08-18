@@ -4,7 +4,7 @@ import {
 	shell,
 	BrowserWindow,
 	MenuItemConstructorOptions,
-	ipcRenderer
+	ipcRenderer,
 } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
@@ -13,7 +13,7 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 }
 
 function openSettingsWindow() {
-  ipcRenderer.send('open-settings-window');
+	ipcRenderer.send('open-settings-window');
 }
 
 export default class MenuBuilder {
@@ -169,7 +169,7 @@ export default class MenuBuilder {
 					label: 'Documentation',
 					click() {
 						shell.openExternal(
-							'https://github.com/electron/electron/tree/main/docs#readme',
+							'https://github.com/electron/electron/tree/main/docs#readme'
 						);
 					},
 				},
@@ -233,7 +233,7 @@ export default class MenuBuilder {
 									accelerator: 'F11',
 									click: () => {
 										this.mainWindow.setFullScreen(
-											!this.mainWindow.isFullScreen(),
+											!this.mainWindow.isFullScreen()
 										);
 									},
 								},
@@ -251,7 +251,7 @@ export default class MenuBuilder {
 									accelerator: 'F11',
 									click: () => {
 										this.mainWindow.setFullScreen(
-											!this.mainWindow.isFullScreen(),
+											!this.mainWindow.isFullScreen()
 										);
 									},
 								},
@@ -270,7 +270,7 @@ export default class MenuBuilder {
 						label: 'Documentation',
 						click() {
 							shell.openExternal(
-								'https://github.com/electron/electron/tree/main/docs#readme',
+								'https://github.com/electron/electron/tree/main/docs#readme'
 							);
 						},
 					},

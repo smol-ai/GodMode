@@ -16,4 +16,18 @@ export interface ProviderInterface {
 	getUserAgent(): string;
 	isEnabled(): boolean;
 	setEnabled(enabled: boolean): void;
+	clearCookies(): void;
+}
+
+export interface Settings {
+	getGlobalShortcut: () => Promise<string>;
+	setGlobalShortcut: (shortcut: string) => Promise<boolean>;
+	getPlatform: () => Promise<string>;
+}
+
+// Tell typescript that the window object has a property called settings
+declare global {
+	interface Window {
+		settings: Settings;
+	}
 }

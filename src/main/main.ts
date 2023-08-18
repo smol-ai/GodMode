@@ -10,12 +10,20 @@
  */
 import path from 'path';
 
-import { app, BrowserWindow, shell, screen, ipcMain, globalShortcut } from 'electron';
+import {
+	app,
+	BrowserWindow,
+	shell,
+	screen,
+	ipcMain,
+	globalShortcut,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { isValidShortcut } from '../lib/utils';
 
 let store = new Store();
 
@@ -57,9 +65,17 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 	event.returnValue = bool;
 });
 
-ipcMain.on('open-settings-window', () => {
-  createSettingsWindow();
+/*
+ * Return the user's device platform (macOS, Windows, Linux) for use in
+ * keyboard shortcuts and other platform-specific features in the renderer.
+ */
+ipcMain.handle('get-platform', () => {
+	return process.platform;
 });
+
+// ipcMain.on('open-settings-window', () => {
+//   createSettingsWindow();
+// });
 
 if (process.env.NODE_ENV === 'production') {
 	const sourceMapSupport = require('source-map-support');
@@ -81,7 +97,7 @@ const installExtensions = async () => {
 	return installer
 		.default(
 			extensions.map((name) => installer[name]),
-			forceDownload,
+			forceDownload
 		)
 		.catch(console.log);
 };
@@ -117,6 +133,12 @@ const createWindow = async () => {
 				: path.join(__dirname, '../../scripts/dll/preload.js'),
 		},
 	});
+
+	const nativeImage = require('electron').nativeImage;
+	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'));
+
+	app.dock.setIcon(dockIcon);
+	app.name = 'God Mode';
 
 	mainWindow.loadURL(resolveHtmlPath('index.html'));
 
@@ -220,30 +242,91 @@ app
 	.whenReady()
 	.then(() => {
 		createWindow();
-
-		// Register global shortcut (CommandOrControl+Shift+G) to show the app
-		const ret = globalShortcut.register('CommandOrControl+Shift+G', () => {
-			if (mainWindow) {
-				if (mainWindow.isMinimized()) {
-					mainWindow.restore();
-				}
-				mainWindow.focus();
-				mainWindow.show();
-			}
-		});
-
-		if (!ret) {
-			console.log('Global shortcut registration failed');
-		}
-
 		app.on('activate', () => {
-
 			// On macOS it's common to re-create a window in the app when the
 			// dock icon is clicked and there are no other windows open.
 			if (mainWindow === null) createWindow();
 		});
 	})
 	.catch(console.log);
+
+/* ========================================================================== */
+/* Global Shortcut Logic                                                      */
+/* ========================================================================== */
+
+/*
+ * Fetch global shortcut from electron store, or default if none is set
+ */
+store.delete('quickOpenShortcut');
+const quickOpenDefaultShortcut = store.get(
+	'quickOpenShortcut',
+	'CommandOrControl+Shift+G'
+) as string;
+/*
+ * Update the global shortcut to one provided
+ */
+function changeGlobalShortcut(newShortcut: string) {
+	if (!newShortcut) return;
+	if (!isValidShortcut(newShortcut)) return;
+	store.set('quickOpenShortcut', newShortcut);
+	globalShortcut.register(newShortcut, quickOpen);
+}
+
+/*
+ * Open and focus the main window
+ */
+function quickOpen() {
+	if (mainWindow) {
+		if (mainWindow.isMinimized()) {
+			mainWindow.restore();
+		}
+		mainWindow.focus();
+		mainWindow.show();
+		// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
+		mainWindow.webContents.executeJavaScript(
+			`{document.querySelector('#prompt')?.focus()}`
+		);
+	}
+}
+
+/*
+ * Reply to renderer process with the global shortcut
+ */
+ipcMain.handle('get-global-shortcut', (event) => {
+	return store.get('quickOpenShortcut', 'Shift+Super+G');
+});
+
+/*
+ * Set the global shortcut to one provided
+ */
+ipcMain.handle('set-global-shortcut', async (event, shortcut: string) => {
+	if (!shortcut) return false;
+	changeGlobalShortcut(shortcut);
+	return true;
+});
+
+app.on('ready', () => {
+	/*
+	 * Register global shortcut on app ready
+	 */
+	if (isValidShortcut(quickOpenDefaultShortcut)) {
+	} else {
+		store.set('quickOpenShortcut', 'CommandOrControl+Shift+G');
+		globalShortcut.register('CommandOrControl+Shift+G', quickOpen);
+	}
+
+	/*
+	 * Re-register global shortcut when it is changed in settings
+	 * and unregister the old one
+	 */
+	store.onDidChange(
+		'quickOpenShortcut',
+		(newValue: unknown, oldValue: unknown) => {
+			if (newValue === oldValue) return;
+			changeGlobalShortcut(newValue as string);
+		}
+	);
+});
 
 app.on('will-quit', () => {
 	// Unregister the global shortcut

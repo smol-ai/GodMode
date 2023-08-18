@@ -23,7 +23,7 @@ class OobaBooga extends Provider {
         } else {
           const inputEvent = new Event('input', { bubbles: true });
           inputElement.value = \`${this.templateFn(
-						input,
+						input
 					)}\`; // must be escaped backticks to support multiline
           inputElement.dispatchEvent(inputEvent);
         }
