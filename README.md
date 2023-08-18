@@ -47,17 +47,17 @@ Yes and no:
   - `Cmd+Shift+L` to toggle light/dark mode (not customizable for now)
   - Remember you can customize further by building from source!
 
-- **Window Resizing and Rearranging**:
+- **Pane Resizing and Rearranging**:
 
-  - Resize the window by clicking and dragging.
-  - Use `Cmd+1/2/3/A/+/-` or drag to resize the internal webviews.
-    - `Cmd +` and `Cmd -` are especially useful if you have a lot of chats enabled!
+  - Resize the panes by clicking and dragging.
+  - Use `Cmd+1/2/3` to pop out individual webviews
+  - Use `Cmd +/-` to zoom in/out globally
   - open up the panel on the bottom right to reorder panes or reset them to default
-  - `Cmd p` to pin the window Always on Top (or not)
+  - `Cmd p` to pin/unpin the window Always on Top
 
 - **Model Toggle**:
 
-  - Enable/disable providers by accessing the context menu from the menubar icon (right-click and choose from the list). The choice is saved for future sessions.
+  - Enable/disable providers by accessing the context menu. The choice is saved for future sessions.
   - Supported models: ChatGPT, Bing, Bard, Claude 1/2, and more (see Supported LLM Providers above)
 
 - **Support for oobabooga/text-generation-webui**:
@@ -77,6 +77,7 @@ Yes and no:
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 - July 11 version https://twitter.com/swyx/status/1678944036135260160
+- Aug 15 version https://twitter.com/swyx/status/1692351633681011018
 
 ## Download and Setup
 
