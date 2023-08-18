@@ -1,6 +1,6 @@
 # GodMode - the smol AI Chat Browser
 
-This is a smol menubar app that helps you quickly access **the full webapps** of ChatGPT, Claude 2, Perplexity.ai, Bing and more (see below) **with a single keyboard shortcut (Cmd+Shift+G)**.
+This is a dedicated chat browser that only does one thing: help you quickly access **the full webapps** of ChatGPT, Claude 2, Perplexity, Bing and more **with a single keyboard shortcut (Cmd+Shift+G)**.
 
 ![image](https://github.com/smol-ai/menubar/assets/6764957/90f4bab4-e406-4507-b37e-8c8d80d18f15)
 
