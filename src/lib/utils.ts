@@ -80,7 +80,7 @@ export function isValidShortcut(...keys: (string | string[])[]): boolean {
 		typeof value === 'string' ? value.split('+') : value.flat()
 	);
 
-	shortcut.forEach(key => {
+	shortcut.forEach((key) => {
 		if (key === 'Shift') {
 			shiftCount++;
 		} else if (modifierKeys.has(key as ShortcutKey)) {

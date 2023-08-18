@@ -4,7 +4,7 @@ import {
 	Bars2Icon,
 	ChevronUpDownIcon,
 	CheckIcon,
-	Cog6ToothIcon
+	Cog6ToothIcon,
 } from '@heroicons/react/20/solid';
 import { BookmarkIcon, BookmarkSlashIcon } from '@heroicons/react/20/solid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -35,8 +35,8 @@ export function BrowserPane({
 	isAlwaysOnTop,
 	toggleIsAlwaysOnTop,
 	isSettingsOpen,
-	setIsSettingsOpen
-} : {
+	setIsSettingsOpen,
+}: {
 	paneList: paneInfo[];
 	setPaneList: (paneList: paneInfo[]) => void;
 	resetPaneList: () => void;

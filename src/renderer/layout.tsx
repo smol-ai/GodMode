@@ -16,14 +16,14 @@ import SettingsMenu from './components/settings';
 // @ts-ignore
 export type paneInfo = { webviewId: string; shortName: string };
 const defaultPaneList = getEnabledProviders(
-	allProviders as ProviderInterface[],
+	allProviders as ProviderInterface[]
 ).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
 const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 	'paneList',
-	defaultPaneList,
+	defaultPaneList
 );
 
 export default function Layout() {
@@ -83,7 +83,6 @@ export default function Layout() {
 		'SuperPromptEnterKey',
 		false
 	);
-
 
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;

@@ -10,7 +10,14 @@
  */
 import path from 'path';
 
-import { app, BrowserWindow, shell, screen, ipcMain, globalShortcut } from 'electron';
+import {
+	app,
+	BrowserWindow,
+	shell,
+	screen,
+	ipcMain,
+	globalShortcut,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Store from 'electron-store';
@@ -90,11 +97,10 @@ const installExtensions = async () => {
 	return installer
 		.default(
 			extensions.map((name) => installer[name]),
-			forceDownload,
+			forceDownload
 		)
 		.catch(console.log);
 };
-
 
 const createWindow = async () => {
 	if (isDebug) {
@@ -129,7 +135,7 @@ const createWindow = async () => {
 	});
 
 	const nativeImage = require('electron').nativeImage;
-	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'))
+	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'));
 
 	app.dock.setIcon(dockIcon);
 	app.name = 'God Mode';
@@ -150,8 +156,6 @@ const createWindow = async () => {
 	mainWindow.on('closed', () => {
 		mainWindow = null;
 	});
-
-
 
 	const menuBuilder = new MenuBuilder(mainWindow);
 	menuBuilder.buildMenu();
@@ -235,17 +239,16 @@ app.on('web-contents-created', (e, contents) => {
 });
 
 app
-.whenReady()
-.then(() => {
-	createWindow();
-	app.on('activate', () => {
-
-		// On macOS it's common to re-create a window in the app when the
-		// dock icon is clicked and there are no other windows open.
-		if (mainWindow === null) createWindow();
-	});
-})
-.catch(console.log);
+	.whenReady()
+	.then(() => {
+		createWindow();
+		app.on('activate', () => {
+			// On macOS it's common to re-create a window in the app when the
+			// dock icon is clicked and there are no other windows open.
+			if (mainWindow === null) createWindow();
+		});
+	})
+	.catch(console.log);
 
 /* ========================================================================== */
 /* Global Shortcut Logic                                                      */
@@ -255,7 +258,10 @@ app
  * Fetch global shortcut from electron store, or default if none is set
  */
 store.delete('quickOpenShortcut');
-const quickOpenDefaultShortcut = store.get('quickOpenShortcut', 'CommandOrControl+Shift+G') as string;
+const quickOpenDefaultShortcut = store.get(
+	'quickOpenShortcut',
+	'CommandOrControl+Shift+G'
+) as string;
 /*
  * Update the global shortcut to one provided
  */
@@ -299,29 +305,27 @@ ipcMain.handle('set-global-shortcut', async (event, shortcut: string) => {
 	return true;
 });
 
-
 app.on('ready', () => {
-
 	/*
 	 * Register global shortcut on app ready
 	 */
-	if (isValidShortcut(quickOpenDefaultShortcut)){
-
+	if (isValidShortcut(quickOpenDefaultShortcut)) {
 	} else {
-		store.set('quickOpenShortcut', 'CommandOrControl+Shift+G')
+		store.set('quickOpenShortcut', 'CommandOrControl+Shift+G');
 		globalShortcut.register('CommandOrControl+Shift+G', quickOpen);
-
 	}
 
 	/*
 	 * Re-register global shortcut when it is changed in settings
 	 * and unregister the old one
 	 */
-	store.onDidChange('quickOpenShortcut', (newValue: unknown, oldValue: unknown) => {
-		if (newValue === oldValue) return;
-		changeGlobalShortcut(newValue as string);
-	});
-
+	store.onDidChange(
+		'quickOpenShortcut',
+		(newValue: unknown, oldValue: unknown) => {
+			if (newValue === oldValue) return;
+			changeGlobalShortcut(newValue as string);
+		}
+	);
 });
 
 app.on('will-quit', () => {

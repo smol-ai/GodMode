@@ -41,8 +41,8 @@ export default function SettingsMenu({
 			? convertModifierKey(key as ShortcutKey)
 			: convertKeyCode(event.code);
 
-        pressedKeys.add(pressedKey);
-        workingShortcut = Array.from(pressedKeys);
+		pressedKeys.add(pressedKey);
+		workingShortcut = Array.from(pressedKeys);
 
 		if (isValidShortcut(workingShortcut)) {
 			pressedKeys.clear();
@@ -55,15 +55,15 @@ export default function SettingsMenu({
 	}
 
 	function keyUp(event: KeyboardEvent) {
-        event.preventDefault();
+		event.preventDefault();
 		// if (!isRecording) return;
-        const { key } = event;
-        if (modifierKeys.has(key as ShortcutKey)) {
-            pressedKeys.delete(convertModifierKey(key as ShortcutKey));
-        } else {
-            pressedKeys.delete(convertKeyCode(event.code));
-        }
-        if (key === 'Escape') setIsRecording(false);
+		const { key } = event;
+		if (modifierKeys.has(key as ShortcutKey)) {
+			pressedKeys.delete(convertModifierKey(key as ShortcutKey));
+		} else {
+			pressedKeys.delete(convertKeyCode(event.code));
+		}
+		if (key === 'Escape') setIsRecording(false);
 	}
 
 	// Set the meta key on mount based on platform (cmd on mac, ctrl on windows)
@@ -91,7 +91,7 @@ export default function SettingsMenu({
 		const updateShortcut = async (shortcut: string[]) => {
 			const newShortcut = shortcut.join('+');
 			const sc = await settings.setGlobalShortcut(newShortcut);
-            setValidShortcut([]);
+			setValidShortcut([]);
 		};
 		updateShortcut(validShortcut);
 	}, [validShortcut]);
@@ -99,18 +99,18 @@ export default function SettingsMenu({
 	// Turn on key listeners when recording shortcuts
 	useEffect(() => {
 		if (isRecording && validShortcut.length === 0) {
-            console.log('inside recording')
+			console.log('inside recording');
 			window.addEventListener('keydown', recordShortcut);
 			window.addEventListener('keyup', keyUp);
 		} else {
-            console.log('inside not recording')
+			console.log('inside not recording');
 			window.removeEventListener('keydown', recordShortcut);
 			window.removeEventListener('keyup', keyUp);
 		}
-        return () => {
+		return () => {
 			window.removeEventListener('keydown', recordShortcut);
 			window.removeEventListener('keyup', keyUp);
-        }
+		};
 	}, [isRecording, validShortcut]);
 
 	// Turn off recording when the dialog is closed
@@ -139,24 +139,23 @@ export default function SettingsMenu({
 						</div>
 					))}
 				</div>
-                {isRecording ? (
-                    <Button
-                        onClick={() => setIsRecording(!isRecording)}
-                        variant="outline"
-                        className="text-red-500"
-                    >
-                        Recording...
-                    </Button>
-                ) : (
-                    <Button
-                        onClick={() => setIsRecording(!isRecording)}
-                        variant="outline"
-                        className=""
-                    >
-                        Record shortcut
-                    </Button>
-                )}
-
+				{isRecording ? (
+					<Button
+						onClick={() => setIsRecording(!isRecording)}
+						variant="outline"
+						className="text-red-500"
+					>
+						Recording...
+					</Button>
+				) : (
+					<Button
+						onClick={() => setIsRecording(!isRecording)}
+						variant="outline"
+						className=""
+					>
+						Record shortcut
+					</Button>
+				)}
 			</DialogContent>
 		</Dialog>
 	);

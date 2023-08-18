@@ -62,6 +62,3 @@ contextBridge.exposeInMainWorld('settings', {
 });
 
 export type ElectronHandler = typeof electronHandler;
-
-
-
