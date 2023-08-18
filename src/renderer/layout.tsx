@@ -84,12 +84,6 @@ export default function Layout() {
 		false
 	);
 
-	const paneShortcutKeys: Record<string, number | null> = {};
-	for (let i = 0; i < enabledProviders.length; i++) {
-		paneShortcutKeys[`${i + 1}`] = i;
-	}
-
-	console.warn('paneShortcutKeys', paneShortcutKeys);
 
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
@@ -127,18 +121,25 @@ export default function Layout() {
 		}
 	}
 
+	const paneShortcutKeys: Record<string, number | null> = {};
+	for (let i = 0; i < enabledProviders.length; i++) {
+		paneShortcutKeys[`${i + 1}`] = i;
+	}
+
+	console.warn('paneShortcutKeys', paneShortcutKeys);
+
+	const [currentlyOpenPreviewPane, setOpenPreviewPane] = React.useState(0);
+	const closePreviewPane = () => setOpenPreviewPane(0);
+
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		const isShift = event.shiftKey;
 		console.debug('keydown', event.key, isCmdOrCtrl, event);
 		if (isCmdOrCtrl && !isShift && event.key in paneShortcutKeys) {
-			const newSizes = updateSplitSizes(
-				enabledProviders,
-				paneShortcutKeys[event.key]
-			);
-			setSizes(newSizes);
 			if (paneShortcutKeys[event.key] === null) {
 				window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
+			} else {
+				setOpenPreviewPane(+event.key);
 			}
 		} else if (isCmdOrCtrl && isShift && event.key === 'a') {
 			window.electron.browserWindow.reload();
@@ -148,6 +149,7 @@ export default function Layout() {
 		) {
 			// Increase zoom level with Cmd/Ctrl + '+' or '='
 			enabledProviders.forEach((provider) => {
+				// @ts-ignore
 				provider
 					.getWebview()
 					// @ts-ignore
@@ -156,8 +158,10 @@ export default function Layout() {
 		} else if (isCmdOrCtrl && event.key === '-') {
 			// Decrease zoom level with Cmd/Ctrl + '-'
 			enabledProviders.forEach((provider) => {
+				// @ts-ignore
 				provider
-					.getWebview() // @ts-ignore
+					.getWebview()
+					// @ts-ignore
 					.setZoomLevel(provider.getWebview().getZoomLevel() - 1);
 			});
 		} else if (isCmdOrCtrl && event.key === 'p') {
@@ -179,10 +183,14 @@ export default function Layout() {
 
 		enterKeyHandler(event);
 	}
+
 	return (
 		<div id="windowRef" className="flex flex-col" ref={windowRef}>
 			<TitleBar {...{ isAlwaysOnTop, toggleIsAlwaysOnTop }} />
-			<SettingsMenu open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+			<SettingsMenu
+				open={isSettingsOpen}
+				onClose={() => setIsSettingsOpen(false)}
+			/>
 			<Split
 				sizes={sizes}
 				minSize={0}
@@ -196,7 +204,13 @@ export default function Layout() {
 				className="flex"
 			>
 				{enabledProviders.map((provider, index) => (
-					<Pane provider={provider as ProviderInterface} key={index} />
+					<Pane
+						provider={provider as ProviderInterface}
+						number={index + 1}
+						currentlyOpenPreviewPane={currentlyOpenPreviewPane}
+						setOpenPreviewPane={setOpenPreviewPane}
+						key={index}
+					/>
 				))}
 			</Split>
 			<div
@@ -215,7 +229,7 @@ export default function Layout() {
 						onKeyDown={onKeyDown}
 						name="prompt"
 						placeholder="Enter a superprompt here.
-- Quick Open: Cmd+G or Submit: Cmd/Ctrl+Enter
+- Quick Open: Cmd+Shift+G or Submit: Cmd/Ctrl+Enter
 - Switch windows: Cmd+1/2/3/etc, or Resize/Pin windows: Cmd -/+/p, or Back/Fwd: Cmd H/L
 - New chat: Cmd+R or Reset windows evenly: Cmd+Shift+A"
 					/>
@@ -250,8 +264,7 @@ export default function Layout() {
 								isAlwaysOnTop,
 								toggleIsAlwaysOnTop,
 								isSettingsOpen,
-								setIsSettingsOpen
-
+								setIsSettingsOpen,
 							}}
 						/>
 					</div>

@@ -16,6 +16,7 @@ export interface ProviderInterface {
 	getUserAgent(): string;
 	isEnabled(): boolean;
 	setEnabled(enabled: boolean): void;
+	clearCookies(): void;
 }
 
 export interface Settings {

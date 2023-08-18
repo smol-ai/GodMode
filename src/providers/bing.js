@@ -89,6 +89,7 @@ class Bing extends Provider {
 				}
         `);
 			}, 1000);
+			// this.getWebview().setZoomLevel(this.getWebview().getZoomLevel() - 2);
 			// setTimeout(() => {
 			// 	this.getWebview().executeJavaScript(`{
 
