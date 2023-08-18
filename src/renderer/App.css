@@ -23,7 +23,9 @@ body {
 	--superprompt-height: 4rem;
 	--titlebar-height: 26px;
 	--powerbar-height: 2rem;
-	--allverticalheight: calc(var(--titlebar-height) + var(--powerbar-height) + var(--superprompt-height));
+	--allverticalheight: calc(
+		var(--titlebar-height) + var(--powerbar-height) + var(--superprompt-height)
+	);
 	--actual-height: calc(100vh - var(--titlebar-height));
 }
 
@@ -37,13 +39,13 @@ body {
 	position: absolute;
 	z-index: 10;
 	left: calc(50% - 3rem);
-	@apply bg-white/50 rounded-b-lg
+	@apply bg-white/50 rounded-b-lg;
 }
 .powerbar:hover {
-  backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
 	background: #fff;
 	animation: blur 1s linear 0s infinite;
-  /* box-shadow: 
+	/* box-shadow: 
     0 0 60px 30px rgba(255, 255, 255, 0.8), 
     0 0 100px 60px rgba(255, 255, 255, 0.5); */
 }
@@ -64,7 +66,9 @@ body {
 	/* disabled because its quite buggy */
 	/* resize: both;  */
 	width: 100%;
-	height: calc(100vh - var(--titlebar-height) - var(--superprompt-height) - 2rem);
+	height: calc(
+		100vh - var(--titlebar-height) - var(--superprompt-height) - 2rem
+	);
 	/* margin: 0 auto; */
 	position: relative;
 }
@@ -74,7 +78,9 @@ webview {
 	position: absolute;
 	left: 0;
 	width: 100%;
-	height: calc(100vh - var(--titlebar-height) - var(--superprompt-height) - 2rem);
+	height: calc(
+		100vh - var(--titlebar-height) - var(--superprompt-height) - 2rem
+	);
 	display: inline-flex !important;
 }
 
@@ -116,7 +122,6 @@ webview {
 .titlebar button {
 	@apply p-2 mr-4 font-mono text-white bg-gray-700 rounded hover:bg-gray-500;
 }
-
 
 .gutter {
 	background-color: #a9a9a9;
