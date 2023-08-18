@@ -19,9 +19,9 @@ export interface ProviderInterface {
 }
 
 export interface Settings {
-	getGlobalShortcut: () => string;
-	setGlobalShortcut: (shortcut: string) => boolean;
-	getPlatform: () => string;
+	getGlobalShortcut: () => Promise<string>;
+	setGlobalShortcut: (shortcut: string) => Promise<boolean>;
+	getPlatform: () => Promise<string>;
 }
 
 // Tell typescript that the window object has a property called settings

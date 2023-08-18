@@ -2,7 +2,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { useEffect, useState } from 'react';
 import { Settings } from 'lib/types';
 import { Button } from './ui/button';
-import { convertKeyCode } from 'lib/utils';
+import {
+	convertKeyCode,
+	convertModifierKey,
+	modifierKeys,
+	isValidShortcut,
+	type ShortcutKey,
+} from 'lib/utils';
 
 export default function SettingsMenu({
 	open,
@@ -12,89 +18,106 @@ export default function SettingsMenu({
 	onClose: () => void;
 }) {
 	const [shortcut, setShortcut] = useState<string[]>([]);
+	const [validShortcut, setValidShortcut] = useState<string[]>([]);
 	const [isRecording, setIsRecording] = useState(false);
+	const [metaKey, setMetaKey] = useState('');
 
 	const settings = window.settings as Settings;
-	const metaKey = settings.getPlatform() === 'darwin' ? 'Command' : 'Super';
-
-	const onlyShiftPressed = () =>
-		modifierKeySet.size === 1 && modifierKeySet.has('Shift');
-	const validModifierKeys = () =>
-		modifierKeySet.size > 0 && !onlyShiftPressed();
-
-	let modifierKeySet = new Set();
-	let interimShift = false;
-	const modifierKeys = new Set(['Control', 'Shift', 'Alt', 'Meta']);
+	let pressedKeys = new Set<string>();
 
 	function recordShortcut(event: KeyboardEvent) {
 		event.preventDefault();
 		if (!isRecording) return;
 
+		let workingShortcut = shortcut;
 		const { key } = event;
 
-		if (key === 'Shift') interimShift = true;
+		const fetchPlatform = async () => {
+			const platform = await settings.getPlatform();
+			return platform;
+		};
 
-		if (modifierKeys.has(key)) {
-			if (interimShift) modifierKeySet.add('Shift');
-			const otherKey = key === 'Meta' ? metaKey : key;
-			modifierKeySet.add(otherKey);
-		}
+		const pressedKey = modifierKeys.has(key as ShortcutKey)
+			? convertModifierKey(key as ShortcutKey)
+			: convertKeyCode(event.code);
 
-		if (key.length === 1 && validModifierKeys()) {
-			const nonModifiedKey = convertKeyCode(event.code);
-			const finalShortcut = Array.from(modifierKeySet).concat(
-				nonModifiedKey
-			) as string[];
-			setShortcut(finalShortcut);
-			modifierKeySet = new Set();
+        pressedKeys.add(pressedKey);
+        workingShortcut = Array.from(pressedKeys);
+
+		if (isValidShortcut(workingShortcut)) {
+			pressedKeys.clear();
 			setIsRecording(false);
+			console.debug('SETTINGS VIEW 🔵 set valid shortcut');
+			setValidShortcut([...workingShortcut]);
 		}
-	}
 
+		setShortcut([...workingShortcut]);
+	}
+	console.debug('SETTINGS VIEW 🔵 validShortcut', validShortcut);
 	function keyUp(event: KeyboardEvent) {
-		event.preventDefault();
-		if (!isRecording) return;
-		const { key } = event;
-
-		if (key === 'Escape') setIsRecording(false);
-		if (key === 'Shift') interimShift = false;
-		if (modifierKeys.has(key)) modifierKeySet.delete(key);
+        event.preventDefault();
+		// if (!isRecording) return;
+        const { key } = event;
+        if (modifierKeys.has(key as ShortcutKey)) {
+            console.debug('SETTINGS VIEW 🔵 keyUp modifier key', key, convertModifierKey(key as ShortcutKey))
+            pressedKeys.delete(convertModifierKey(key as ShortcutKey));
+        } else {
+            console.debug('SETTINGS VIEW 🔵 keyUp key', key, convertKeyCode(event.code));
+            pressedKeys.delete(convertKeyCode(event.code));
+        }
+        if (key === 'Escape') setIsRecording(false);
 	}
 
-    // Set the shortcut from the main process on mount
+	// Set the meta key on mount based on platform (cmd on mac, ctrl on windows)
 	useEffect(() => {
-        const displayShortcut = async () => {
-            const initialShortcut = await settings.getGlobalShortcut();
-            console.log('initialShortcut', initialShortcut)
-            setShortcut(initialShortcut?.split('+'));
-        }
-        displayShortcut();
-    }, []);
+		const fetchPlatform = async () => {
+			const platform = await settings.getPlatform();
+			setMetaKey(platform === 'darwin' ? 'CmdOrCtrl' : 'Control');
+		};
+		if (isValidShortcut(shortcut)) fetchPlatform();
+	}, []);
 
-    // Whenever shortcut is updated, update the main process
+	// Set the shortcut from the main process on mount
 	useEffect(() => {
-		if (!shortcut || shortcut?.length === 0) return;
+		const displayShortcut = async () => {
+			const initialShortcut = await settings.getGlobalShortcut();
+			console.debug('initialShortcut', initialShortcut);
+			setShortcut(initialShortcut?.split('+'));
+		};
+		displayShortcut();
+	}, []);
 
-		const shortcutString = shortcut?.join('+');
-		settings.setGlobalShortcut(shortcutString);
-        console.log('shortcut', settings.getGlobalShortcut())
-	}, [shortcut]);
+	// Whenever shortcut is updated, update it in the electron store in the main process via IPC
+	useEffect(() => {
+		if (!isValidShortcut(validShortcut)) return;
+		const updateShortcut = async (shortcut: string[]) => {
+			const newShortcut = shortcut.join('+');
+			console.debug(
+				'SETTINGS VIEW 🔵 setGlobalShortcut newShortcut',
+				newShortcut,
+				typeof newShortcut
+			);
+			const sc = await settings.setGlobalShortcut(newShortcut);
+			console.debug('SETTINGS VIEW 🔵 setGlobalShortcut sc', sc);
+		};
+		if (isValidShortcut(validShortcut)) updateShortcut(validShortcut);
+	}, [validShortcut]);
 
-    // Turn on key listeners when recording shortcuts
-    useEffect(() => {
-        if (isRecording) {
-            window.addEventListener('keydown', recordShortcut);
-            window.addEventListener('keyup', keyUp);
-        } else {
-            window.removeEventListener('keydown', recordShortcut);
-            window.removeEventListener('keyup', keyUp);
-        }
-    }, [isRecording])
+	// Turn on key listeners when recording shortcuts
+	useEffect(() => {
+		if (isRecording) {
+			window.addEventListener('keydown', recordShortcut);
+			window.addEventListener('keyup', keyUp);
+		} else {
+			window.removeEventListener('keydown', recordShortcut);
+			window.removeEventListener('keyup', keyUp);
+		}
+	}, [isRecording]);
 
-    // Turn off recording when the dialog is closed
-    useEffect(() => {
-        if (!open) setIsRecording(false);
-    }, [open])
+	// Turn off recording when the dialog is closed
+	useEffect(() => {
+		if (!open) setIsRecording(false);
+	}, [open]);
 
 	return (
 		<Dialog open={open} onOpenChange={onClose}>
@@ -102,17 +125,28 @@ export default function SettingsMenu({
 				<DialogHeader>
 					<DialogTitle>Settings</DialogTitle>
 				</DialogHeader>
-				<div id="accelerator-container" className='flex flex-row justify-center'>
-                    {shortcut?.map((key, index) => (
-                        <div key={index} className='flex items-center'>
-                            <div className='bg-gray-200 dark:bg-gray:700 rounded-md px-2 py-1 text-xs'>{key}</div>
-                            <div className='mx-2 text-sm'>{index < shortcut.length - 1 && '+'}</div>
-                        </div>
-                    ))}
+				<div
+					id="accelerator-container"
+					className="flex flex-row justify-center"
+				>
+					{shortcut?.map((key, index) => (
+						<div key={index} className="flex items-center">
+							<div className="bg-gray-200 dark:bg-gray:700 rounded-md px-2 py-1 text-xs">
+								{key}
+							</div>
+							<div className="mx-2 text-sm">
+								{index < shortcut.length - 1 && '+'}
+							</div>
+						</div>
+					))}
 				</div>
-					<Button onClick={() => setIsRecording(true)} variant='outline' className=''>
-						{isRecording ? 'Recording...' : 'Record shortcut'}
-					</Button>
+				<Button
+					onClick={() => setIsRecording(!isRecording)}
+					variant="outline"
+					className=""
+				>
+					{isRecording ? 'Recording...' : 'Record shortcut'}
+				</Button>
 			</DialogContent>
 		</Dialog>
 	);

@@ -16,6 +16,7 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { isValidShortcut } from '../lib/utils';
 
 let store = new Store();
 
@@ -253,15 +254,16 @@ app
 /*
  * Fetch global shortcut from electron store, or default if none is set
  */
-const quickOpenDefaultShortcut = store.get('quickOpenShortcut', 'CommandOrControl+Shift+G');
-
+store.delete('quickOpenShortcut');
+const quickOpenDefaultShortcut = store.get('quickOpenShortcut', 'CommandOrControl+Shift+G') as string;
+console.log('MAIN 🟢 quickOpenDefaultShortcut', quickOpenDefaultShortcut)
+console.log('MAIN 🟢 quickOpenDefaultShortcut type', typeof quickOpenDefaultShortcut);
 /*
  * Update the global shortcut to one provided
  */
 function changeGlobalShortcut(newShortcut: string) {
-	globalShortcut.unregisterAll();
-	store.delete('quickOpenShortcut');
-
+	if (!newShortcut) return;
+	if (!isValidShortcut(newShortcut)) return;
 	store.set('quickOpenShortcut', newShortcut);
 	globalShortcut.register(newShortcut, quickOpen);
 }
@@ -283,15 +285,15 @@ function quickOpen() {
  * Reply to renderer process with the global shortcut
  */
 ipcMain.handle('get-global-shortcut', (event) => {
-	return store.get('quickOpenShortcut', 'CommandOrControl+Shift+G');
+	return store.get('quickOpenShortcut', 'Shift+Super+G');
 });
 
 /*
  * Set the global shortcut to one provided
  */
-ipcMain.handle('set-global-shortcut', (event, shortcut: string) => {
+ipcMain.handle('set-global-shortcut', async (event, shortcut: string) => {
+	console.log('MAIN 🟢 set-global-shortcut shortcut', shortcut)
 	if (!shortcut) return false;
-	console.log('set-global-shortcut', shortcut)
 	changeGlobalShortcut(shortcut);
 	return true;
 });
@@ -302,8 +304,14 @@ app.on('ready', () => {
 	/*
 	 * Register global shortcut on app ready
 	 */
-	if (quickOpenDefaultShortcut) {
-		globalShortcut.register(quickOpenDefaultShortcut as string, quickOpen);
+	if (isValidShortcut(quickOpenDefaultShortcut)){
+
+		console.log('MAIN 🟢 globalShortcut.register', quickOpenDefaultShortcut)
+		console.log('MAIN 🟢 globalShortcut.isRegistered', globalShortcut);
+	} else {
+		store.set('quickOpenShortcut', 'CommandOrControl+Shift+G')
+		globalShortcut.register('CommandOrControl+Shift+G', quickOpen);
+		console.log('MAIN 🟢 globalShortcut.register', 'CommandOrControl+Shift+G')
 	}
 
 	/*

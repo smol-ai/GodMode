@@ -53,7 +53,8 @@ contextBridge.exposeInMainWorld('settings', {
 	getGlobalShortcut: () => {
 		return ipcRenderer.invoke('get-global-shortcut');
 	},
-	setGlobalShortcut: (event: KeyboardEvent, shortcut: string) => {
+	setGlobalShortcut: (shortcut: string) => {
+		console.log('PRELOAD 🟠 setGlobalShortcut shortcut', shortcut)
 		return ipcRenderer.invoke('set-global-shortcut', shortcut);
 	},
 	getPlatform: () => {
