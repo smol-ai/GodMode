@@ -181,19 +181,21 @@ app.on('window-all-closed', () => {
 	// Respect the OSX convention of having the application in memory even
 	// after all windows have been closed
 	if (process.platform !== 'darwin') {
-		if (mainWindow) {
-			// trying to fix https://github.com/smol-ai/GodMode/issues/133 but it doesnt work yet
-			mainWindow.hide();
-		}
+		// if (mainWindow) {
+		// 	// trying to fix https://github.com/smol-ai/GodMode/issues/133 but it doesnt work yet
+		// 	mainWindow.hideWindow();
+		// }
+		app.hide();
 	}
 });
 
 // trying to fix https://github.com/smol-ai/GodMode/issues/133 but it doesnt work yet
 app.on('before-quit', event => {
-  event.preventDefault();
-	if (mainWindow) {
-		mainWindow.hide();
-	}
+  // event.preventDefault();
+	// if (mainWindow) {
+	// 	mainWindow.hideWindow();
+	// }
+	app.hide();
 })
 
 
@@ -284,6 +286,7 @@ function changeGlobalShortcut(newShortcut: string) {
 	if (!isValidShortcut(newShortcut)) return;
 	store.set('quickOpenShortcut', newShortcut);
 	globalShortcut.register(newShortcut, quickOpen);
+	console.debug('shortcut registered', newShortcut);
 }
 
 /*
@@ -291,23 +294,30 @@ function changeGlobalShortcut(newShortcut: string) {
  */
 function quickOpen() {
 	if (mainWindow) {
-		if (mainWindow.isMinimized()) {
-			mainWindow.restore();
+		// if (mainWindow.isVisible() & mainWindow.isFocused()) {
+		// 	console.log('mainWindow.isVisible()')
+		// 	app.hide()
+		// } else {
+			if (mainWindow.isMinimized()) {
+				console.log('mainWindow.isMinimized()')
+				mainWindow.restore();
+			}
+			console.log('mainWindow.focus()')
+			mainWindow.focus();
+			mainWindow.show();
+			// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
+			mainWindow.webContents.executeJavaScript(
+				`{document.querySelector('#prompt')?.focus()}`
+			);
 		}
-		mainWindow.focus();
-		mainWindow.show();
-		// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
-		mainWindow.webContents.executeJavaScript(
-			`{document.querySelector('#prompt')?.focus()}`
-		);
-	}
+	// }
 }
 
 /*
  * Reply to renderer process with the global shortcut
  */
 ipcMain.handle('get-global-shortcut', (event) => {
-	return store.get('quickOpenShortcut', 'CmdOrCtrl+Shift+G');
+	return store.get('quickOpenShortcut', 'CommandOrControl+Shift+G');
 });
 
 /*
@@ -324,9 +334,11 @@ app.on('ready', () => {
 	 * Register global shortcut on app ready
 	 */
 	if (isValidShortcut(quickOpenDefaultShortcut)) {
+		console.debug('quickOpenDefaultShortcut', quickOpenDefaultShortcut)
 	} else {
 		store.set('quickOpenShortcut', 'CommandOrControl+Shift+G');
 		globalShortcut.register('CommandOrControl+Shift+G', quickOpen);
+		console.debug('shortcut registered', 'CommandOrControl+Shift+G');
 	}
 
 	/*
