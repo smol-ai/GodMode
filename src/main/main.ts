@@ -265,7 +265,7 @@ const quickOpenDefaultShortcut = store.get(
 ) as string;
 
 console.log(quickOpenDefaultShortcut);
-console.log(isValidShortcut(quickOpenDefaultShortcut))
+console.log(isValidShortcut(quickOpenDefaultShortcut));
 /*
  * Update the global shortcut to one provided
  */
