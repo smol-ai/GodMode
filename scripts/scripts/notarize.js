@@ -21,7 +21,7 @@ exports.default = async function notarizeMacos(context) {
 
 	const appName = context.packager.appInfo.productFilename;
 
-	const appPath =  `${appOutDir}/${appName}.app`;
+	const appPath = `${appOutDir}/${appName}.app`;
 	await notarize({
 		appPath,
 		// appleId: process.env.APPLE_ID,
@@ -30,6 +30,6 @@ exports.default = async function notarizeMacos(context) {
 		// https://www.electronforge.io/guides/code-signing/code-signing-macos
 		appleApiKey: `build/AuthKey_QRJN4Y5JG6.p8`,
 		appleApiKeyId: 'QRJN4Y5JG6',
-		appleApiIssuer: "58a60bb5-5495-4a08-b180-2c106e11bc66"
+		appleApiIssuer: '58a60bb5-5495-4a08-b180-2c106e11bc66',
 	});
 };
