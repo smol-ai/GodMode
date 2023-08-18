@@ -257,11 +257,13 @@ app
 /*
  * Fetch global shortcut from electron store, or default if none is set
  */
-store.delete('quickOpenShortcut');
 const quickOpenDefaultShortcut = store.get(
 	'quickOpenShortcut',
 	'CommandOrControl+Shift+G'
 ) as string;
+
+console.log(quickOpenDefaultShortcut);
+console.log(isValidShortcut(quickOpenDefaultShortcut))
 /*
  * Update the global shortcut to one provided
  */
@@ -293,7 +295,7 @@ function quickOpen() {
  * Reply to renderer process with the global shortcut
  */
 ipcMain.handle('get-global-shortcut', (event) => {
-	return store.get('quickOpenShortcut', 'Shift+Super+G');
+	return store.get('quickOpenShortcut', 'CommandOrControl+Shift+G');
 });
 
 /*
@@ -310,9 +312,8 @@ app.on('ready', () => {
 	 * Register global shortcut on app ready
 	 */
 	if (isValidShortcut(quickOpenDefaultShortcut)) {
-	} else {
-		store.set('quickOpenShortcut', 'CommandOrControl+Shift+G');
-		globalShortcut.register('CommandOrControl+Shift+G', quickOpen);
+		store.set('quickOpenShortcut', quickOpenDefaultShortcut);
+		globalShortcut.register(quickOpenDefaultShortcut, quickOpen);
 	}
 
 	/*

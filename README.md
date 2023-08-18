@@ -8,6 +8,14 @@ This is a dedicated chat browser that only does one thing: help you quickly acce
 
 Whatever is typed at the bottom is entered into all **web apps** simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://www.youtube.com/watch?v=wCGe3_L5a30)
 
+## Mixture of Mixture of Experts
+
+It's well discussed by now that [GPT4 is a mixture of experts model](https://twitter.com/swyx/status/1671272883379908608), which explains its great advancement over GPT3 while not sacrificing speed. It stands to reason that if you can run one chat and get results from all the top closed/open source models, you will get that much more diversity in results for what you seek. As a side benefit, we will add opt-in data submission soon so we can crowdsource statistics on win rates, niche advantages, and show them over time.
+
+> “That's why it's always worth having a few philosophers around the place. One minute it's all is truth beauty and is beauty truth, and does a falling tree in the forest make a sound if there's no one there to hear it, and then just when you think they're going to start dribbling one of 'em says, incidentally, putting a thirty-foot parabolic reflector on a high place to shoot the rays of the sun at an enemy's ships would be a very interesting demonstration of optical principles.”
+>
+> ― [Terry Pratchett, Small Gods](https://www.goodreads.com/work/quotes/1636629-small-gods)
+
 ## Oh so this is like nat.dev?
 
 Yes and no:
@@ -22,18 +30,18 @@ Yes and no:
 | Provider (default in **bold**)                                                          | Notes                                                                                                                                        |
 | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | **ChatGPT**                                                                             | Defaults to "[GPT4.5](https://www.latent.space/p/code-interpreter#details)"!                                                                                                           |
-| **Claude 2**                                                                            | **Login Tip**: Use manual email login and remember to type (not paste) the login code! ([#56](https://github.com/smol-ai/menubar/issues/56)) |
-| **HuggingChat**                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
-| **Perplexity**                                                                          | Search + Chat                                                                                                                                |
-| **Bing**                                                                                | Microsoft's best. [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20)                           |
+| **Claude 2**                                                                            | Excellent, long context, multi document, fast model.  |
+| **Perplexity**                                                                          | The login is finnicky - login to Google on any of the other chats, and then reload (cmd+R) - it'll auto login. Hopefully they make it more intuitive/reliable in future.                                                                                                                                |
+| **Bing**                                                                                | Microsoft's best. [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20). We could use help normalizing its styling.                           |
 | Bard                                                                                    | Google's best. [Bard's updates are... flaky](https://twitter.com/swyx/status/1678495067663925248)                                            |
-| Local/GGML Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | Requires Local Setup                                                                                                                         |
-| Phind                                                                                   | Developer focused chat                                                                                                                       |
-| OpenAssistant                                                                           | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
 | Quora Poe                                                                               | Added in #118                                                                                                                                |
+| HuggingChat                                                                         | Offers Llama2, OpenAssistant                                                                                                                 |
 | Vercel Chat                                                                             | Added in #117                                                                                                                                |
-| Claude                                                                                  | Requires Beta Access                                                                                                                         |
-| ... What's Else?                                                                        | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
+| Local/GGML Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | Requires Local Setup, see oobabooga docs                                                                                                                         |
+| Phind                                                                                   | Developer focused chat (temporarily disabled)                                                                                                                       |
+| OpenAssistant                                                                           | Coming Soon — [Submit a PR](https://github.com/smol-ai/menubar/issues/37)!                                                                   |
+| Claude 1                                                                                  | Requires Beta Access                                                                                                                         |
+| ... What Else?                                                                        | [Submit a New Issue](https://github.com/smol-ai/menubar/issues)!                                                                             |
 
 ## Features and Usage
 
