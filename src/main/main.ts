@@ -17,6 +17,7 @@ import {
 	screen,
 	ipcMain,
 	globalShortcut,
+	Event,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -153,8 +154,9 @@ const createWindow = async () => {
 		}
 	});
 
-	mainWindow.on('closed', () => {
-		mainWindow = null;
+	mainWindow.on('close', (event: Event) => {
+		event?.preventDefault();
+		mainWindow?.hide();
 	});
 
 	const menuBuilder = new MenuBuilder(mainWindow);
@@ -278,12 +280,12 @@ function changeGlobalShortcut(newShortcut: string) {
  * Open and focus the main window
  */
 function quickOpen() {
-	if (mainWindow) {
+	if (mainWindow && !mainWindow.isDestroyed()) {
 		if (mainWindow.isMinimized()) {
 			mainWindow.restore();
 		}
-		mainWindow.focus();
 		mainWindow.show();
+		mainWindow.focus();
 		// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
 		mainWindow.webContents.executeJavaScript(
 			`{document.querySelector('#prompt')?.focus()}`
