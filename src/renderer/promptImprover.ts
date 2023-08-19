@@ -16,7 +16,7 @@ export function promptCritic(originalPrompt: string) {
 
 export function promptImprover(
 	originalPrompt: string,
-	modifyInstructions?: string
+	modifyInstructions?: string,
 ) {
 	return `I need to add more detail to the original prompt: 
   

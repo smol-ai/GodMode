@@ -28,14 +28,14 @@ vex.defaultOptions.className = 'vex-theme-os';
 // @ts-ignore
 export type paneInfo = { webviewId: string; shortName: string };
 const defaultPaneList = getEnabledProviders(
-	allProviders as ProviderInterface[]
+	allProviders as ProviderInterface[],
 ).map((x) => ({
 	webviewId: x.webviewId,
 	shortName: x.shortName,
 })); // in future we will have to disconnect the provider from the webview Id
 const storedPaneList: paneInfo[] = window.electron.electronStore.get(
 	'paneList',
-	defaultPaneList
+	defaultPaneList,
 );
 
 export default function Layout() {
@@ -52,7 +52,7 @@ export default function Layout() {
 	};
 
 	const enabledProviders = paneList.map(
-		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!
+		(x) => allProviders.find((y) => y.webviewId === (x.webviewId || x.id))!,
 	);
 
 	const [sizes, setSizes] = React.useState(updateSplitSizes(enabledProviders));
@@ -64,7 +64,7 @@ export default function Layout() {
 	const resetPaneList = () => setPaneList(defaultPaneList);
 
 	const nonEnabledProviders: ProviderInterface[] = allProviders.filter(
-		(x) => !enabledProviders.includes(x)
+		(x) => !enabledProviders.includes(x),
 	);
 
 	/*
@@ -93,7 +93,7 @@ export default function Layout() {
 	const formRef = React.useRef<HTMLDivElement>(null); // don't actually use a <form> because it will just reload on submit even if you preventdefault
 	const SuperPromptEnterKey = window.electron.electronStore.get(
 		'SuperPromptEnterKey',
-		false
+		false,
 	);
 
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -251,7 +251,7 @@ export default function Layout() {
 							type="button"
 							onClick={async () => {
 								var llama2response = window.electron.browserWindow.promptLlama2(
-									promptCritic(superprompt)
+									promptCritic(superprompt),
 								);
 								console.log('stage 1 response', llama2response);
 								llama2response = await new Promise((res) =>
@@ -263,19 +263,19 @@ export default function Layout() {
 										${llama2response.responseHTML}`,
 										placeholder: `what you'd like to change about your prompt`,
 										callback: res,
-									})
+									}),
 								);
 								if (llama2response === null) return;
 								console.log('stage 2 response', llama2response);
 								var prospectivePrompt =
 									window.electron.browserWindow.promptLlama2(
-										promptImprover(superprompt, llama2response)
+										promptImprover(superprompt, llama2response),
 									);
 								console.log('stage 3 response', prospectivePrompt);
 
 								const textareavalue = prospectivePrompt.responseText.replace(
 									/\r|\n/,
-									'<br>'
+									'<br>',
 								);
 								var finalPrompt: string | null = await new Promise((res) =>
 									vex.dialog.prompt({
@@ -295,7 +295,7 @@ export default function Layout() {
 												res(data);
 											}
 										},
-									})
+									}),
 								);
 								console.log('finalPrompt', finalPrompt);
 								if (finalPrompt != null) {
