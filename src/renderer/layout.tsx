@@ -12,18 +12,16 @@ import { BrowserPane } from './browserPane';
 import { ProviderInterface } from 'lib/types';
 import { TitleBar } from './TitleBar';
 import SettingsMenu from './components/settings';
-import { promptCritic, promptImprover } from './promptImprover';
-// @ts-ignore
-import vex from 'vex-js';
-
-// Main css
-import 'vex-js/dist/css/vex.css';
-
-// Themes (Import all themes you want to use here)
-import 'vex-js/dist/css/vex-theme-default.css';
-import 'vex-js/dist/css/vex-theme-os.css';
-vex.registerPlugin(require('vex-dialog'));
-vex.defaultOptions.className = 'vex-theme-os';
+// import { promptCritic, promptImprover } from './promptImprover';
+// // @ts-ignore
+// import vex from 'vex-js';
+// // Main css
+// import 'vex-js/dist/css/vex.css';
+// // Themes (Import all themes you want to use here)
+// import 'vex-js/dist/css/vex-theme-default.css';
+// import 'vex-js/dist/css/vex-theme-os.css';
+// vex.registerPlugin(require('vex-dialog'));
+// vex.defaultOptions.className = 'vex-theme-os';
 
 // @ts-ignore
 export type paneInfo = { webviewId: string; shortName: string };
@@ -245,7 +243,7 @@ export default function Layout() {
 - New chat: Cmd+R or Reset windows evenly: Cmd+Shift+A"
 					/>
 					<div className="flex items-center justify-center p-4 space-x-2">
-						<button
+						{/* <button
 							className="flex items-center justify-center w-12 h-12 p-1 text-white transition bg-gray-600 rounded-lg shadow-inner hover:bg-gray-200"
 							id="btn"
 							type="button"
@@ -317,7 +315,7 @@ export default function Layout() {
 									clipRule="evenodd"
 								></path>
 							</svg>
-						</button>
+						</button> */}
 						<button
 							className="flex items-center justify-center w-12 h-12 p-1 text-white transition bg-gray-600 rounded-lg shadow-inner hover:bg-gray-200"
 							id="btn"
@@ -342,6 +340,8 @@ export default function Layout() {
 						</button>
 						<BrowserPane
 							{...{
+								superprompt,
+								setSuperprompt,
 								paneList,
 								setPaneList,
 								resetPaneList,
