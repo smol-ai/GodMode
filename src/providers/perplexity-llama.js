@@ -53,6 +53,16 @@ class PerplexityLlama extends Provider {
           document.documentElement.classList.add('dark');
 				}`);
 				}, 100);
+				setTimeout(() => {
+					this.getWebview().executeJavaScript(`{
+          // pick llama 70b
+					var selectElement = document.querySelector('#lamma-select');
+					selectElement.value = 'llama-2-70b-chat';
+					// Dispatch the change event manually if there are any event listeners
+					var event = new Event('change');
+					selectElement.dispatchEvent(event);
+				}`);
+				}, 1000);
 			} catch (e) {
 				console.debug('Error in PerplexityLlama.handleCss():', e);
 			}

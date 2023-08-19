@@ -22,8 +22,9 @@ Yes and no:
 
 1. SOTA functionality is often released without API (eg: ChatGPT Code Interpreter, Bing Image Creator, Bard Multimodal Input, Claude Multifile Upload). **We insist on using webapps** so that you have full access to all functionality on launch day. We also made light/dark mode for each app, just for fun (`Cmd+Shift+L`)
 2. This is a menubar app that can be invoked with a keyboard shortcut (Cmd+Shift+G). Feels a LOT faster than having it live in a browser window somewhere and is easy to pull up/dismiss during long generations.
-3. Supports local models like LLaMa and Vicuna via [OobaBooga](https://github.com/oobabooga/text-generation-webui).
+3. Supports no-API models like Perplexity and Poe, and local models like LLaMa and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)).
 4. No paywall, build from source.
+5. Fancy new features like PromptCritic (AI assisted prompt improvement) and keyboard shortcut quick open from anywhere.
 
 ## Supported LLM Providers
 
@@ -77,7 +78,10 @@ Yes and no:
   - The UI only supports one kind of prompt template. Contributions are welcome to make the templating customizable (see the Oobabooga.js provider).
 
 - **Starting New Conversations**:
+
   - Use `Cmd+R` to start a new conversation with a simple window refresh.
+
+- **Prompt Critic**: Uses Llama 2 to improve your prompting when you want it!
 
 ## video demo
 
