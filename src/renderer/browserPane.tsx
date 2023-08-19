@@ -5,7 +5,7 @@ import {
 	ChevronUpDownIcon,
 	CheckIcon,
 	Cog6ToothIcon,
-	SparklesIcon
+	SparklesIcon,
 } from '@heroicons/react/20/solid';
 import { BookmarkIcon, BookmarkSlashIcon } from '@heroicons/react/20/solid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -49,7 +49,7 @@ export function BrowserPane({
 	isSettingsOpen,
 	setIsSettingsOpen,
 	superprompt,
-	setSuperprompt
+	setSuperprompt,
 }: {
 	paneList: paneInfo[];
 	setPaneList: (paneList: paneInfo[]) => void;
@@ -69,63 +69,64 @@ export function BrowserPane({
 	};
 
 	async function runPromptCritic() {
-			if (superprompt.length < 10) {
-				alert('superprompt is too short. write a longer one! e.g. "write a receipe for scrambled eggs"')
-				return 
-			}
-			console.log('promptCritic', superprompt)
-			var llama2response = window.electron.browserWindow.promptLlama2(
-				promptCritic(superprompt),
+		if (superprompt.length < 10) {
+			alert(
+				'superprompt is too short. write a longer one! e.g. "write a receipe for scrambled eggs"',
 			);
-			// console.log('stage 1 response', llama2response);
-			llama2response = await new Promise((res) =>
-				vex.dialog.prompt({
-					unsafeMessage: `
+			return;
+		}
+		console.log('promptCritic', superprompt);
+		var llama2response = window.electron.browserWindow.promptLlama2(
+			promptCritic(superprompt),
+		);
+		// console.log('stage 1 response', llama2response);
+		llama2response = await new Promise((res) =>
+			vex.dialog.prompt({
+				unsafeMessage: `
 					<div class="title-bar">
 							<h1>PromptCritic analysis</h1>
 					</div>
 					${llama2response.responseHTML}`,
-					placeholder: `what you'd like to change about your prompt`,
-					callback: res,
-				}),
-			);
-			if (llama2response === null) return;
-			// console.log('stage 2 response', llama2response);
-			var prospectivePrompt =
-				window.electron.browserWindow.promptLlama2(
-					promptImprover(superprompt, llama2response),
-				);
-			// console.log('stage 3 response', prospectivePrompt);
+				placeholder: `what you'd like to change about your prompt`,
+				callback: res,
+			}),
+		);
+		if (llama2response === null) return;
+		// console.log('stage 2 response', llama2response);
+		var prospectivePrompt = window.electron.browserWindow.promptLlama2(
+			promptImprover(superprompt, llama2response),
+		);
+		// console.log('stage 3 response', prospectivePrompt);
 
-			const textareavalue = prospectivePrompt.responseText.replace(
-				/\r|\n/,
-				'<br>',
-			);
-			var finalPrompt: string | null = await new Promise((res) =>
-				vex.dialog.prompt({
-					unsafeMessage: `
+		const textareavalue = prospectivePrompt.responseText.replace(
+			/\r|\n/,
+			'<br>',
+		);
+		var finalPrompt: string | null = await new Promise((res) =>
+			vex.dialog.prompt({
+				unsafeMessage: `
 					<div class="title-bar">
 							<h1>PromptCritic's Improved suggestion</h1>
 					</div>
 					${prospectivePrompt.responseHTML}`,
-					value: prospectivePrompt.responseText,
-					input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="" value="${textareavalue}" rows="4">${textareavalue}</textarea>`,
-					placeholder: `your final prompt; copy and paste from above if it helps`,
-					callback: (data: any) => {
-						console.log({ data });
-						if (!data) {
-							console.log('Cancelled');
-						} else {
-							res(data);
-						}
-					},
-				}),
-			);
-			console.log('finalPrompt', finalPrompt);
-			if (finalPrompt != null) {
-				setSuperprompt(finalPrompt);
-			}
-	} 
+				value: prospectivePrompt.responseText,
+				input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="" value="${textareavalue}" rows="4">${textareavalue}</textarea>`,
+				placeholder: `your final prompt; copy and paste from above if it helps`,
+				callback: (data: any) => {
+					console.log({ data });
+					if (!data) {
+						console.log('Cancelled');
+					} else {
+						res(data);
+					}
+				},
+			}),
+		);
+		console.log('finalPrompt', finalPrompt);
+		if (finalPrompt != null) {
+			setSuperprompt(finalPrompt);
+		}
+	}
 
 	function onDragEnd(result: {
 		source: { index: number };
@@ -324,7 +325,7 @@ export function BrowserPane({
 													)}
 													onClick={runPromptCritic}
 												>
-													<SparklesIcon className="inline w-4 h-4 mr-2" /> 
+													<SparklesIcon className="inline w-4 h-4 mr-2" />
 													PromptCritic (alpha)
 												</button>
 											)}
