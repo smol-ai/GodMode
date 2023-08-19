@@ -66,15 +66,13 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 	event.returnValue = bool;
 });
 
-
-
-	// thanks claude
+// thanks claude
 
 function timeout(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function getLlamaResponse(prompt: string) {
-  const win = new BrowserWindow({
+	const win = new BrowserWindow({
 		// show: true,
 		show: false,
 		// titleBarStyle: 'hidden',
@@ -124,7 +122,6 @@ ipcMain.on('prompt-llama2', async (event, val) => {
 	const response = await getLlamaResponse(val);
 	event.returnValue = response;
 });
-
 
 /*
  * Return the user's device platform (macOS, Windows, Linux) for use in
