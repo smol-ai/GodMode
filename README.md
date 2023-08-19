@@ -20,7 +20,7 @@ It's well discussed by now that [GPT4 is a mixture of experts model](https://twi
 
 Yes and no:
 
-1. SOTA functionality is often released without API (eg: ChatGPT Code Interpreter, Bing Image Creator, Bard Multimodal Input, Claude Multifile Upload). **We insist on using webapps** so that you have full access to all functionality on launch day. We also made light/dark mode for each app, just for fun (`Cmd+Shift+L`)
+1. SOTA functionality is often released without API (eg: ChatGPT Code Interpreter, Bing Image Creator, Bard Multimodal Input, Claude Multifile Upload). **We insist on using webapps** so that you have full access to all functionality on launch day. We also made light/dark mode for each app, just for fun (`Cmd+Shift+L` (Aug update: currently broken in the GodMode rewrite, will fix))
 2. This is a menubar app that can be invoked with a keyboard shortcut (Cmd+Shift+G). Feels a LOT faster than having it live in a browser window somewhere and is easy to pull up/dismiss during long generations.
 3. Supports no-API models like Perplexity and Poe, and local models like LLaMa and Vicuna (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)).
 4. No paywall, build from source.
