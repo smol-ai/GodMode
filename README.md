@@ -78,6 +78,7 @@ Yes and no:
   - The UI only supports one kind of prompt template. Contributions are welcome to make the templating customizable (see the Oobabooga.js provider).
 
 - **Starting New Conversations**:
+
   - Use `Cmd+R` to start a new conversation with a simple window refresh.
 
 - **Prompt Critic**: Uses Llama 2 to improve your prompting when you want it!
