@@ -24,7 +24,7 @@ class InflectionPi extends Provider {
 	}
 
 	static handleSubmit() {
-    // this does not work yet.. how to fix?
+		// this does not work yet.. how to fix?
 		this.getWebview().executeJavaScript(`{
       
       var inputElement = document.querySelector('.text-muted textarea');
