@@ -90,7 +90,7 @@ Yes and no:
 - https://twitter.com/swyx/status/1658403625717338112
 - https://twitter.com/swyx/status/1663290955804360728?s=20
 - July 11 version https://twitter.com/swyx/status/1678944036135260160
-- Aug 15 version https://twitter.com/swyx/status/1692351633681011018
+- Aug 19 godmode rewrite https://twitter.com/swyx/status/1692988634364871032
 
 ## Download and Setup
 
