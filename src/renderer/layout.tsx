@@ -96,21 +96,20 @@ export default function Layout() {
 		false
 	);
 
+	function submitProviders() {
+		enabledProviders.forEach((provider) => {
+			provider.handleSubmit();
+		});
+	}
+
 	function enterKeyHandler(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		const isEnter = event.key === 'Enter';
 
 		if ((SuperPromptEnterKey && isEnter) || (isCmdOrCtrl && isEnter)) {
 			event.preventDefault();
-			// formRef.current?.submit();
-			enabledProviders.forEach((provider) => {
-				// Call provider-specific CSS handling and custom paste setup
-				provider.handleSubmit();
-			});
+			submitProviders();
 		}
-		// if (isEnter) {
-		//   event.preventDefault();
-		// }
 	}
 
 	const windowRef = React.useRef<HTMLDivElement>(null);
@@ -225,6 +224,7 @@ export default function Layout() {
 				))}
 			</Split>
 			<div
+				// not a form, because the form submit causes a reload for some reason even if we preventdefault.
 				ref={formRef}
 				id="form"
 				className=""
@@ -253,7 +253,7 @@ export default function Layout() {
 								var llama2response = window.electron.browserWindow.promptLlama2(
 									promptCritic(superprompt)
 								);
-								console.log('stage 1 response', llama2response);
+								// console.log('stage 1 response', llama2response);
 								llama2response = await new Promise((res) =>
 									vex.dialog.prompt({
 										unsafeMessage: `
@@ -266,12 +266,12 @@ export default function Layout() {
 									})
 								);
 								if (llama2response === null) return;
-								console.log('stage 2 response', llama2response);
+								// console.log('stage 2 response', llama2response);
 								var prospectivePrompt =
 									window.electron.browserWindow.promptLlama2(
 										promptImprover(superprompt, llama2response)
 									);
-								console.log('stage 3 response', prospectivePrompt);
+								// console.log('stage 3 response', prospectivePrompt);
 
 								const textareavalue = prospectivePrompt.responseText.replace(
 									/\r|\n/,
@@ -311,7 +311,7 @@ export default function Layout() {
 								xmlns="http://www.w3.org/2000/svg"
 							>
 								<path
-									d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM7.50003 4C7.77617 4 8.00003 4.22386 8.00003 4.5V7H10.5C10.7762 7 11 7.22386 11 7.5C11 7.77614 10.7762 8 10.5 8H8.00003V10.5C8.00003 10.7761 7.77617 11 7.50003 11C7.22389 11 7.00003 10.7761 7.00003 10.5V8H4.50003C4.22389 8 4.00003 7.77614 4.00003 7.5C4.00003 7.22386 4.22389 7 4.50003 7H7.00003V4.5C7.00003 4.22386 7.22389 4 7.50003 4Z"
+									d="M13.9 0.499976C13.9 0.279062 13.7209 0.0999756 13.5 0.0999756C13.2791 0.0999756 13.1 0.279062 13.1 0.499976V1.09998H12.5C12.2791 1.09998 12.1 1.27906 12.1 1.49998C12.1 1.72089 12.2791 1.89998 12.5 1.89998H13.1V2.49998C13.1 2.72089 13.2791 2.89998 13.5 2.89998C13.7209 2.89998 13.9 2.72089 13.9 2.49998V1.89998H14.5C14.7209 1.89998 14.9 1.72089 14.9 1.49998C14.9 1.27906 14.7209 1.09998 14.5 1.09998H13.9V0.499976ZM11.8536 3.14642C12.0488 3.34168 12.0488 3.65826 11.8536 3.85353L10.8536 4.85353C10.6583 5.04879 10.3417 5.04879 10.1465 4.85353C9.9512 4.65827 9.9512 4.34169 10.1465 4.14642L11.1464 3.14643C11.3417 2.95116 11.6583 2.95116 11.8536 3.14642ZM9.85357 5.14642C10.0488 5.34168 10.0488 5.65827 9.85357 5.85353L2.85355 12.8535C2.65829 13.0488 2.34171 13.0488 2.14645 12.8535C1.95118 12.6583 1.95118 12.3417 2.14645 12.1464L9.14646 5.14642C9.34172 4.95116 9.65831 4.95116 9.85357 5.14642ZM13.5 5.09998C13.7209 5.09998 13.9 5.27906 13.9 5.49998V6.09998H14.5C14.7209 6.09998 14.9 6.27906 14.9 6.49998C14.9 6.72089 14.7209 6.89998 14.5 6.89998H13.9V7.49998C13.9 7.72089 13.7209 7.89998 13.5 7.89998C13.2791 7.89998 13.1 7.72089 13.1 7.49998V6.89998H12.5C12.2791 6.89998 12.1 6.72089 12.1 6.49998C12.1 6.27906 12.2791 6.09998 12.5 6.09998H13.1V5.49998C13.1 5.27906 13.2791 5.09998 13.5 5.09998ZM8.90002 0.499976C8.90002 0.279062 8.72093 0.0999756 8.50002 0.0999756C8.2791 0.0999756 8.10002 0.279062 8.10002 0.499976V1.09998H7.50002C7.2791 1.09998 7.10002 1.27906 7.10002 1.49998C7.10002 1.72089 7.2791 1.89998 7.50002 1.89998H8.10002V2.49998C8.10002 2.72089 8.2791 2.89998 8.50002 2.89998C8.72093 2.89998 8.90002 2.72089 8.90002 2.49998V1.89998H9.50002C9.72093 1.89998 9.90002 1.72089 9.90002 1.49998C9.90002 1.27906 9.72093 1.09998 9.50002 1.09998H8.90002V0.499976Z"
 									fill="currentColor"
 									fillRule="evenodd"
 									clipRule="evenodd"
@@ -321,6 +321,7 @@ export default function Layout() {
 						<button
 							className="flex items-center justify-center w-12 h-12 p-1 text-white transition bg-gray-600 rounded-lg shadow-inner hover:bg-gray-200"
 							id="btn"
+							onClick={submitProviders}
 							type="submit"
 							title="cmd+enter to submit"
 						>
