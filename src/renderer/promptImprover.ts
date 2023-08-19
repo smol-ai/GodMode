@@ -6,7 +6,7 @@ export function promptCritic(originalPrompt: string) {
   --- End Original Prompt ---
 
   There are known ways to improve prompts for better LLM performance.  
-  Can you please briefly (in <200 words, mostly bullet points) criticize the original prompt?
+  Can you please briefly (in <200 words, mostly <ol> <li> bullet points with <b>bolded headings</b> per bullet) criticize the original prompt?
   `;
 	// For example:
 	// - for general knowledge questions, appending "Let's think step by step to get to the right answer." is known to do well.
@@ -30,6 +30,7 @@ export function promptImprover(
 			: ''
 	}
   Please suggest a newer, more detailed (still <300 words) version of this prompt that improves LLM performance. 
+  Do not preface with any conversation or small talk, only reply with the improved prompt.
   `;
 
 	// For example:

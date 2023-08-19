@@ -75,8 +75,8 @@ function timeout(ms: number) {
 }
 async function getLlamaResponse(prompt: string) {
   const win = new BrowserWindow({
-    // show: true,
-    show: false,
+		// show: true,
+		show: false,
 		// titleBarStyle: 'hidden',
 		// width: 800,
 		// height: 600,
@@ -84,11 +84,11 @@ async function getLlamaResponse(prompt: string) {
 		// 	webviewTag: true,
 		// 	nodeIntegration: true,
 		// },
-  });
-  win.loadURL('https://labs.perplexity.ai');
-  return new Promise((resolve, reject) => {
-    win.webContents.on('dom-ready', async () => {
-      await win.webContents.executeJavaScript(`{
+	});
+	win.loadURL('https://labs.perplexity.ai');
+	return new Promise((resolve, reject) => {
+		win.webContents.on('dom-ready', async () => {
+			await win.webContents.executeJavaScript(`{
 				var selectElement = document.querySelector('#lamma-select');
 				selectElement.value = 'llama-2-70b-chat';
 
@@ -103,21 +103,25 @@ async function getLlamaResponse(prompt: string) {
 				var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 				var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
 				button.click();
-			}`)
-			await timeout(1000)
-			console.log('timeout')
-      const response = await win.webContents.executeJavaScript(`
+			}`);
+			await timeout(5000);
+			// const temp = await win.webContents.executeJavaScript(`
+			// [...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].map(x => x.innerHTML)
+			// `);
+			// console.log('temp', temp);
+			const responseHTML = await win.webContents.executeJavaScript(`
+			[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0].innerHTML
+			`);
+			const responseText = await win.webContents.executeJavaScript(`
 			[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0].innerText
 			`);
-			console.log('response', response)
-      resolve(response);
-      win.close();
-    });
-  });
+			resolve({ responseHTML, responseText });
+			win.close();
+		});
+	});
 }
 ipcMain.on('prompt-llama2', async (event, val) => {
-	const response = await getLlamaResponse(val)
-	console.log('response')
+	const response = await getLlamaResponse(val);
 	event.returnValue = response;
 });
 

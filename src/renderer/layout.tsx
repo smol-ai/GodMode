@@ -256,25 +256,50 @@ export default function Layout() {
 								console.log('stage 1 response', llama2response);
 								llama2response = await new Promise((res) =>
 									vex.dialog.prompt({
-										message: 'PromptCritic analysis: ' + llama2response,
+										unsafeMessage: `
+										<div class="title-bar">
+												<h1>PromptCritic analysis</h1>
+										</div>
+										${llama2response.responseHTML}`,
 										placeholder: `what you'd like to change about your prompt`,
 										callback: res,
 									})
 								);
 								if (llama2response === null) return;
 								console.log('stage 2 response', llama2response);
-								llama2response = window.electron.browserWindow.promptLlama2(
-									promptImprover(superprompt, llama2response)
+								var prospectivePrompt =
+									window.electron.browserWindow.promptLlama2(
+										promptImprover(superprompt, llama2response)
+									);
+								console.log('stage 3 response', prospectivePrompt);
+
+								const textareavalue = prospectivePrompt.responseText.replace(
+									/\r|\n/,
+									'<br>'
 								);
-								console.log('stage 3 response', llama2response);
-								var accept = await new Promise((res) =>
+								var finalPrompt: string | null = await new Promise((res) =>
 									vex.dialog.prompt({
-										message: 'llama2 says: ' + llama2response,
-										callback: res,
+										unsafeMessage: `
+										<div class="title-bar">
+												<h1>PromptCritic's Improved suggestion</h1>
+										</div>
+										${prospectivePrompt.responseHTML}`,
+										value: prospectivePrompt.responseText,
+										input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="" value="${textareavalue}" rows="4">${textareavalue}</textarea>`,
+										placeholder: `your final prompt; copy and paste from above if it helps`,
+										callback: (data: any) => {
+											console.log({ data });
+											if (!data) {
+												console.log('Cancelled');
+											} else {
+												res(data);
+											}
+										},
 									})
 								);
-								if (accept) {
-									setSuperprompt(llama2response);
+								console.log('finalPrompt', finalPrompt);
+								if (finalPrompt != null) {
+									setSuperprompt(finalPrompt);
 								}
 							}}
 						>
