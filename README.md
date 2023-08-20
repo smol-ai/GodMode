@@ -6,7 +6,7 @@ This is a dedicated chat browser that only does one thing: help you quickly acce
 
 ([click for video](https://twitter.com/swyx/status/1692988634364871032))
 
-Whatever is typed at the bottom is entered into all **web apps** simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews. [See video demo](https://www.youtube.com/watch?v=wCGe3_L5a30)
+Whatever is typed at the bottom is entered into all **web apps** simultaneously, however if you wish to explore one further than the other you can do so independently since they are just webviews.
 
 ## Installation
 
