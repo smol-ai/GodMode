@@ -195,7 +195,7 @@ const createWindow = async () => {
 	const nativeImage = require('electron').nativeImage;
 	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'));
 
-	app.dock.setIcon(dockIcon);
+	app.dock.setIcon(dockIcon); // todo: if electronStore preferences say to hide icon, hide icon with app.dock.setMenu(Menu.buildFromTemplate([])); maybe https://stackoverflow.com/questions/59668664/how-to-avoid-showing-a-dock-icon-while-my-electron-app-is-launching-on-macos
 	app.name = 'God Mode';
 
 	mainWindow.loadURL(resolveHtmlPath('index.html'));
@@ -279,35 +279,34 @@ app.on('web-contents-created', (e, contents) => {
 			if (key === 'l') contents.goForward();
 		});
 	}
-	// // we can't set the native app menu with "menubar" so need to manually register these events
-	// // register cmd+c/cmd+v events
-	// contents.on('before-input-event', (event, input) => {
-	//   const { control, meta, key } = input;
-	//   if (!control && !meta) return;
-	//   if (key === 'c') contents.copy();
-	//   if (key === 'v') contents.paste();
-	//   if (key === 'x') contents.cut();
-	//   if (key === 'a') contents.selectAll();
-	//   if (key === 'z') contents.undo();
-	//   if (key === 'y') contents.redo();
-	//   if (key === 'q') app.quit();
-	//   if (key === 'r') contents.reload();
-	//   if (key === 'h') contents.goBack();
-	//   if (key === 'l') contents.goForward();
-	// });
 });
 
-app
-	.whenReady()
-	.then(() => {
-		createWindow();
-		app.on('activate', () => {
-			// On macOS it's common to re-create a window in the app when the
-			// dock icon is clicked and there are no other windows open.
-			if (mainWindow === null) createWindow();
-		});
-	})
-	.catch(console.log);
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+	app.quit();
+} else {
+	app.on(
+		'second-instance',
+		(event, commandLine, workingDirectory, additionalData) => {
+			// Someone tried to run a second instance, we should focus our window.
+			if (mainWindow) {
+				if (mainWindow.isMinimized()) mainWindow.restore();
+				mainWindow.focus();
+			}
+		}
+	);
+	app
+		.whenReady()
+		.then(() => {
+			createWindow();
+			app.on('activate', () => {
+				// On macOS it's common to re-create a window in the app when the
+				// dock icon is clicked and there are no other windows open.
+				if (mainWindow === null) createWindow();
+			});
+		})
+		.catch(console.log);
+}
 
 /* ========================================================================== */
 /* Global Shortcut Logic                                                      */
