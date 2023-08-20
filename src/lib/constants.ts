@@ -12,6 +12,7 @@ import Phind from '../providers/phind';
 import Smol from '../providers/smol';
 import Together from '../providers/together';
 import Vercel from 'providers/vercel';
+import OpenRouter from '../providers/openrouter';
 import Poe from 'providers/poe';
 
 export const allProviders = [
@@ -30,4 +31,5 @@ export const allProviders = [
 	Smol,
 	Vercel,
 	Poe,
+	OpenRouter,
 ];
