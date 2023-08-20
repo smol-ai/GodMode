@@ -101,7 +101,7 @@ Yes and no:
 
 ## Download and Setup
 
-You can: 
+You can:
 
 - download the precompiled binaries for MacOS: https://github.com/smol-ai/GodMode/releases/latest (sometimes Apple marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it).
 - Or run it from source (instructions below)
