@@ -101,21 +101,19 @@ Yes and no:
 
 ## Download and Setup
 
-You can download the precompiled binaries for MacOS: https://github.com/smol-ai/menubar/releases/latest (sometimes Apple marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it. Or run it from source (instructions below)
+You can: 
 
-The first run creates a desktop shortcut. After the initial setup, you can simply use the generated desktop file to start the application in the future.
+- download the precompiled binaries for MacOS: https://github.com/smol-ai/GodMode/releases/latest (sometimes Apple marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it).
+- Or run it from source (instructions below)
 
 When you first run the app:
 
-1. log into your Google account (once you log into your google account for chatgpt, you'l also be logged in to Bard).
+1. log into your Google account (once you log into your google account for chatgpt, you'l also be logged in to Bard, Perplexity, Anthropic, etc).
 2. For Bing, after you log in to your Microsoft account, you'll need to refresh to get into the Bing Chat screen. It's a little finnicky at first try but it works.
-3. Login for Anthropic via Google SSO is broken right now - it requires a popup which is blocked at least in my testing. For now just use manual email + login token, it works fine (dont include the extra space at the end from their email!!). If you are familiar with Electron and Webviews, would welcome a PR to fix, we can't figure it out so far.
-
-![image](https://github.com/smol-ai/menubar/assets/6764957/dce5b127-e8c2-4be2-97d3-e2fa3042ef24)
 
 ## seeking contributors!
 
-please see https://github.com/smol-ai/menubar/blob/main/CONTRIBUTING.md
+please see https://github.com/smol-ai/GodMode/blob/main/CONTRIBUTING.md
 
 ## build from source
 
@@ -124,10 +122,10 @@ If you want to build from source, you will need to clone the repo and open the p
 1. Clone the repository and navigate to the project folder:
 
    ```bash
-   git clone https://github.com/smol-ai/menubar.git
+   git clone https://github.com/smol-ai/GodMode.git
    cd menubar
    npm install
-   # On Windows, you may also need Squirrel - these are old instructions, we would love help to verify
+   # On Windows, you may also need Squirrel - these are old instructions, we would love a Windows volunteer to verify
    # npm install electron-squirrel-startup
 
    npm run start # to run in development, locally
@@ -150,7 +148,7 @@ If you want to build from source, you will need to clone the repo and open the p
 
 by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"! and someone to help make this work on Arch Linux)
 
-Please let usknow if you hvave windows/linux instructions.
+Please let us know if you hvave windows/linux instructions.
 
 ## Related project
 
