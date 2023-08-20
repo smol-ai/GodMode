@@ -148,7 +148,7 @@ If you want to build from source, you will need to clone the repo and open the p
 
 by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"! and someone to help make this work on Arch Linux)
 
-Please let us know if you hvave windows/linux instructions.
+Please let us know if you have windows/linux instructions.
 
 ## Related project
 
