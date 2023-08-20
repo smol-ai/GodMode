@@ -293,7 +293,7 @@ if (!gotTheLock) {
 				if (mainWindow.isMinimized()) mainWindow.restore();
 				mainWindow.focus();
 			}
-		}
+		},
 	);
 	app
 		.whenReady()
