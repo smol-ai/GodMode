@@ -1,7 +1,7 @@
 {
 	"name": "godmode",
 	"productName": "GodMode",
-	"version": "1.0.0-beta.1",
+	"version": "1.0.0-beta.2",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
 	"main": "src/main/main.ts",
@@ -47,7 +47,8 @@
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.11.2",
 		"react-split": "^2.0.14",
-		"tailwind-merge": "^1.14.0"
+		"tailwind-merge": "^1.14.0",
+		"vex-js": "^4.1.0"
 	},
 	"repository": {
 		"type": "git",
