@@ -5,7 +5,7 @@ export interface ProviderInterface {
 	fullName: string;
 	shortName: string;
 	webviewId: string;
-	getWebview(): HTMLElement;
+	getWebview(): HTMLElement | null;
 	url: string;
 	paneId(): string;
 	setupCustomPasteBehavior(): void;
@@ -16,7 +16,14 @@ export interface ProviderInterface {
 	getUserAgent(): string;
 	isEnabled(): boolean;
 	setEnabled(enabled: boolean): void;
-	clearCookies(): void;
+	clearCookies?(): void;
+
+
+	codeForInputElement?: string;
+	codeForSetInputElementValue?(prompt: string): void;
+	codeForClickingSubmit?: string;
+	codeForExtractingResponse?: string;
+
 }
 
 export interface Settings {
