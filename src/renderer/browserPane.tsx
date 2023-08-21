@@ -333,7 +333,7 @@ export function BrowserPane({
 										<Menu.Item>
 											{({ active }) => (
 												<a
-													href="https://github.com/smol-ai/menubar/issues/new"
+													href="https://github.com/smol-ai/GodMode/issues/new"
 													target="_blank"
 													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
 													className={classNames(

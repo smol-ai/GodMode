@@ -52,7 +52,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/smol-ai/menubar"
+		"url": "https://github.com/smol-ai/GodMode"
 	},
 	"devDependencies": {
 		"@electron/notarize": "^1.2.3",
@@ -186,7 +186,7 @@
 		"publish": {
 			"provider": "github",
 			"owner": "smol-ai",
-			"repo": "menubar"
+			"repo": "GodMode"
 		}
 	},
 	"devEngines": {
