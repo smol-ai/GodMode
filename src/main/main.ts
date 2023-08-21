@@ -155,8 +155,12 @@ const createWindow = async () => {
 	});
 
 	mainWindow.on('close', (event: Event) => {
-		event?.preventDefault();
-		mainWindow?.hide();
+		event.preventDefault();
+		mainWindow?.destroy();
+	});
+
+	app.on('activate', () => {
+		if (mainWindow === null) createWindow();
 	});
 
 	const menuBuilder = new MenuBuilder(mainWindow);
