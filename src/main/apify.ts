@@ -50,18 +50,6 @@ export async function streamChatResponse(opts: {
           var responseHTML = await win.webContents.executeJavaScript(`${opts.provider.codeForExtractingResponse}.innerHTML`);
           var responseText = await win.webContents.executeJavaScript(`${opts.provider.codeForExtractingResponse}.innerText`);
 
-			console.log('looping');
-			// Loop until our condition is met
-			await timeout(2000);
-			while (true) {
-				await timeout(1000);
-				var responseHTML = await win.webContents.executeJavaScript(
-					`${opts.provider.codeForExtractingResponse}.innerHTML`,
-				);
-				var responseText = await win.webContents.executeJavaScript(
-					`${opts.provider.codeForExtractingResponse}.innerText`,
-				);
-
 				console.log({ responseHTML, secondLastResponseHTML });
 				// If responseHTML hasn't changed for 2 invocations, break
 				if (
