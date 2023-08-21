@@ -27,12 +27,12 @@ class PerplexityLlama extends Provider {
 		}
 	}
 
-	static codeForInputElement = `var inputElement = document.querySelector('textarea[placeholder*="Ask"]')`
+	static codeForInputElement = `var inputElement = document.querySelector('textarea[placeholder*="Ask"]')`;
 	static codeForSetInputElementValue(prompt) {
 		return `
 		var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 		nativeTextAreaValueSetter.call(inputElement, \`${prompt}\`);
-		`
+		`;
 	}
 	static codeForClickingSubmit = `
 		var buttons = Array.from(document.querySelectorAll('button.bg-super'));
@@ -41,8 +41,8 @@ class PerplexityLlama extends Provider {
 		var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
 
 		button.click();
-	`
-	static codeForExtractingResponse = `[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0]`
+	`;
+	static codeForExtractingResponse = `[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0]`;
 
 	static handleSubmit() {
 		try {

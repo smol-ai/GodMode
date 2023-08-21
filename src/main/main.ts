@@ -71,7 +71,11 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 ipcMain.on('prompt-hidden-chat', async (event, channel: string, prompt) => {
 	const sendFn = (...args: any[]) =>
 		mainWindow?.webContents.send(channel, ...args);
-	const done = await streamChatResponse({ provider: PerplexityLlama, prompt, sendFn });
+	const done = await streamChatResponse({
+		provider: PerplexityLlama,
+		prompt,
+		sendFn,
+	});
 	event.returnValue = done; // {responseHTML, responseText}
 });
 
@@ -107,7 +111,7 @@ const installExtensions = async () => {
 	return installer
 		.default(
 			extensions.map((name) => installer[name]),
-			forceDownload
+			forceDownload,
 		)
 		.catch(console.log);
 };
@@ -162,7 +166,6 @@ const createWindow = async () => {
 			mainWindow.show();
 		}
 	});
-
 
 	mainWindow.on('close', (event: Event) => {
 		event?.preventDefault();
@@ -246,7 +249,7 @@ if (!gotTheLock) {
 				if (mainWindow.isMinimized()) mainWindow.restore();
 				mainWindow.focus();
 			}
-		}
+		},
 	);
 	app
 		.whenReady()
@@ -270,7 +273,7 @@ if (!gotTheLock) {
  */
 const quickOpenDefaultShortcut = store.get(
 	'quickOpenShortcut',
-	'CommandOrControl+Shift+G'
+	'CommandOrControl+Shift+G',
 ) as string;
 
 console.log(quickOpenDefaultShortcut);
@@ -297,7 +300,7 @@ function quickOpen() {
 		mainWindow.focus();
 		// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
 		mainWindow.webContents.executeJavaScript(
-			`{document.querySelector('#prompt')?.focus()}`
+			`{document.querySelector('#prompt')?.focus()}`,
 		);
 	}
 }
@@ -336,7 +339,7 @@ app.on('ready', () => {
 		(newValue: unknown, oldValue: unknown) => {
 			if (newValue === oldValue) return;
 			changeGlobalShortcut(newValue as string);
-		}
+		},
 	);
 });
 

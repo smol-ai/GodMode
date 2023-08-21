@@ -59,8 +59,6 @@ export function BrowserPane({
 		fullName: 'Select a provider',
 	} as ProviderInterface;
 
-	
-
 	function onDragEnd(result: {
 		source: { index: number };
 		destination: { index: number };
@@ -249,7 +247,9 @@ export function BrowserPane({
 										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
-												<PromptCritic {...{active, superprompt, setSuperprompt}} />
+												<PromptCritic
+													{...{ active, superprompt, setSuperprompt }}
+												/>
 											)}
 										</Menu.Item>
 										<Menu.Item>
@@ -297,7 +297,11 @@ export function BrowserPane({
 }
 
 // https://tailwindui.com/components/application-ui/forms/select-menus
-export default function ListBox(props: { selected: ProviderInterface, setSelected: (p: ProviderInterface) => void, selectList: ProviderInterface[] }) {
+export default function ListBox(props: {
+	selected: ProviderInterface;
+	setSelected: (p: ProviderInterface) => void;
+	selectList: ProviderInterface[];
+}) {
 	const { selected, setSelected, selectList } = props;
 	return (
 		<Listbox value={selected} onChange={setSelected}>

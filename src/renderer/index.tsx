@@ -13,7 +13,8 @@ window.electron.ipcRenderer.once('ipc-example', (arg) => {
 window.electron.ipcRenderer.sendMessage('ipc-example', ['ping']);
 
 window.electron.ipcRenderer.on('perplexity-llama2', (args: string[]) => {
-	console.log(`args[0]`, args[0])
+	console.log(`args[0]`, args[0]);
 	// comes from main.ts ipcMain.on('prompt-hidden-chat',...) sendFn(responseHTML, responseText)
-	document.getElementById('streamingPromptResponseContainer')!.innerHTML  = args[0] as string;
+	document.getElementById('streamingPromptResponseContainer')!.innerHTML =
+		args[0] as string;
 });

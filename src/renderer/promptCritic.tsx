@@ -1,6 +1,4 @@
-import {
-	SparklesIcon,
-} from '@heroicons/react/20/solid';
+import { SparklesIcon } from '@heroicons/react/20/solid';
 
 // @ts-ignore
 import vex from 'vex-js';
@@ -62,13 +60,13 @@ export function PromptCritic(props: {
 	async function runPromptCritic() {
 		if (superprompt.length < 10) {
 			alert(
-				'superprompt is too short. write a longer one! e.g. "write a receipe for scrambled eggs"'
+				'superprompt is too short. write a longer one! e.g. "write a receipe for scrambled eggs"',
 			);
 			return;
 		}
 		console.log('promptCritic', superprompt);
 		var llama2response = window.electron.browserWindow.promptHiddenChat(
-			_promptCritic(superprompt)
+			_promptCritic(superprompt),
 		);
 		// console.log('stage 1 response', llama2response);
 		llama2response = await new Promise((res) =>
@@ -82,18 +80,18 @@ export function PromptCritic(props: {
 					</div>`,
 				placeholder: `what you'd like to change about your prompt`,
 				callback: res,
-			})
+			}),
 		);
 		if (!llama2response) return;
 		// console.log('stage 2 response', llama2response);
 		var prospectivePrompt = window.electron.browserWindow.promptHiddenChat(
-			_promptImprover(superprompt, llama2response)
+			_promptImprover(superprompt, llama2response),
 		);
 		// console.log('stage 3 response', prospectivePrompt);
 
 		const textareavalue = prospectivePrompt.responseText.replace(
 			/\r|\n/,
-			'<br>'
+			'<br>',
 		);
 		var finalPrompt: string | null = await new Promise((res) =>
 			vex.dialog.prompt({
@@ -115,7 +113,7 @@ export function PromptCritic(props: {
 						res(data);
 					}
 				},
-			})
+			}),
 		);
 		console.log('finalPrompt', finalPrompt);
 		if (finalPrompt != null) {
@@ -126,7 +124,7 @@ export function PromptCritic(props: {
 		<button
 			className={classNames(
 				active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-				'px-4 py-2 text-sm w-full flex items-center justify-start'
+				'px-4 py-2 text-sm w-full flex items-center justify-start',
 			)}
 			onClick={runPromptCritic}
 		>
@@ -135,7 +133,6 @@ export function PromptCritic(props: {
 		</button>
 	);
 }
-
 
 // https://tailwindui.com/components/application-ui/elements/dropdowns
 function classNames(...classes: string[]) {

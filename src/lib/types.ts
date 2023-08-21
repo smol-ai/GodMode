@@ -18,12 +18,10 @@ export interface ProviderInterface {
 	setEnabled(enabled: boolean): void;
 	clearCookies?(): void;
 
-
 	codeForInputElement?: string;
 	codeForSetInputElementValue?(prompt: string): void;
 	codeForClickingSubmit?: string;
 	codeForExtractingResponse?: string;
-
 }
 
 export interface Settings {

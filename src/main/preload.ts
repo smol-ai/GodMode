@@ -10,7 +10,8 @@ const electronHandler = {
 			ipcRenderer.send(channel, ...args);
 		},
 		on(channel: Channels, func: (...args: unknown[]) => void) {
-			const subscription = (_event: IpcRendererEvent, ...args: unknown[]) => func(...args);
+			const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
+				func(...args);
 			ipcRenderer.on(channel, subscription);
 
 			return () => {
@@ -44,7 +45,11 @@ const electronHandler = {
 			ipcRenderer.send('set-always-on-top', val);
 		},
 		promptHiddenChat(prompt: string) {
-			const response = ipcRenderer.sendSync('prompt-hidden-chat', 'perplexity-llama2', prompt);
+			const response = ipcRenderer.sendSync(
+				'prompt-hidden-chat',
+				'perplexity-llama2',
+				prompt,
+			);
 			return response;
 		},
 	},
