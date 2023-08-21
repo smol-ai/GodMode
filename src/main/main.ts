@@ -23,8 +23,10 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Store from 'electron-store';
 import MenuBuilder from './menu';
+import { streamChatResponse } from './apify';
 import { resolveHtmlPath } from './util';
 import { isValidShortcut } from '../lib/utils';
+import PerplexityLlama from '../providers/perplexity-llama';
 
 let store = new Store();
 
@@ -66,61 +68,15 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 	event.returnValue = bool;
 });
 
-// thanks claude
-
-function timeout(ms: number) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-}
-async function getLlamaResponse(prompt: string) {
-	const win = new BrowserWindow({
-		// show: true,
-		show: false,
-		// titleBarStyle: 'hidden',
-		// width: 800,
-		// height: 600,
-		// webPreferences: {
-		// 	webviewTag: true,
-		// 	nodeIntegration: true,
-		// },
+ipcMain.on('prompt-hidden-chat', async (event, channel: string, prompt) => {
+	const sendFn = (...args: any[]) =>
+		mainWindow?.webContents.send(channel, ...args);
+	const done = await streamChatResponse({
+		provider: PerplexityLlama,
+		prompt,
+		sendFn,
 	});
-	win.loadURL('https://labs.perplexity.ai');
-	return new Promise((resolve, reject) => {
-		win.webContents.on('dom-ready', async () => {
-			await win.webContents.executeJavaScript(`{
-				var selectElement = document.querySelector('#lamma-select');
-				selectElement.value = 'llama-2-70b-chat';
-
-        var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
-				inputElement.focus();
-        var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
-				nativeTextAreaValueSetter.call(inputElement, \`${prompt}\`);
-
-				var event = new Event('input', { bubbles: true});
-				inputElement.dispatchEvent(event);
-				var buttons = Array.from(document.querySelectorAll('button.bg-super'));
-				var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
-				var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
-				button.click();
-			}`);
-			await timeout(5000);
-			// const temp = await win.webContents.executeJavaScript(`
-			// [...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].map(x => x.innerHTML)
-			// `);
-			// console.log('temp', temp);
-			const responseHTML = await win.webContents.executeJavaScript(`
-			[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0].innerHTML
-			`);
-			const responseText = await win.webContents.executeJavaScript(`
-			[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0].innerText
-			`);
-			resolve({ responseHTML, responseText });
-			win.close();
-		});
-	});
-}
-ipcMain.on('prompt-llama2', async (event, val) => {
-	const response = await getLlamaResponse(val);
-	event.returnValue = response;
+	event.returnValue = done; // {responseHTML, responseText}
 });
 
 /*
@@ -221,11 +177,11 @@ const createWindow = async () => {
 	const menuBuilder = new MenuBuilder(mainWindow);
 	menuBuilder.buildMenu();
 
-	// // Open urls in the user's browser
-	// mainWindow.webContents.setWindowOpenHandler((edata) => {
-	// 	shell.openExternal(edata.url);
-	// 	return { action: 'allow' };
-	// });
+	// Open urls in the user's browser
+	mainWindow.webContents.setWindowOpenHandler((edata) => {
+		shell.openExternal(edata.url);
+		return { action: 'allow' };
+	});
 
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line

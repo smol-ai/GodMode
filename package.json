@@ -68,6 +68,7 @@
 		"@types/jest": "^29.5.2",
 		"@types/node": "20.2.5",
 		"@types/react": "^18.2.8",
+		"@types/react-beautiful-dnd": "^13.1.4",
 		"@types/react-dom": "^18.2.4",
 		"@types/react-test-renderer": "^18.0.0",
 		"@types/terser-webpack-plugin": "^5.0.4",

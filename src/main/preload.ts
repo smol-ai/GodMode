@@ -2,7 +2,7 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
+export type Channels = 'ipc-example' | 'perplexity-llama2';
 
 const electronHandler = {
 	ipcRenderer: {
@@ -44,9 +44,8 @@ const electronHandler = {
 		setAlwaysOnTop(val: any) {
 			ipcRenderer.send('set-always-on-top', val);
 		},
-		promptLlama2(prompt: string) {
-			const response = ipcRenderer.sendSync('prompt-llama2', prompt);
-			return response;
+		promptHiddenChat(prompt: string) {
+			ipcRenderer.send('prompt-hidden-chat', 'perplexity-llama2', prompt);
 		},
 	},
 };
