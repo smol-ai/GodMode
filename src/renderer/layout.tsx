@@ -163,6 +163,17 @@ export default function Layout() {
 					// @ts-ignore
 					.setZoomLevel(provider.getWebview().getZoomLevel() + 1);
 			});
+		} else if (
+			(isCmdOrCtrl && event.key === '0')
+		) {
+			// reset zoomlevel
+			enabledProviders.forEach((provider) => {
+				// @ts-ignore
+				provider
+					.getWebview()
+					// @ts-ignore
+					.setZoomLevel(0);
+			});
 		} else if (isCmdOrCtrl && event.key === '-') {
 			// Decrease zoom level with Cmd/Ctrl + '-'
 			enabledProviders.forEach((provider) => {
