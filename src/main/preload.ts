@@ -45,12 +45,7 @@ const electronHandler = {
 			ipcRenderer.send('set-always-on-top', val);
 		},
 		promptHiddenChat(prompt: string) {
-			const response = ipcRenderer.sendSync(
-				'prompt-hidden-chat',
-				'perplexity-llama2',
-				prompt,
-			);
-			return response;
+			ipcRenderer.send('prompt-hidden-chat', 'perplexity-llama2', prompt);
 		},
 	},
 };

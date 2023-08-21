@@ -65,60 +65,61 @@ export function PromptCritic(props: {
 			return;
 		}
 		console.log('promptCritic', superprompt);
-		var llama2response = window.electron.browserWindow.promptHiddenChat(
-			_promptCritic(superprompt),
-		);
-		// console.log('stage 1 response', llama2response);
-		llama2response = await new Promise((res) =>
+		window.electron.browserWindow.promptHiddenChat(_promptCritic(superprompt));
+		var promptChangeStr = await new Promise<string>((res) =>
 			vex.dialog.prompt({
 				unsafeMessage: `
 					<div class="title-bar">
 							<h1>PromptCritic analysis</h1>
 					</div>
 					<div id="streamingPromptResponseContainer">
-					${llama2response.responseHTML}
 					</div>`,
 				placeholder: `what you'd like to change about your prompt`,
 				callback: res,
 			}),
 		);
-		if (!llama2response) return;
-		// console.log('stage 2 response', llama2response);
-		var prospectivePrompt = window.electron.browserWindow.promptHiddenChat(
-			_promptImprover(superprompt, llama2response),
-		);
-		// console.log('stage 3 response', prospectivePrompt);
+		if (!promptChangeStr) return;
+		console.log('stage 2 response', promptChangeStr);
 
-		const textareavalue = prospectivePrompt.responseText.replace(
-			/\r|\n/,
-			'<br>',
-		);
-		var finalPrompt: string | null = await new Promise((res) =>
-			vex.dialog.prompt({
-				unsafeMessage: `
-					<div class="title-bar">
-							<h1>PromptCritic's Improved suggestion</h1>
-					</div>
-					<div id="streamingPromptResponseContainer">
-					${prospectivePrompt.responseHTML}
-					</div>`,
-				value: prospectivePrompt.responseText,
-				input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="" value="${textareavalue}" rows="4">${textareavalue}</textarea>`,
-				placeholder: `your final prompt; copy and paste from above if it helps`,
-				callback: (data: any) => {
-					console.log({ data });
-					if (!data) {
-						console.log('Cancelled');
-					} else {
-						res(data);
-					}
-				},
-			}),
-		);
-		console.log('finalPrompt', finalPrompt);
-		if (finalPrompt != null) {
-			setSuperprompt(finalPrompt);
+		console.log('finalPrompt', promptChangeStr);
+		if (promptChangeStr != null) {
+			setSuperprompt(promptChangeStr);
 		}
+		// window.electron.browserWindow.promptHiddenChat(_promptImprover(superprompt, promptChangeStr));
+		// console.log('stage 3 response', prospectivePrompt);
+		// var finalPrompt: string | null = await new Promise((res) =>
+		// 	vex.dialog.prompt({
+		// 		unsafeMessage: `
+		// 			<div class="title-bar">
+		// 					<h1>PromptCritic's Improved suggestion</h1>
+		// 			</div>
+		// 			<div id="streamingPromptResponseContainer">
+		// 			</div>`,
+		// 		// value: prospectivePrompt.responseText,
+		// 		input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="your final prompt" 
+		// 		value="${textareavalue}" rows="4">
+		// 		${textareavalue}
+		// 		</textarea>`,
+		// 		placeholder: `your final prompt; copy and paste from above if it helps`,
+		// 		callback: (data: any) => {
+		// 			console.log({ data });
+		// 			if (!data) {
+		// 				console.log('Cancelled');
+		// 			} else {
+		// 				res(data);
+		// 			}
+		// 		},
+		// 	}),
+		// );
+
+		// const textareavalue = prospectivePrompt.responseText.replace(
+		// 	/\r|\n/,
+		// 	'<br>'
+		// );
+		// console.log('finalPrompt', finalPrompt);
+		// if (finalPrompt != null) {
+		// 	setSuperprompt(finalPrompt);
+		// }
 	}
 	return (
 		<button

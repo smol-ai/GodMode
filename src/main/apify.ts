@@ -7,8 +7,8 @@ export async function streamChatResponse(opts: {
 	sendFn: (...args: any[]) => void | undefined;
 }) {
 	const win = new BrowserWindow({
-		// show: true,
-		show: false,
+		show: true,
+		// show: false,
 		// titleBarStyle: 'hidden',
 		// width: 800,
 		// height: 600,
@@ -21,27 +21,34 @@ export async function streamChatResponse(opts: {
 
 	return new Promise((resolve, reject) => {
 		win.webContents.on('dom-ready', async () => {
-			try {
-				// check if logged in (and inputElement exists)
-				await win.webContents.executeJavaScript(
-					`{${opts.provider.codeForInputElement}}`,
-				);
-			} catch (err) {
-				console.error(
-					'input element doesnt exist: ',
-					opts.provider.codeForInputElement,
-				);
-				return reject(err);
-			}
-			await win.webContents.executeJavaScript(`{
+      try {
+        // check if logged in (and inputElement exists)
+        await win.webContents.executeJavaScript(`{${opts.provider.codeForInputElement}}`)
+      } catch (err) {
+        console.error('input element doesnt exist: ', opts.provider.codeForInputElement)
+        return reject(err)
+      }
+      await timeout(500);
+      const script = `{
 				${opts.provider.codeForInputElement}
-        ${opts.provider.codeForSetInputElementValue(opts.prompt)}
+        ${opts.provider.codeForSetInputElementValue!(opts.prompt)}
         ${opts.provider.codeForClickingSubmit}
-			}`);
+			}`
+			await win.webContents.executeJavaScript(script);
+      console.log('script', script)
+      
+      // Define two variables to store the previous responses
+      let lastResponseHTML = null;
+      let secondLastResponseHTML = null;
 
-			// Define two variables to store the previous responses
-			let lastResponseHTML = null;
-			let secondLastResponseHTML = null;
+      console.log('looping')
+      // Loop until our condition is met
+      await timeout(300);
+      while (true) {
+          await timeout(300);
+          await win.webContents.executeJavaScript(`console.log('hiii', [...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')]);`);
+          var responseHTML = await win.webContents.executeJavaScript(`${opts.provider.codeForExtractingResponse}.innerHTML`);
+          var responseText = await win.webContents.executeJavaScript(`${opts.provider.codeForExtractingResponse}.innerText`);
 
 			console.log('looping');
 			// Loop until our condition is met
