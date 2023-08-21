@@ -17,10 +17,11 @@ function _promptCritic(originalPrompt: string) {
   ${originalPrompt}
   --- End Original Prompt ---
 
-  There are known ways to improve prompts for better LLM performance, for example adding "Let's think step by step to get to the right answer" or adding comments before each line of code.
+  There are known ways to improve prompts for better LLM performance.
   Can you please briefly list ways to improve (3 <ol> <li> bullet points with <b>bolded headings</b> per bullet) and then suggest one improved prompt following your criticism?
 	Stop at the improved prompt, do not attempt to answer the prompt.
   `;
+	// for example adding "Let's think step by step to get to the right answer" or adding comments before each line of code.
 }
 
 function _promptImprover(originalPrompt: string, modifyInstructions?: string) {

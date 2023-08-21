@@ -51,9 +51,9 @@ export async function streamChatResponse(opts: {
 			await timeout(300);
 			while (true) {
 				await timeout(300);
-				await win.webContents.executeJavaScript(
-					`console.log('hiii', [...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')]);`,
-				);
+				// await win.webContents.executeJavaScript(
+				// 	`console.log('hiii', [...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')]);`,
+				// );
 				var responseHTML = await win.webContents.executeJavaScript(
 					`${opts.provider.codeForExtractingResponse}.innerHTML`,
 				);
