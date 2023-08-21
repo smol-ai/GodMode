@@ -7,8 +7,8 @@ export async function streamChatResponse(opts: {
 	sendFn: (...args: any[]) => void | undefined;
 }) {
 	const win = new BrowserWindow({
-		show: true,
-		// show: false,
+		// show: true,
+		show: false,
 		// titleBarStyle: 'hidden',
 		// width: 800,
 		// height: 600,
