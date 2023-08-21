@@ -175,6 +175,10 @@ const createWindow = async () => {
 
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
+	const preload = app.isPackaged
+		? path.join(__dirname, 'preload.js')
+		: path.join(__dirname, '../../scripts/dll/preload.js');
+
 	mainWindow = new BrowserWindow({
 		show: false,
 		// frame: false,
@@ -186,16 +190,14 @@ const createWindow = async () => {
 		webPreferences: {
 			webviewTag: true,
 			nodeIntegration: true,
-			preload: app.isPackaged
-				? path.join(__dirname, 'preload.js')
-				: path.join(__dirname, '../../scripts/dll/preload.js'),
+			preload,
 		},
 	});
 
 	const nativeImage = require('electron').nativeImage;
 	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'));
 
-	app.dock.setIcon(dockIcon); // todo: if electronStore preferences say to hide icon, hide icon with app.dock.setMenu(Menu.buildFromTemplate([])); maybe https://stackoverflow.com/questions/59668664/how-to-avoid-showing-a-dock-icon-while-my-electron-app-is-launching-on-macos
+	app.dock?.setIcon(dockIcon); // todo: if electronStore preferences say to hide icon, hide icon with app.dock.setMenu(Menu.buildFromTemplate([])); maybe https://stackoverflow.com/questions/59668664/how-to-avoid-showing-a-dock-icon-while-my-electron-app-is-launching-on-macos
 	app.name = 'God Mode';
 
 	mainWindow.loadURL(resolveHtmlPath('index.html'));
