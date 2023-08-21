@@ -2,7 +2,7 @@
 
 ## seeking contributors!
 
-this is a FOSS effort and will never be commercialized (no tracking, will not be a paid app (but the chat apps within might), etc). please check out the feature requests (https://github.com/smol-ai/menubar/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) if you'd like to help! in particular, we'd like:
+this is a FOSS effort and will never be commercialized (no tracking, will not be a paid app (but the chat apps within might), etc). please check out the feature requests (https://github.com/smol-ai/GodMode/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) if you'd like to help! in particular, we'd like:
 
 - **a PR to make the 3 panels customizable to different URLs and input targets!**
 - a "Windows maintainer" to handle Windows user needs and beta test every release to make sure we didn't break something for them
@@ -14,8 +14,8 @@ To install and run from source, follow these steps:
 1. Clone the repository and navigate to the project folder:
 
    ```bash
-   git clone https://github.com/smol-ai/menubar.git
-   cd menubar
+   git clone https://github.com/smol-ai/GodMode.git
+   cd GodMode
    ```
 
 2. Install dependencies:
@@ -34,7 +34,7 @@ To install and run from source, follow these steps:
 
 ## debugging
 
-I have the menubar devtools up all the time while in development. You can disable them by commenting this line.
+I have the devtools up all the time while in development. You can disable them by commenting this line.
 
 ```js
 window.webContents.openDevTools();

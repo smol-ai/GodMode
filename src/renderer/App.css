@@ -34,12 +34,32 @@ body {
 	-webkit-app-region: drag;
 }
 
+.vex-dialog-message ol {
+	all: revert; /* locally remove tailwind styles */
+}
+.vex.vex-theme-os .vex-content {
+	width: 90vw !important;
+}
+/* https://github.com/HubSpot/vex/issues/51 */
+.vex-theme-os .title-bar {
+	margin: -1em;
+	background: #ccc;
+	padding: 1em;
+	margin-bottom: 1em;
+	border-radius: 5px 5px 0 0;
+}
+.vex-theme-os .title-bar h1 {
+	font-size: 1.3em;
+	font-weight: normal;
+	line-height: 1.2em;
+	margin: 0;
+}
 .powerbar {
 	/* height: var(--powerbar-height) */
 	position: absolute;
 	z-index: 10;
 	left: calc(50% - 3rem);
-	@apply bg-white/50 rounded-b-lg;
+	@apply rounded-b-lg bg-white/50;
 }
 .powerbar:hover {
 	backdrop-filter: blur(10px);

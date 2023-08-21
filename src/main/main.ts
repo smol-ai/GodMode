@@ -66,6 +66,63 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 	event.returnValue = bool;
 });
 
+// thanks claude
+
+function timeout(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+async function getLlamaResponse(prompt: string) {
+	const win = new BrowserWindow({
+		// show: true,
+		show: false,
+		// titleBarStyle: 'hidden',
+		// width: 800,
+		// height: 600,
+		// webPreferences: {
+		// 	webviewTag: true,
+		// 	nodeIntegration: true,
+		// },
+	});
+	win.loadURL('https://labs.perplexity.ai');
+	return new Promise((resolve, reject) => {
+		win.webContents.on('dom-ready', async () => {
+			await win.webContents.executeJavaScript(`{
+				var selectElement = document.querySelector('#lamma-select');
+				selectElement.value = 'llama-2-70b-chat';
+
+        var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
+				inputElement.focus();
+        var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+				nativeTextAreaValueSetter.call(inputElement, \`${prompt}\`);
+
+				var event = new Event('input', { bubbles: true});
+				inputElement.dispatchEvent(event);
+				var buttons = Array.from(document.querySelectorAll('button.bg-super'));
+				var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
+				var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
+				button.click();
+			}`);
+			await timeout(5000);
+			// const temp = await win.webContents.executeJavaScript(`
+			// [...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].map(x => x.innerHTML)
+			// `);
+			// console.log('temp', temp);
+			const responseHTML = await win.webContents.executeJavaScript(`
+			[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0].innerHTML
+			`);
+			const responseText = await win.webContents.executeJavaScript(`
+			[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0].innerText
+			`);
+			resolve({ responseHTML, responseText });
+			win.close();
+		});
+	});
+}
+ipcMain.on('prompt-llama2', async (event, val) => {
+	const response = await getLlamaResponse(val);
+	event.returnValue = response;
+});
+
 /*
  * Return the user's device platform (macOS, Windows, Linux) for use in
  * keyboard shortcuts and other platform-specific features in the renderer.
@@ -118,6 +175,10 @@ const createWindow = async () => {
 
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
+	const preload = app.isPackaged
+		? path.join(__dirname, 'preload.js')
+		: path.join(__dirname, '../../scripts/dll/preload.js');
+
 	mainWindow = new BrowserWindow({
 		show: false,
 		// frame: false,
@@ -129,16 +190,14 @@ const createWindow = async () => {
 		webPreferences: {
 			webviewTag: true,
 			nodeIntegration: true,
-			preload: app.isPackaged
-				? path.join(__dirname, 'preload.js')
-				: path.join(__dirname, '../../scripts/dll/preload.js'),
+			preload,
 		},
 	});
 
 	const nativeImage = require('electron').nativeImage;
 	const dockIcon = nativeImage.createFromPath(getAssetPath('icon.png'));
 
-	app.dock.setIcon(dockIcon);
+	app.dock?.setIcon(dockIcon); // todo: if electronStore preferences say to hide icon, hide icon with app.dock.setMenu(Menu.buildFromTemplate([])); maybe https://stackoverflow.com/questions/59668664/how-to-avoid-showing-a-dock-icon-while-my-electron-app-is-launching-on-macos
 	app.name = 'God Mode';
 
 	mainWindow.loadURL(resolveHtmlPath('index.html'));
@@ -226,35 +285,34 @@ app.on('web-contents-created', (e, contents) => {
 			if (key === 'l') contents.goForward();
 		});
 	}
-	// // we can't set the native app menu with "menubar" so need to manually register these events
-	// // register cmd+c/cmd+v events
-	// contents.on('before-input-event', (event, input) => {
-	//   const { control, meta, key } = input;
-	//   if (!control && !meta) return;
-	//   if (key === 'c') contents.copy();
-	//   if (key === 'v') contents.paste();
-	//   if (key === 'x') contents.cut();
-	//   if (key === 'a') contents.selectAll();
-	//   if (key === 'z') contents.undo();
-	//   if (key === 'y') contents.redo();
-	//   if (key === 'q') app.quit();
-	//   if (key === 'r') contents.reload();
-	//   if (key === 'h') contents.goBack();
-	//   if (key === 'l') contents.goForward();
-	// });
 });
 
-app
-	.whenReady()
-	.then(() => {
-		createWindow();
-		app.on('activate', () => {
-			// On macOS it's common to re-create a window in the app when the
-			// dock icon is clicked and there are no other windows open.
-			if (mainWindow === null) createWindow();
-		});
-	})
-	.catch(console.log);
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+	app.quit();
+} else {
+	app.on(
+		'second-instance',
+		(event, commandLine, workingDirectory, additionalData) => {
+			// Someone tried to run a second instance, we should focus our window.
+			if (mainWindow) {
+				if (mainWindow.isMinimized()) mainWindow.restore();
+				mainWindow.focus();
+			}
+		},
+	);
+	app
+		.whenReady()
+		.then(() => {
+			createWindow();
+			app.on('activate', () => {
+				// On macOS it's common to re-create a window in the app when the
+				// dock icon is clicked and there are no other windows open.
+				if (mainWindow === null) createWindow();
+			});
+		})
+		.catch(console.log);
+}
 
 /* ========================================================================== */
 /* Global Shortcut Logic                                                      */

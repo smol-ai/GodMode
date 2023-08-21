@@ -5,11 +5,23 @@ import {
 	ChevronUpDownIcon,
 	CheckIcon,
 	Cog6ToothIcon,
+	SparklesIcon,
 } from '@heroicons/react/20/solid';
 import { BookmarkIcon, BookmarkSlashIcon } from '@heroicons/react/20/solid';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { type paneInfo } from './layout';
 import { ProviderInterface } from 'lib/types';
+
+// @ts-ignore
+import vex from 'vex-js';
+// Main css
+import 'vex-js/dist/css/vex.css';
+// Themes (Import all themes you want to use here)
+import 'vex-js/dist/css/vex-theme-default.css';
+import 'vex-js/dist/css/vex-theme-os.css';
+vex.registerPlugin(require('vex-dialog'));
+vex.defaultOptions.className = 'vex-theme-os';
+import { promptCritic, promptImprover } from './promptImprover';
 
 // https://tailwindui.com/components/application-ui/elements/dropdowns
 function classNames(...classes) {
@@ -36,6 +48,8 @@ export function BrowserPane({
 	toggleIsAlwaysOnTop,
 	isSettingsOpen,
 	setIsSettingsOpen,
+	superprompt,
+	setSuperprompt,
 }: {
 	paneList: paneInfo[];
 	setPaneList: (paneList: paneInfo[]) => void;
@@ -45,12 +59,74 @@ export function BrowserPane({
 	toggleIsAlwaysOnTop: () => void;
 	isSettingsOpen: boolean;
 	setIsSettingsOpen: (isSettingsOpen: boolean) => void;
+	superprompt: string;
+	setSuperprompt: (p: string) => void;
 }) {
 	const nullProvider = {
 		webviewId: 'nullProvider',
 		shortName: 'Select a provider',
 		fullName: 'Select a provider',
 	};
+
+	async function runPromptCritic() {
+		if (superprompt.length < 10) {
+			alert(
+				'superprompt is too short. write a longer one! e.g. "write a receipe for scrambled eggs"',
+			);
+			return;
+		}
+		console.log('promptCritic', superprompt);
+		var llama2response = window.electron.browserWindow.promptLlama2(
+			promptCritic(superprompt),
+		);
+		// console.log('stage 1 response', llama2response);
+		llama2response = await new Promise((res) =>
+			vex.dialog.prompt({
+				unsafeMessage: `
+					<div class="title-bar">
+							<h1>PromptCritic analysis</h1>
+					</div>
+					${llama2response.responseHTML}`,
+				placeholder: `what you'd like to change about your prompt`,
+				callback: res,
+			}),
+		);
+		if (llama2response === null) return;
+		// console.log('stage 2 response', llama2response);
+		var prospectivePrompt = window.electron.browserWindow.promptLlama2(
+			promptImprover(superprompt, llama2response),
+		);
+		// console.log('stage 3 response', prospectivePrompt);
+
+		const textareavalue = prospectivePrompt.responseText.replace(
+			/\r|\n/,
+			'<br>',
+		);
+		var finalPrompt: string | null = await new Promise((res) =>
+			vex.dialog.prompt({
+				unsafeMessage: `
+					<div class="title-bar">
+							<h1>PromptCritic's Improved suggestion</h1>
+					</div>
+					${prospectivePrompt.responseHTML}`,
+				value: prospectivePrompt.responseText,
+				input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="" value="${textareavalue}" rows="4">${textareavalue}</textarea>`,
+				placeholder: `your final prompt; copy and paste from above if it helps`,
+				callback: (data: any) => {
+					console.log({ data });
+					if (!data) {
+						console.log('Cancelled');
+					} else {
+						res(data);
+					}
+				},
+			}),
+		);
+		console.log('finalPrompt', finalPrompt);
+		if (finalPrompt != null) {
+			setSuperprompt(finalPrompt);
+		}
+	}
 
 	function onDragEnd(result: {
 		source: { index: number };
@@ -63,7 +139,7 @@ export function BrowserPane({
 			paneList,
 			result.source.index,
 			result.destination.index,
-		);
+		) as paneInfo[];
 		setPaneList(reorderedItems);
 		window.electron.browserWindow.reload();
 	}
@@ -240,8 +316,24 @@ export function BrowserPane({
 										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
+												<button
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'px-4 py-2 text-sm w-full flex items-center justify-start',
+													)}
+													onClick={runPromptCritic}
+												>
+													<SparklesIcon className="inline w-4 h-4 mr-2" />
+													PromptCritic (alpha)
+												</button>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
 												<a
-													href="https://github.com/smol-ai/menubar/issues/new"
+													href="https://github.com/smol-ai/GodMode/issues/new"
 													target="_blank"
 													// className="flex items-center justify-center px-4 py-2 text-white bg-teal-700 rounded hover:bg-teal-500"
 													className={classNames(
