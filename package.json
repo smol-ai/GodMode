@@ -13,6 +13,9 @@
 		"postinstall": "ts-node scripts/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.dev.dll.ts",
 		"lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
 		"package": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --publish never",
+		"package-mac": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --mac --publish never",
+		"package-lin": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --linux --publish never",
+		"package-win": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --win --x64  --publish never",
 		"rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
 		"start": "ts-node ./scripts/scripts/check-port-in-use.js && npm run start:renderer",
 		"start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
@@ -171,7 +174,10 @@
 		},
 		"linux": {
 			"target": [
-				"AppImage"
+				{
+					"target": "AppImage",
+					"arch": ["x64", "arm64"]
+				}
 			],
 			"category": "Development"
 		},
