@@ -343,15 +343,19 @@ function changeGlobalShortcut(newShortcut: string) {
  */
 function quickOpen() {
 	if (mainWindow && !mainWindow.isDestroyed()) {
-		if (mainWindow.isMinimized()) {
-			mainWindow.restore();
+		if (mainWindow.isFocused()) {
+			mainWindow.hide();
+		} else {
+			if (mainWindow.isMinimized()) {
+				mainWindow.restore();
+			}
+			mainWindow.show();
+			mainWindow.focus();
+			// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
+			mainWindow.webContents.executeJavaScript(
+				`{document.querySelector('#prompt')?.focus()}`,
+			);
 		}
-		mainWindow.show();
-		mainWindow.focus();
-		// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
-		mainWindow.webContents.executeJavaScript(
-			`{document.querySelector('#prompt')?.focus()}`,
-		);
 	} else {
 		createWindow();
 	}
