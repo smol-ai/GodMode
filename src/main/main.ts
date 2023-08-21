@@ -175,6 +175,10 @@ const createWindow = async () => {
 
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
+	const preload = app.isPackaged
+		? path.join(__dirname, 'preload.js')
+		: path.join(__dirname, '../../scripts/dll/preload.js');
+
 	mainWindow = new BrowserWindow({
 		show: false,
 		// frame: false,
@@ -186,9 +190,7 @@ const createWindow = async () => {
 		webPreferences: {
 			webviewTag: true,
 			nodeIntegration: true,
-			preload: app.isPackaged
-				? path.join(__dirname, 'preload.js')
-				: path.join(__dirname, '../../scripts/dll/preload.js'),
+			preload,
 		},
 	});
 
