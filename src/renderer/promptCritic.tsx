@@ -93,7 +93,7 @@ export function PromptCritic(props: {
 		// 			<div id="streamingPromptResponseContainer">
 		// 			</div>`,
 		// 		// value: prospectivePrompt.responseText,
-		// 		input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="your final prompt" 
+		// 		input: `<textarea name="vex" type="text" class="vex-dialog-prompt-input" placeholder="your final prompt"
 		// 		value="${textareavalue}" rows="4">
 		// 		${textareavalue}
 		// 		</textarea>`,
