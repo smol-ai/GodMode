@@ -352,6 +352,8 @@ function quickOpen() {
 		mainWindow.webContents.executeJavaScript(
 			`{document.querySelector('#prompt')?.focus()}`,
 		);
+	} else {
+		createWindow();
 	}
 }
 
