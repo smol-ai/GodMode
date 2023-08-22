@@ -64,7 +64,7 @@ export function PromptCritic(props: {
 		}
 		if (superprompt.length > 60) {
 			alert(
-				'superprompt is too long. it can only currently handle low effort prompts. e.g. "write a receipe for scrambled eggs". we are working on extending it to 100k tokens!'
+				'superprompt is too long. it can only currently handle low effort prompts. e.g. "write a receipe for scrambled eggs". we are working on extending it to 100k tokens!',
 			);
 			return;
 		}
