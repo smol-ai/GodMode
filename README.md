@@ -10,7 +10,9 @@ Whatever is typed at the bottom is entered into all **web apps** simultaneously,
 
 ## Installation
 
-Install [here](https://github.com/smol-ai/GodMode/releases/latest)! Arm64 for Apple Silicon Macs, non Arm64 for the rest. We technically do support Windows, but need Windows users to help us with the build process/instructions.
+Install [here](https://github.com/smol-ai/GodMode/releases/latest)! Arm64 for Apple Silicon Macs, non Arm64 for the rest (there are some [temporary issues for Intel Macs](https://github.com/smol-ai/GodMode/issues/163), but beta.0 works. help wanted!). 
+
+We [just added Windows/Linux support](https://github.com/smol-ai/GodMode/pull/162), but it needs a lot of work. Help wanted!
 
 You can also build from source, see instructions below.
 
@@ -103,7 +105,11 @@ Yes and no:
 
 You can:
 
-- download the precompiled binaries for MacOS: https://github.com/smol-ai/GodMode/releases/latest (sometimes Apple marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it).
+- download the precompiled binaries: https://github.com/smol-ai/GodMode/releases/latest (sometimes Apple/Windows marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it).
+  - for Apple Silicon M1/M2 macs, use the "arm64" version
+  - for Intel Macs, use the ".dmg" versions with no "arm64"
+  - for Windows, use ".exe" version. It will be marked as untrusted for now as we haven't done Windows codesigning yet
+  - for Linux, use ".AppImage". We don't think we support Arch Linux yet.
 - Or run it from source (instructions below)
 
 When you first run the app:
