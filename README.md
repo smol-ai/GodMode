@@ -130,7 +130,7 @@ If you want to build from source, you will need to clone the repo and open the p
    ```bash
    git clone https://github.com/smol-ai/GodMode.git
    cd GodMode
-   npm install
+   npm install --force
    # On Windows, you may also need Squirrel - these are old instructions, we would love a Windows volunteer to verify
    # npm install electron-squirrel-startup
 
@@ -149,12 +149,6 @@ If you want to build from source, you will need to clone the repo and open the p
    ```
 
    The outputs will be located in the `/release/build` directory.
-
-## windows/linux builds
-
-by default we're mac only - i only have a mac sorry. (we are seeking a "Windows Maintainer"! and someone to help make this work on Arch Linux)
-
-Please let us know if you have windows/linux instructions.
 
 ## Related project
 
