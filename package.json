@@ -12,7 +12,7 @@
 		"build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.prod.ts",
 		"postinstall": "ts-node scripts/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.dev.dll.ts",
 		"lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-		"package": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --publish never",
+		"package": "concurrently \"npm run package-mac\" \"npm run package-lin\" \"npm run package-win\"",
 		"package-mac": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --mac --publish never",
 		"package-lin": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --linux --publish never",
 		"package-win": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --win --x64  --publish never",
