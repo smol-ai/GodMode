@@ -10,7 +10,7 @@ Whatever is typed at the bottom is entered into all **web apps** simultaneously,
 
 ## Installation
 
-Install [here](https://github.com/smol-ai/GodMode/releases/latest)! Arm64 for Apple Silicon Macs, non Arm64 for the rest (there are some [temporary issues for Intel Macs](https://github.com/smol-ai/GodMode/issues/163), but beta.0 works. help wanted!). 
+Install [here](https://github.com/smol-ai/GodMode/releases/latest)! Arm64 for Apple Silicon Macs, non Arm64 for the rest (there are some [temporary issues for Intel Macs](https://github.com/smol-ai/GodMode/issues/163), but beta.0 works. help wanted!).
 
 We [just added Windows/Linux support](https://github.com/smol-ai/GodMode/pull/162), but it needs a lot of work. Help wanted!
 
