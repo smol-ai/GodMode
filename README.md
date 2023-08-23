@@ -106,8 +106,9 @@ Yes and no:
 You can:
 
 - download the precompiled binaries: https://github.com/smol-ai/GodMode/releases/latest (sometimes Apple/Windows marks these as untrusted/damaged, just open them up in Applications and right-click-open to run it).
-  - for Apple Silicon M1/M2 macs, use the "arm64" version
-  - for Intel Macs, use the ".dmg" versions with no "arm64"
+  - for Macs, you can use the "-universal.dmg" versions and it will choose between Apple Silicon/Intel architectures. We recommend installing this, but just fyi:
+    - Apple Silicon M1/M2 macs use the "arm64" version
+    - Intel Macs use the ".dmg" versions with no "arm64"
   - for Windows, use ".exe" version. It will be marked as untrusted for now as we haven't done Windows codesigning yet
   - for Linux, use ".AppImage". We don't think we support Arch Linux yet.
 - Or run it from source (instructions below)
