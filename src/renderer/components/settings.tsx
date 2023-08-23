@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { useEffect, useState } from 'react';
 import { Settings } from 'lib/types';
 import { Button } from './ui/button';
+import { Switch } from '@headlessui/react';
 import {
 	convertKeyCode,
 	convertModifierKey,
@@ -21,6 +22,11 @@ export default function SettingsMenu({
 	const [validShortcut, setValidShortcut] = useState<string[]>([]);
 	const [isRecording, setIsRecording] = useState(false);
 	const [metaKey, setMetaKey] = useState('');
+	const [openAtLogin, setOpenAtLogin] = useState(false);
+
+	function classNames(...classes) {
+		return classes.filter(Boolean).join(' ');
+	}
 
 	const settings = window.settings as Settings;
 	let pressedKeys = new Set<string>();
@@ -118,12 +124,63 @@ export default function SettingsMenu({
 		if (!open) setIsRecording(false);
 	}, [open]);
 
+	useEffect(() => {
+		const fetchOpenAtLogin = async () => {
+			const isOpen = await settings.getOpenAtLogin();
+			setOpenAtLogin(isOpen);
+		};
+		fetchOpenAtLogin();
+	}, []);
+
+	useEffect(() => {
+		openAtLogin
+			? window.electron.browserWindow.enableOpenAtLogin()
+			: window.electron.browserWindow.disableOpenAtLogin();
+	}, [openAtLogin]);
+
 	return (
 		<Dialog open={open} onOpenChange={onClose}>
 			<DialogContent className="bg-white">
 				<DialogHeader>
 					<DialogTitle>Settings</DialogTitle>
 				</DialogHeader>
+				<Switch.Group as="div" className="flex items-center justify-between">
+					<span className="flex flex-grow flex-col">
+						<Switch.Label
+							as="span"
+							className="text-sm font-medium leading-6 text-gray-900"
+							passive
+						>
+							Open at Login
+						</Switch.Label>
+					</span>
+					<Switch
+						checked={openAtLogin}
+						onChange={setOpenAtLogin}
+						className={classNames(
+							openAtLogin ? 'bg-indigo-600' : 'bg-gray-200',
+							'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none',
+						)}
+					>
+						<span
+							aria-hidden="true"
+							className={classNames(
+								openAtLogin ? 'translate-x-5' : 'translate-x-0',
+								'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+							)}
+						/>
+					</Switch>
+				</Switch.Group>
+				<span className="flex flex-grow flex-col">
+					<div
+						as="span"
+						className="text-sm font-medium leading-6 text-gray-900"
+						passive
+					>
+						Change Shortcut
+					</div>
+				</span>
+
 				<div
 					id="accelerator-container"
 					className="flex flex-row justify-center"

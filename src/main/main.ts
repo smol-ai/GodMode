@@ -68,6 +68,42 @@ ipcMain.on('get-always-on-top', async (event, property, val) => {
 	event.returnValue = bool;
 });
 
+const appFolder = path.dirname(process.execPath);
+const updateExe = path.resolve(appFolder, '..', 'Update.exe');
+const exeName = path.basename(process.execPath);
+
+ipcMain.on('enable-open-at-login', async (event, property, val) => {
+	app.setLoginItemSettings({
+		openAtLogin: true,
+		path: updateExe,
+		args: [
+			'--processStart',
+			`"${exeName}"`,
+			'--process-start-args',
+			`"--hidden"`,
+		],
+	});
+});
+
+ipcMain.on('disable-open-at-login', async (event, property, val) => {
+	app.setLoginItemSettings({
+		openAtLogin: false,
+		path: updateExe,
+		args: [
+			'--processStart',
+			`"${exeName}"`,
+			'--process-start-args',
+			`"--hidden"`,
+		],
+	});
+});
+
+ipcMain.handle('get-open-at-login', () => {
+	const openAtLogin = app.getLoginItemSettings().openAtLogin;
+	console.log(openAtLogin);
+	return openAtLogin;
+});
+
 ipcMain.on('prompt-hidden-chat', async (event, channel: string, prompt) => {
 	const sendFn = (...args: any[]) =>
 		mainWindow?.webContents.send(channel, ...args);
