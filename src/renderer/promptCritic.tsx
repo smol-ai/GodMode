@@ -62,6 +62,12 @@ export function PromptCritic(props: {
 			);
 			return;
 		}
+		if (superprompt.length > 60) {
+			alert(
+				'superprompt is too long. it can only currently handle low effort prompts. e.g. "write a receipe for scrambled eggs". we are working on extending it to 100k tokens!',
+			);
+			return;
+		}
 		console.log('promptCritic', superprompt);
 		window.electron.browserWindow.promptHiddenChat(_promptCritic(superprompt));
 		var promptChangeStr = await new Promise<string>((res) =>
