@@ -28,10 +28,11 @@ class InflectionPi extends Provider {
 		this.getWebview().executeJavaScript(`{
       
       var inputElement = document.querySelector('.text-muted textarea');
-      const event = new KeyboardEvent('keyup', {
-        key: 'Enter',
-        metaKey: true
-      });
+	  const event = new KeyboardEvent('keydown', {
+		key: 'Enter',
+		view: window,
+		bubbles: true
+	});
       inputElement.dispatchEvent(event);
   }`);
 	}
@@ -53,4 +54,4 @@ class InflectionPi extends Provider {
 	}
 }
 
-module.exports = YouChat;
+module.exports = InflectionPi;
