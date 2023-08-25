@@ -204,6 +204,15 @@ app.on('window-all-closed', () => {
 	}
 });
 
+app.on('web-contents-created', (event, contents) =>{
+	contents.setWindowOpenHandler(({ url }) => {
+		setImmediate(() => {
+			shell.openExternal(url);
+		})
+		return {action: 'deny'};
+	})
+})
+
 app.on('web-contents-created', (e, contents) => {
 	if (contents.getType() == 'webview') {
 		// contents.on("will-navigate", (event, url, frameName, disposition, options, additionalFeatures) => {
