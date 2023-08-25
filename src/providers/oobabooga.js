@@ -10,7 +10,7 @@ class OobaBooga extends Provider {
 	// todo: let user customize their preferred template.
 	static templateFn = (input) => `Common sense questions and answers
 
-  Question: \`${input}\`
+  Question: ${input}
   Factual answer:`;
 
 	static handleInput(input) {
@@ -23,7 +23,7 @@ class OobaBooga extends Provider {
         } else {
           const inputEvent = new Event('input', { bubbles: true });
           inputElement.value = \`${this.templateFn(
-						input,
+						input
 					)}\`; // must be escaped backticks to support multiline
           inputElement.dispatchEvent(inputEvent);
         }
