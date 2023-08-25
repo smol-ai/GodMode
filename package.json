@@ -134,6 +134,7 @@
 		"appId": "org.smol.GodMode",
 		"asar": true,
 		"asarUnpack": "**\\*.{node,dll}",
+		"copyright": "Copyright 2023 smol.ai/godmode",
 		"files": [
 			"dist",
 			"node_modules",
