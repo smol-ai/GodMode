@@ -117,6 +117,11 @@ When you first run the app:
 1. log into your Google account (once you log into your google account for chatgpt, you'l also be logged in to Bard, Perplexity, Anthropic, etc).
 2. For Bing, after you log in to your Microsoft account, you'll need to refresh to get into the Bing Chat screen. It's a little finnicky at first try but it works.
 
+Optional: You can have GodMode start up automatically on login - just go to Settings and toggle it on. Thanks [@leeknowlton](https://github.com/smol-ai/GodMode/pull/188)!
+
+![image](https://github.com/smol-ai/GodMode/assets/6764957/99c3426f-d306-469c-98fb-88c80fb12a41)
+
+
 ## seeking contributors!
 
 please see https://github.com/smol-ai/GodMode/blob/main/CONTRIBUTING.md
