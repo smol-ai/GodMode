@@ -42,11 +42,13 @@ class SmolTalk extends Provider {
 		this.getWebview().executeJavaScript(`{
 
     var btn = document.querySelector('#smol-submitbtn');
+		if (btn) {
+			btn.focus();
+			btn.setAttribute("aria-disabled", "false"); // doesnt work alone
+			btn.disabled = false;
+			btn.click()
+		}
 
-    btn.focus();
-    btn.setAttribute("aria-disabled", "false"); // doesnt work alone
-    btn.disabled = false;
-    btn.click()
 	}`);
 	}
 

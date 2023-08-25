@@ -14,6 +14,7 @@ import {
 	ResetIcon,
 	ZoomInIcon,
 	ZoomOutIcon,
+	MagnifyingGlassIcon,
 } from '@radix-ui/react-icons';
 import { Input } from 'renderer/components/ui/input';
 import {
@@ -152,6 +153,17 @@ export default function Pane({
 									}}
 								>
 									<ZoomOutIcon />
+								</XButton>
+								<XButton
+									tooltip="Cmd + 0"
+									onClick={() => {
+										provider
+											.getWebview()
+											// @ts-ignore
+											.setZoomLevel(0);
+									}}
+								>
+									<MagnifyingGlassIcon />
 								</XButton>
 							</div>
 							<Input type="url" value={shownUrl || ''} readOnly={true} />
