@@ -47,6 +47,12 @@ const electronHandler = {
 		promptHiddenChat(prompt: string) {
 			ipcRenderer.send('prompt-hidden-chat', 'perplexity-llama2', prompt);
 		},
+		enableOpenAtLogin(prompt: string) {
+			ipcRenderer.send('enable-open-at-login');
+		},
+		disableOpenAtLogin(prompt: string) {
+			ipcRenderer.send('disable-open-at-login');
+		},
 	},
 };
 
@@ -61,6 +67,9 @@ contextBridge.exposeInMainWorld('settings', {
 	},
 	getPlatform: () => {
 		return ipcRenderer.invoke('get-platform');
+	},
+	getOpenAtLogin: () => {
+		return ipcRenderer.invoke('get-open-at-login');
 	},
 });
 
