@@ -3,7 +3,7 @@ const Provider = require('./provider');
 class LeptonLlama extends Provider {
 	static webviewId = 'webiewLeptonLlama';
 	static fullName = 'Llama 2 (via Lepton)';
-	static shortName = 'Llama2';
+	static shortName = 'Llama2-Lepton';
 
 	static url = 'https://llama2.lepton.run/';
 
@@ -49,7 +49,7 @@ class LeptonLlama extends Provider {
 	static handleSubmit() {
 		try {
 			this.getWebview().executeJavaScript(`{
-        var buttons = Array.from(document.querySelectorAll('button.bg-super'));
+        var buttons = Array.from(document.querySelectorAll('button.ant-btn-primary'));
         var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 
         var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
@@ -65,23 +65,23 @@ class LeptonLlama extends Provider {
 	static handleCss() {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
-			try {
-				// setTimeout(() => {
-				// 	this.getWebview().executeJavaScript(`{
-				//   // Add Dark Mode
-				//   document.documentElement.classList.add('dark');
-				// }`);
-				// }, 100);
-				setTimeout(() => {
-					this.getWebview().executeJavaScript(`{
-					// Dispatch the change event manually if there are any event listeners
-					var event = new Event('change');
-					selectElement.dispatchEvent(event);
-				}`);
-				}, 1000);
-			} catch (e) {
-				console.debug('Error in LeptonLlama.handleCss():', e);
-			}
+			// try {
+			// 	// setTimeout(() => {
+			// 	// 	this.getWebview().executeJavaScript(`{
+			// 	//   // Add Dark Mode
+			// 	//   document.documentElement.classList.add('dark');
+			// 	// }`);
+			// 	// }, 100);
+			// 	setTimeout(() => {
+			// 		this.getWebview().executeJavaScript(`{
+			// 		// Dispatch the change event manually if there are any event listeners
+			// 		var event = new Event('change');
+			// 		selectElement.dispatchEvent(event);
+			// 	}`);
+			// 	}, 1000);
+			// } catch (e) {
+			// 	console.debug('Error in LeptonLlama.handleCss():', e);
+			// }
 			setTimeout(() => {
 				// hide temperature/length settings
 				this.getWebview().insertCSS(`
