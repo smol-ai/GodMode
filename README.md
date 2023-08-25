@@ -123,7 +123,6 @@ Optional: You can have GodMode start up automatically on login - just go to Sett
 
 ![image](https://github.com/smol-ai/GodMode/assets/6764957/99c3426f-d306-469c-98fb-88c80fb12a41)
 
-
 ## seeking contributors!
 
 please see https://github.com/smol-ai/GodMode/blob/main/CONTRIBUTING.md
