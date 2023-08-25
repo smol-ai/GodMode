@@ -1,16 +1,16 @@
 const Provider = require('./provider');
 
-class YouChat extends Provider {
-	static webviewId = 'webviewYoudotcom';
-	static fullName = 'You.com Chat';
-	static shortName = 'You.com';
+class InflectionPi extends Provider {
+	static webviewId = 'webviewInflection';
+	static fullName = 'Inflection Pi';
+	static shortName = 'InflectionPi';
 
-	static url = 'https://you.com/chat/';
+	static url = 'https://pi.ai/talk/';
 
 	static handleInput(input) {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
-        var inputElement = document.querySelector('textarea[placeholder*="Ask me anything..."]'); 
+        var inputElement = document.querySelector('.text-muted textarea');
         if (!inputElement) {
           console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
         } else {
@@ -24,9 +24,16 @@ class YouChat extends Provider {
 	}
 
 	static handleSubmit() {
+		// this does not work yet.. how to fix?
 		this.getWebview().executeJavaScript(`{
-    var buttons = Array.from(document.querySelectorAll('button[type="submit"]'));
-    buttons[0].click();
+      
+      var inputElement = document.querySelector('.text-muted textarea');
+	  const event = new KeyboardEvent('keydown', {
+		key: 'Enter',
+		view: window,
+		bubbles: true
+	});
+      inputElement.dispatchEvent(event);
   }`);
 	}
 	static handleCss() {
@@ -47,4 +54,4 @@ class YouChat extends Provider {
 	}
 }
 
-module.exports = YouChat;
+module.exports = InflectionPi;
