@@ -180,13 +180,7 @@ const createWindow = async () => {
 
 	const menuBuilder = new MenuBuilder(mainWindow);
 	menuBuilder.buildMenu();
-
-	// Open urls in the user's browser
-	mainWindow.webContents.setWindowOpenHandler((edata) => {
-		shell.openExternal(edata.url);
-		return { action: 'allow' };
-	});
-
+	
 	// Remove this if your app does not use auto updates
 	// eslint-disable-next-line
 	new AppUpdater();
@@ -204,6 +198,7 @@ app.on('window-all-closed', () => {
 	}
 });
 
+// Open urls in the user's browser
 app.on('web-contents-created', (event, contents) =>{
 	contents.setWindowOpenHandler(({ url }) => {
 		setImmediate(() => {
