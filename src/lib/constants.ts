@@ -8,6 +8,7 @@ import OpenAi from '../providers/openai';
 import Perplexity from '../providers/perplexity';
 import YouChat from '../providers/you';
 import PerplexityLlama from '../providers/perplexity-llama.js';
+import LeptonLlama from '../providers/lepton-llama.js';
 import Phind from '../providers/phind';
 import Smol from '../providers/smol';
 import Together from '../providers/together';
@@ -20,18 +21,19 @@ export const allProviders = [
 	OpenAi,
 	Bard,
 	Bing,
-	// Claude, // Can't Verify
+	Claude,
 	Claude2,
-	Together,
 	YouChat,
 	Perplexity,
 	// Phind, // Broken
-	PerplexityLlama,
-	HuggingChat,
-	// OobaBooga, // Can't Verify
-	Smol,
-	Vercel,
 	Poe,
 	InflectionPi,
+	HuggingChat,
+	OobaBooga,
+	Together,
 	OpenRouter,
+	PerplexityLlama,
+	LeptonLlama,
+	Vercel,
+	Smol,
 ];
