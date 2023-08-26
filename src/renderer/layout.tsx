@@ -139,7 +139,7 @@ export default function Layout() {
 			} else {
 				setOpenPreviewPane(+event.key);
 			}
-		} else if (isCmdOrCtrl && isShift && event.key === 'a') {
+		} else if (isCmdOrCtrl && isShift && event.key.toLowerCase() === 'a') {
 			window.electron.browserWindow.reload();
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
