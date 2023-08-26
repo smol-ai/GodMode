@@ -6,6 +6,7 @@ import {
 	DialogTitle,
 } from 'renderer/components/ui/dialog';
 import { ProviderInterface } from 'lib/types';
+import { CmdOrCtrlKey } from 'lib/utils';
 import React from 'react';
 import {
 	ArrowLeftIcon,
@@ -120,7 +121,7 @@ export default function Pane({
 							clipRule="evenodd"
 						></path>
 					</svg>{' '}
-					Cmd + {number}
+					{CmdOrCtrlKey} + {number}
 				</Button>
 			</div>
 			<Dialog open={isPreviewOpen} onOpenChange={() => setOpenPreviewPane(0)}>
@@ -133,7 +134,7 @@ export default function Pane({
 							{provider.fullName}
 							<div className="flex">
 								<XButton
-									tooltip="Cmd + ="
+									tooltip={`${CmdOrCtrlKey} + =`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -144,7 +145,7 @@ export default function Pane({
 									<ZoomInIcon />
 								</XButton>
 								<XButton
-									tooltip="Cmd + -"
+									tooltip={`${CmdOrCtrlKey} + -`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -155,7 +156,7 @@ export default function Pane({
 									<ZoomOutIcon />
 								</XButton>
 								<XButton
-									tooltip="Cmd + 0"
+									tooltip={`${CmdOrCtrlKey} + 0`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -169,7 +170,7 @@ export default function Pane({
 							<Input type="url" value={shownUrl || ''} readOnly={true} />
 							<div className="flex">
 								<XButton
-									tooltip="Cmd + R"
+									tooltip={`${CmdOrCtrlKey} + R`}
 									className="mr-4"
 									onClick={() => {
 										const webview = provider.getWebview();
@@ -183,7 +184,7 @@ export default function Pane({
 									<ReloadIcon />
 								</XButton>
 								<XButton
-									tooltip="Cmd + h"
+									tooltip={`${CmdOrCtrlKey} + h`}
 									onClick={() => {
 										provider.getWebview()?.goBack();
 									}}
@@ -191,7 +192,7 @@ export default function Pane({
 									<ArrowLeftIcon />
 								</XButton>
 								<XButton
-									tooltip="Cmd + ;"
+									tooltip={`${CmdOrCtrlKey} + ;`}
 									onClick={() => {
 										provider.getWebview()?.goForward();
 									}}
