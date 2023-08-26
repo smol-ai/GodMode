@@ -92,3 +92,16 @@ export function isValidShortcut(...keys: (string | string[])[]): boolean {
 
 	return modifierCount >= 1 && nonModifierCount === 1; // Modify this based on the specific rules for a valid shortcut
 }
+
+export function getCurrentPlatform(): string {
+	const platform = (
+		typeof process !== 'undefined' ? process.platform : navigator.platform
+	).toLowerCase();
+	if (platform === 'darwin') {
+		return 'mac';
+	} else if (platform === 'win32') {
+		return 'win';
+	} else {
+		return 'linux';
+	}
+}
