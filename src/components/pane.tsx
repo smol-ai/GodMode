@@ -172,7 +172,12 @@ export default function Pane({
 									tooltip="Cmd + R"
 									className="mr-4"
 									onClick={() => {
-										provider.getWebview()?.refresh();
+										const webview = provider.getWebview();
+										if (typeof webview?.refresh === 'function') {
+											webview?.refresh();
+										} else {
+											webview?.reload();
+										}
 									}}
 								>
 									<ReloadIcon />
