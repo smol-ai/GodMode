@@ -22,24 +22,9 @@ class Together extends Provider {
     }`);
 	}
 
-	// inputElement.focus();
-	// inputElement.value = \`${input}\`;
-	// // try to send keyboard event to trigger the re-enable of the disabled button
-	// // thanks chatgpt!
-	// var event = new Event('input', { bubbles: true });
-	// event.simulated = true;
-	// var tracker = inputElement._valueTracker;
-	// if (tracker) {
-	//   tracker.setValue(\`${input}\`);
-	// }
-	// // Dispatch the event after a short delay to fix the button state
-	// setTimeout(function() {
-	//   inputElement.dispatchEvent(event);
-	// }, 100);
-
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
-    var btn = document.querySelector('form button:has(svg)'); // YES we are using the has selector!!!!
+    var btn = document.querySelector('button[data-cy="run-inference-button"]'); // YES we are using the has selector!!!!
     btn.focus();
     btn.disabled = false;
     btn.click()

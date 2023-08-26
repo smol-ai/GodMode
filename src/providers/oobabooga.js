@@ -10,7 +10,7 @@ class OobaBooga extends Provider {
 	// todo: let user customize their preferred template.
 	static templateFn = (input) => `Common sense questions and answers
 
-  Question: \`${input}\`
+  Question: ${input}
   Factual answer:`;
 
 	static handleInput(input) {

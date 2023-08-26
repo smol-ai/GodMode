@@ -1,17 +1,17 @@
 const Provider = require('./provider');
 
-class PerplexityLlama extends Provider {
-	static webviewId = 'webiewPerplexityLlama';
-	static fullName = 'Llama 2 (via Perplexity)';
-	static shortName = 'Llama2-Perplexity';
+class LeptonLlama extends Provider {
+	static webviewId = 'webiewLeptonLlama';
+	static fullName = 'Llama 2 (via Lepton)';
+	static shortName = 'Llama2-Lepton';
 
-	static url = 'https://labs.perplexity.ai/';
+	static url = 'https://llama2.lepton.run/';
 
 	static handleInput(input) {
 		try {
 			const fullName = this.fullName;
 			this.getWebview().executeJavaScript(`{
-        var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
+        var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
         if (!inputElement) {
           console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
         } else {
@@ -23,7 +23,7 @@ class PerplexityLlama extends Provider {
         }
 		}`);
 		} catch (e) {
-			console.debug('Error in PerplexityLlama.handleInput():', e);
+			console.debug('Error in LeptonLlama.handleInput():', e);
 		}
 	}
 
@@ -37,19 +37,19 @@ class PerplexityLlama extends Provider {
 		`;
 	}
 	static codeForClickingSubmit = `
-		var buttons = Array.from(document.querySelectorAll('button.bg-super'));
+		var buttons = Array.from(document.querySelectorAll('button.ant-btn-primary'));
 		var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 
 		var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
 
 		button.click();
 	`;
-	static codeForExtractingResponse = `[...document.querySelectorAll('.default.font-sans.text-base.text-textMain .prose')].slice(-1)[0]`; // dont append semicolon, we will append innerhtml etc
+	static codeForExtractingResponse = `[...document.querySelectorAll('.ant-space.ant-space-horizontal .ant-typography pre')].slice(-1)[0]`; // dont append semicolon, we will append innerhtml etc
 
 	static handleSubmit() {
 		try {
 			this.getWebview().executeJavaScript(`{
-        var buttons = Array.from(document.querySelectorAll('button.bg-super'));
+        var buttons = Array.from(document.querySelectorAll('button.ant-btn-primary'));
         var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 
         var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
@@ -58,37 +58,34 @@ class PerplexityLlama extends Provider {
 		}
       `);
 		} catch (e) {
-			console.debug('Error in PerplexityLlama.handleSubmit():', e);
+			console.debug('Error in LeptonLlama.handleSubmit():', e);
 		}
 	}
 
 	static handleCss() {
 		this.getWebview().addEventListener('dom-ready', () => {
 			// hide message below text input, sidebar, suggestions on new chat
-			try {
-				setTimeout(() => {
-					this.getWebview().executeJavaScript(`{
-          // Add Dark Mode
-          document.documentElement.classList.add('dark');
-				}`);
-				}, 100);
-				setTimeout(() => {
-					this.getWebview().executeJavaScript(`{
-          // pick llama 70b
-					var selectElement = document.querySelector('#lamma-select');
-					selectElement.value = 'llama-2-70b-chat';
-					// Dispatch the change event manually if there are any event listeners
-					var event = new Event('change');
-					selectElement.dispatchEvent(event);
-				}`);
-				}, 1000);
-			} catch (e) {
-				console.debug('Error in PerplexityLlama.handleCss():', e);
-			}
-			// Hide the "Try asking" segment
+			// try {
+			// 	// setTimeout(() => {
+			// 	// 	this.getWebview().executeJavaScript(`{
+			// 	//   // Add Dark Mode
+			// 	//   document.documentElement.classList.add('dark');
+			// 	// }`);
+			// 	// }, 100);
+			// 	setTimeout(() => {
+			// 		this.getWebview().executeJavaScript(`{
+			// 		// Dispatch the change event manually if there are any event listeners
+			// 		var event = new Event('change');
+			// 		selectElement.dispatchEvent(event);
+			// 	}`);
+			// 	}, 1000);
+			// } catch (e) {
+			// 	console.debug('Error in LeptonLlama.handleCss():', e);
+			// }
 			setTimeout(() => {
+				// hide temperature/length settings
 				this.getWebview().insertCSS(`
-        .mt-lg {
+        div.ant-col.ant-col-24.css-11zb6yo.ant-col-sm-24.ant-col-md-7.ant-col-xl-5.ant-col-xxl-4.css-lqewvt {
           display: none;
         }
 		    `);
@@ -101,4 +98,4 @@ class PerplexityLlama extends Provider {
 	}
 }
 
-module.exports = PerplexityLlama;
+module.exports = LeptonLlama;
