@@ -41,20 +41,31 @@ class Bing extends Provider {
 
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
-		// Access SERP Shadow DOM
-		var serpDOM = document.querySelector('.cib-serp-main');
+			try {
+				// Access SERP Shadow DOM
+				var serpDOM = document.querySelector('.cib-serp-main');
 
-		// Inner Input Shadow DOM
-		var inputDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
+				// Conversation Shadow DOM - Contains
+				var conversationDOM = serpDOM.shadowRoot.querySelector('#cib-conversation-main');
 
-		// Submit Button
-		var submitButton = inputDOM.shadowRoot.querySelector('div.submit button.primary');
-		submitButton.click();
+				// Action Bar Shadow DOM
+				var actionDOM = serpDOM.shadowRoot.querySelector('#cib-action-bar-main');
 
-		submitButton.focus();
-		setTimeout(() => {
-			submitButton.click();
-		}, 100)
+				// Icon Shadow DOM
+				var iconDOM = actionDOM.shadowRoot.querySelector('div.submit > cib-icon-button');
+
+				// Submit Button
+				var submitButton = iconDOM.shadowRoot.querySelector('button');
+				submitButton.click();
+
+				submitButton.focus();
+				setTimeout(() => {
+					submitButton.click();
+				}, 100)
+			} catch (e) {
+				console.error('Bing submit error', e);
+			}
+
   }
 		`);
 	}
