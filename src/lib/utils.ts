@@ -98,9 +98,9 @@ export const CmdOrCtrlKey = getCurrentPlatform() === 'mac' ? 'Cmd' : 'Ctrl';
 
 export function getCurrentPlatform(): string {
 	const platform = (
-		typeof process !== 'undefined' ? process.platform : navigator.platform
+		typeof process !== 'undefined' ? process.platform : navigator.platform // navigator.platform is technically deprecated, but still works
 	).toLowerCase();
-	if (platform === 'darwin') {
+	if (['darwin', 'macintel'].includes(platform)) {
 		return 'mac';
 	} else if (platform === 'win32') {
 		return 'win';
