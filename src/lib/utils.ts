@@ -49,12 +49,12 @@ export const modifierKeys: Set<ShortcutKey> = new Set([
 
 export function convertModifierKey(key: ShortcutKey | string): string {
 	const shortcuts: Record<ShortcutKey, string> = {
-		Command: 'CmdOrCtrl',
-		Cmd: 'CmdOrCtrl',
-		CmdOrCtrl: 'CmdOrCtrl',
+		Command: CmdOrCtrlKey,
+		Cmd: CmdOrCtrlKey,
+		CmdOrCtrl: CmdOrCtrlKey,
+		CommandOrControl: CmdOrCtrlKey,
 		Control: 'Ctrl',
 		Ctrl: 'Ctrl',
-		CommandOrControl: 'CmdOrCtrl',
 		Alt: 'Alt',
 		Option: 'Option',
 		AltGr: 'AltGr',
@@ -91,4 +91,21 @@ export function isValidShortcut(...keys: (string | string[])[]): boolean {
 	});
 
 	return modifierCount >= 1 && nonModifierCount === 1; // Modify this based on the specific rules for a valid shortcut
+}
+
+// This is here to avoid a circular dependency in constants.ts
+export const CmdOrCtrlKey = getCurrentPlatform() === 'mac' ? 'Cmd' : 'Ctrl';
+
+export function getCurrentPlatform(): string {
+	const platform = (
+		typeof process !== 'undefined' ? process.platform : navigator.platform
+	) // navigator.platform is technically deprecated, but still works
+		.toLowerCase();
+	if (['darwin', 'macintel'].includes(platform)) {
+		return 'mac';
+	} else if (platform === 'win32') {
+		return 'win';
+	} else {
+		return 'linux';
+	}
 }

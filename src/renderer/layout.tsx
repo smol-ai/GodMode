@@ -6,7 +6,7 @@ import { allProviders } from 'lib/constants';
 import React from 'react';
 import Split from 'react-split';
 import 'tailwindcss/tailwind.css';
-import { getEnabledProviders } from 'lib/utils';
+import { CmdOrCtrlKey, getEnabledProviders } from 'lib/utils';
 import './App.css';
 import { BrowserPane } from './browserPane';
 import { ProviderInterface } from 'lib/types';
@@ -139,7 +139,7 @@ export default function Layout() {
 			} else {
 				setOpenPreviewPane(+event.key);
 			}
-		} else if (isCmdOrCtrl && isShift && event.key === 'a') {
+		} else if (isCmdOrCtrl && isShift && event.key.toLowerCase() === 'a') {
 			window.electron.browserWindow.reload();
 		} else if (
 			(isCmdOrCtrl && event.key === '+') ||
@@ -236,10 +236,10 @@ export default function Layout() {
 						onChange={(e) => setSuperprompt(e.target.value)}
 						onKeyDown={onKeyDown}
 						name="prompt"
-						placeholder="Enter a superprompt here.
-- Quick Open: Cmd+Shift+G or Submit: Cmd/Ctrl+Enter
-- Switch windows: Cmd+1/2/3/etc, or Global Resize/Pin: Cmd -/+/p, or Back/Fwd: Cmd H/L
-- New chat: Cmd+R or Reset windows evenly: Cmd+Shift+A"
+						placeholder={`Enter a superprompt here.
+- Quick Open: ${CmdOrCtrlKey}+Shift+G or Submit: ${CmdOrCtrlKey}+Enter
+- Switch windows: ${CmdOrCtrlKey}+1/2/3/etc, or Global Resize/Pin: ${CmdOrCtrlKey} -/+/p, or Back/Fwd: ${CmdOrCtrlKey} H/L
+- New chat: ${CmdOrCtrlKey}+R or Reset windows evenly: ${CmdOrCtrlKey}+Shift+A`}
 					/>
 					<div className="flex items-center justify-center p-4 space-x-2">
 						<button
@@ -247,7 +247,7 @@ export default function Layout() {
 							id="btn"
 							onClick={submitProviders}
 							type="submit"
-							title="cmd+enter to submit"
+							title={`${CmdOrCtrlKey}+Enter to submit`}
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
