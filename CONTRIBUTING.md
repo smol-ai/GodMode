@@ -32,7 +32,6 @@ To install and run from source, follow these steps:
 
    This command will launch the application and automatically generate the appropriate desktop file or shortcut for your operating system (Linux, macOS, or Windows).
 
-
 ## adding/fixing providers
 
 The best way to contribute is to add new providers or improve existing ones. Check out the [providers folder](https://github.com/smol-ai/GodMode/tree/main/src/providers) to see how they work.
