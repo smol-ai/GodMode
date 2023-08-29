@@ -241,7 +241,7 @@ app.on('web-contents-created', (event, contents) => {
 		contextMenu({
 			window: contents,
 			showInspectElement: true,
-		})
+		});
 	}
 
 	// Open urls in the user's browser
