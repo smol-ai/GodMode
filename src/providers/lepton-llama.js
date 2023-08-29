@@ -9,15 +9,11 @@ class LeptonLlama extends Provider {
 
 	static handleInput(input) {
 		try {
-			const fullName = this.fullName;
 			this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        if (inputElement) {
 					var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 					nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-	
 					var event = new Event('input', { bubbles: true});
 					inputElement.dispatchEvent(event);
         }
@@ -50,11 +46,13 @@ class LeptonLlama extends Provider {
 		try {
 			this.getWebview().executeJavaScript(`{
         var buttons = Array.from(document.querySelectorAll('button.ant-btn-primary'));
-        var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
+				if (buttons[0]) {
+					var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
 
-        var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
+					var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
 
-        button.click();
+					button.click();
+				}
 		}
       `);
 		} catch (e) {

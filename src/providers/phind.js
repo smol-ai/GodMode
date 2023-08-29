@@ -14,12 +14,10 @@ class Phind extends Provider {
         if (!inputElement) {
             inputElement = document.querySelector('textarea[placeholder*="Send message"]');
         }
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        if (inputElement) {
           var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
           var event = new Event('input', { bubbles: true});
-  
+
           nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
           inputElement.dispatchEvent(event);
         }
@@ -34,30 +32,32 @@ class Phind extends Provider {
           inputElement = document.querySelector('textarea[placeholder*="Send message"]');
       }
 
-      // simulate keypress to trigger the submit button
-      var keyEvent = new KeyboardEvent('keydown', {key: ' ', bubbles: true});
-      inputElement.dispatchEvent(keyEvent);
+      if (inputElement) {
+        // simulate keypress to trigger the submit button
+        var keyEvent = new KeyboardEvent('keydown', {key: ' ', bubbles: true});
+        inputElement.dispatchEvent(keyEvent);
 
-      // add a space to the input value
-      inputElement.value = inputElement.value + ' ';
+        // add a space to the input value
+        inputElement.value = inputElement.value + ' ';
 
-      // simulate keyup event
-      var keyupEvent = new KeyboardEvent('keyup', {key: ' ', bubbles: true});
-      inputElement.dispatchEvent(keyupEvent);
+        // simulate keyup event
+        var keyupEvent = new KeyboardEvent('keyup', {key: ' ', bubbles: true});
+        inputElement.dispatchEvent(keyupEvent);
 
-      function findParentButton() {
-        let buttons = document.querySelectorAll('button[type="submit"]');
-        for(let button of buttons) {
-          let childIcon = button.querySelector('i.fe.fe-arrow-right');
-          if(childIcon) {
-            return button;
+        function findParentButton() {
+          let buttons = document.querySelectorAll('button[type="submit"]');
+          for(let button of buttons) {
+            let childIcon = button.querySelector('i.fe.fe-arrow-right');
+            if(childIcon) {
+              return button;
+            }
           }
+          return null;
         }
-        return null;
-      }
 
-      var buttonElement = findParentButton();
-      buttonElement.click();
+        var buttonElement = findParentButton();
+        buttonElement.click();
+      }
       }`);
 	}
 

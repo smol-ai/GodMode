@@ -11,9 +11,7 @@ class OpenAI extends Provider {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message"]');
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        if (inputElement) {
           const inputEvent = new Event('input', { bubbles: true });
           inputElement.value = \`${input}\`; // must be escaped backticks to support multiline
           inputElement.dispatchEvent(inputEvent);
@@ -26,9 +24,11 @@ class OpenAI extends Provider {
         // var btn = document.querySelector("textarea[placeholder*='Send a message']+button"); // this one broke recently .. note that they add another div (for the file upload) in code interpreter mode
         var btn = document.querySelector("textarea[placeholder*='Send a message']").parentElement
         var btn = [...btn.querySelectorAll("button")].slice(-1)[0];
-        btn.focus();
-        btn.disabled = false;
-        btn.click();
+        if (btn) {
+          btn.focus();
+          btn.disabled = false;
+          btn.click();
+        }
     }
       `);
 	}

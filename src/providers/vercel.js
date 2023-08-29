@@ -11,12 +11,10 @@ class Vercel extends Provider {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Send a message."]'); // can be "Ask anything" or "Ask follow-up"
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        if (inputElement) {
 					var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 					nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-	
+
 					var event = new Event('input', { bubbles: true});
 					inputElement.dispatchEvent(event);
         }
@@ -26,15 +24,17 @@ class Vercel extends Provider {
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
     var buttons = Array.from(document.querySelectorAll('button[type="submit"]'));
-    var buttonsWithSrOnly = buttons.filter(button => {
-      var span = button.querySelector('span');
-      return span && span.textContent.trim() === 'Send message';
-    });
+		if (buttons[0]) {
+			var buttonsWithSrOnly = buttons.filter(button => {
+				var span = button.querySelector('span');
+				return span && span.textContent.trim() === 'Send message';
+			});
 
-    if (buttonsWithSrOnly.length == 1){
-      var button = buttonsWithSrOnly[0];
-      button.click();
-    }
+			if (buttonsWithSrOnly.length == 1){
+				var button = buttonsWithSrOnly[0];
+				button.click();
+			}
+		}
   }`);
 	}
 	static handleCss() {
