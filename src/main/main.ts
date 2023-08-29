@@ -27,6 +27,7 @@ import { streamChatResponse } from './apify';
 import { resolveHtmlPath } from './util';
 import { isValidShortcut } from '../lib/utils';
 import PerplexityLlama from '../providers/perplexity-llama';
+import contextMenu from 'electron-context-menu';
 
 let store = new Store();
 
@@ -234,8 +235,16 @@ app.on('window-all-closed', () => {
 	}
 });
 
-// Open urls in the user's browser
 app.on('web-contents-created', (event, contents) => {
+	// Enable context menu to debug webviews
+	if (contents.getType() === 'webview') {
+		contextMenu({
+			window: contents,
+			showInspectElement: true,
+		})
+	}
+
+	// Open urls in the user's browser
 	contents.setWindowOpenHandler(({ url }) => {
 		setImmediate(() => {
 			shell.openExternal(url);
