@@ -45,7 +45,7 @@ class Bard extends Provider {
           model-response response-container {
                 display: block !important;
           }
-          /* hide header and footer */
+          /* hide header and footer - disabled for now https://github.com/smol-ai/GodMode/issues/202
           .gmat-caption {
             opacity: 0;
             height: 0;
@@ -56,6 +56,8 @@ class Bard extends Provider {
           header + div {
             display: none !important;
           }
+          */
+
           .capabilities-disclaimer {
             display: none !important;
           }
