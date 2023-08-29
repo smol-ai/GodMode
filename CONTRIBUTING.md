@@ -32,6 +32,19 @@ To install and run from source, follow these steps:
 
    This command will launch the application and automatically generate the appropriate desktop file or shortcut for your operating system (Linux, macOS, or Windows).
 
+
+## adding/fixing providers
+
+The best way to contribute is to add new providers or improve existing ones. Check out the [providers folder](https://github.com/smol-ai/GodMode/tree/main/src/providers) to see how they work.
+
+The Provider base class is https://github.com/smol-ai/GodMode/blob/main/src/providers/provider.js and mostly you have to do 3 things to add a provider:
+
+- edit the `var inputElement = document.querySelector('div.ProseMirror')` to target the right element for chat input
+- edit the `var btn = document.querySelector("button[aria-label*='Send Message']");` to target the right button element to send the message
+- (optional) edit the `handleCss` to clean up the UI for a small window view
+
+See https://github.com/smol-ai/GodMode/blob/main/src/providers/claude2.js for a simple reference. Sometimes it gets more complicated, like [Bing provider](https://github.com/smol-ai/GodMode/blob/main/src/providers/bing.js), because of the DOM structure
+
 ## debugging
 
 I have the devtools up all the time while in development. You can disable them by commenting this line.

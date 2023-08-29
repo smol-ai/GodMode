@@ -10,9 +10,13 @@ Whatever is typed at the bottom is entered into all **web apps** simultaneously,
 
 ## Installation
 
-Install [here](https://github.com/smol-ai/GodMode/releases/latest)! Arm64 for Apple Silicon Macs, non Arm64 for the rest (there are some [temporary issues for Intel Macs](https://github.com/smol-ai/GodMode/issues/163), but beta.0 works. help wanted!).
+**Install [here](https://github.com/smol-ai/GodMode/releases/latest)!** And then log in to Google on any one of the providers + refreshing logs you into most of the rest.
+Google Bard seems to have weird auth requirements [we havent figured out yet](https://github.com/smol-ai/GodMode/issues/201) - logging into Google via Anthropic Claude first seems to be the most reliable right now while we figure it out.
 
-We [just added Windows/Linux support](https://github.com/smol-ai/GodMode/pull/162), but it needs a lot of work. Help wanted!
+Download:
+
+- Arm64 for Apple Silicon Macs, non Arm64 (universal) for Intel Macs.
+- We [just added Windows/Linux support](https://github.com/smol-ai/GodMode/pull/162), but it needs a lot of work. Help wanted!
 
 You can also build from source, see instructions below.
 
@@ -43,13 +47,13 @@ Yes and no:
 | **Perplexity**                                                                          | The login is finnicky - login to Google on any of the other chats, and then reload (cmd+R) - it'll auto login. Hopefully they make it more intuitive/reliable in future. |
 | **Bing**                                                                                | Microsoft's best. [It's not the same as GPT-4!](https://twitter.com/jeremyphoward/status/1666593682676662272?s=20). We could use help normalizing its styling.           |
 | Bard                                                                                    | Google's best. [Bard's updates are... flaky](https://twitter.com/swyx/status/1678495067663925248)                                                                        |
-| Llama2 via Perplexity                                                                   | Can run [the latest CodeLlama 34B model](https://twitter.com/swyx/status/1694870138984747449?s=20)! try it!                                                              |
-| Llama2 via Lepton.ai                                                                    | Is very [fast](https://twitter.com/rauchg/status/1692638409230094644)                                                                                                    |
-| Quora Poe                                                                               | Added in #118                                                                                                                                                            |
-| Inflection Pi                                                                           | Added in [#147](https://github.com/smol-ai/GodMode/pull/147/files)                                                                                                       |
-| You.com Chat                                                                            | Added in #142                                                                                                                                                            |
-| HuggingChat                                                                             | Offers Llama2, OpenAssistant                                                                                                                                             |
-| Vercel Chat                                                                             | Added in #117                                                                                                                                                            |
+| Llama2 via Perplexity                                                                   | Simple model host. Can run [the latest CodeLlama 34B model](https://twitter.com/swyx/status/1694870138984747449?s=20)! try it!                                           |
+| Llama2 via Lepton.ai                                                                    | Simple model host. Is very [fast](https://twitter.com/rauchg/status/1692638409230094644)                                                                                 |
+| Quora Poe                                                                               | Great at answering general knowledge questions                                                                                                                           |
+| Inflection Pi                                                                           | Very unique long-memory clean conversation style                                                                                                                         |
+| You.com Chat                                                                            | great search + chat answers, one of the first                                                                                                                            |
+| HuggingChat                                                                             | Simple model host. Offers Llama2, OpenAssistant                                                                                                                          |
+| Vercel Chat                                                                             | Simple open source chat wrapper for GPT3 API                                                                                                                             |
 | Local/GGML Models (via [OobaBooga](https://github.com/oobabooga/text-generation-webui)) | Requires Local Setup, see oobabooga docs                                                                                                                                 |
 | Phind                                                                                   | Developer focused chat (temporarily disabled)                                                                                                                            |
 | [OpenRouter](https://openrouter.ai)                                                     | Access GPT4, Claude, PaLM, and open source models                                                                                                                        |
@@ -119,7 +123,7 @@ You can:
 
 When you first run the app:
 
-1. log into your Google account (once you log into your google account for chatgpt, you'l also be logged in to Bard, Perplexity, Anthropic, etc).
+1. log into your Google account (once you log into your google account for chatgpt, you'l also be logged in to Bard, Perplexity, Anthropic, etc). logging into Google via Anthropic Claude first seems to be the most reliable right now while we figure it out
 2. For Bing, after you log in to your Microsoft account, you'll need to refresh to get into the Bing Chat screen. It's a little finnicky at first try but it works.
 
 Optional: You can have GodMode start up automatically on login - just go to Settings and toggle it on. Thanks [@leeknowlton](https://github.com/smol-ai/GodMode/pull/188)!
