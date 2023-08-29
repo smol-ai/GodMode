@@ -113,7 +113,8 @@ You can:
     - Apple Silicon M1/M2 macs use the "arm64" version
     - Intel Macs use the ".dmg" versions with no "arm64"
   - for Windows, use ".exe" version. It will be marked as untrusted for now as we haven't done Windows codesigning yet
-  - for Linux, use ".AppImage". We don't think we support Arch Linux yet.
+  - for Linux, use ".AppImage".
+  - for Arch Linux, there is a [third party](https://github.com/smol-ai/GodMode/issues/47) AUR package: aur.archlinux.org/packages/godmode
 - Or run it from source (instructions below)
 
 When you first run the app:
