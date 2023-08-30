@@ -8,7 +8,6 @@ class Bing extends Provider {
 	static url = 'https://bing.com/chat';
 
 	static handleInput(input) {
-		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
 			// Simulate user input
 			function simulateUserInput(element, text) {
@@ -30,9 +29,7 @@ class Bing extends Provider {
 			// This inner cib-text-input Shadow DOM is not always present
 			var inputElement = textInputDOM ? textInputDOM.shadowRoot.querySelector('#searchbox') : inputDOM.shadowRoot.querySelector('#searchbox');
 
-			if (!inputElement) {
-				console.error('inputElement for \`${fullName}\` doesnt exist, have you logged in or are you on the right page?')
-			} else {
+			if (inputElement) {
 				simulateUserInput(inputElement, \`${input}\`);
 			}
     }
@@ -56,12 +53,14 @@ class Bing extends Provider {
 
 				// Submit Button
 				var submitButton = iconDOM.shadowRoot.querySelector('button');
-				submitButton.click();
-
-				submitButton.focus();
-				setTimeout(() => {
+				if (submitButton) {
 					submitButton.click();
-				}, 100)
+
+					submitButton.focus();
+					setTimeout(() => {
+						submitButton.click();
+					}, 100)
+				}
 			} catch (e) {
 				console.error('Bing submit error', e);
 			}

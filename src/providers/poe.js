@@ -11,9 +11,7 @@ class Poe extends Provider {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea');
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        if (inputElement) {
 					var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 					nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
 
@@ -26,8 +24,10 @@ class Poe extends Provider {
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
         var buttons = Array.from(document.querySelectorAll('button.Button_primary__pIDjn'));
-        var button = buttons[buttons.length - 1];
-        button.click();
+				if (buttons[0]) {
+					var button = buttons[buttons.length - 1];
+					button.click();
+				}
     }`);
 	}
 

@@ -8,15 +8,11 @@ class OpenRouter extends Provider {
 	static url = 'https://openrouter.ai/playground';
 
 	static handleInput(input) {
-		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea[placeholder*="Chat or prompt"]'); // can be "Ask anything" or "Ask follow-up"
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        if (inputElement) {
 					var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 					nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-	
 					var event = new Event('input', { bubbles: true});
 					inputElement.dispatchEvent(event);
         }
@@ -26,15 +22,17 @@ class OpenRouter extends Provider {
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
     var buttons = Array.from(document.querySelectorAll('button'));
-    var buttonsWithSVGOnly = buttons.filter(button => {
-      var svg = button.querySelector('svg');
-      return !!svg;
-    });
+		if (buttons[0]) {
+			var buttonsWithSVGOnly = buttons.filter(button => {
+				var svg = button.querySelector('svg');
+				return !!svg;
+			});
 
-    if (buttonsWithSrOnly.length == 1){
-      var button = buttonsWithSrOnly[0];
-      button.click();
-    }
+			if (buttonsWithSrOnly.length == 1){
+				var button = buttonsWithSrOnly[0];
+				button.click();
+			}
+		}
   }`);
 	}
 	static handleCss() {

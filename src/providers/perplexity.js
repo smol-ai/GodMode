@@ -11,12 +11,10 @@ class Perplexity extends Provider {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`
         var inputElement = document.querySelector('textarea[placeholder*="Ask"]'); // can be "Ask anything" or "Ask follow-up"
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        if (inputElement) {
           var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
           nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-  
+
           var event = new Event('input', { bubbles: true});
           inputElement.dispatchEvent(event);
         }
@@ -24,23 +22,14 @@ class Perplexity extends Provider {
 	}
 
 	static handleSubmit() {
-		this.getWebview().executeJavaScript(`
-        // var inputElement = document.querySelector('textarea[placeholder*="Ask anything"]');
-        // var btn = document.querySelector('button.bg-super.aspect-square');
-        // btn.click();
-        // const event = new KeyboardEvent('keyup', {
-        //   key: 'Enter',
-        //   metaKey: true
-        // });
-        // inputElement.dispatchEvent(event);
+		this.getWebview().executeJavaScript(`{
         var buttons = Array.from(document.querySelectorAll('button.bg-super'));
-        var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
-
-        var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
-
-        button.click();
-
-      `);
+				if (buttons[0]) {
+					var buttonsWithSvgPath = buttons.filter(button => button.querySelector('svg path'));
+					var button = buttonsWithSvgPath[buttonsWithSvgPath.length - 1];
+					button.click();
+				}
+      }`);
 	}
 
 	static handleCss() {

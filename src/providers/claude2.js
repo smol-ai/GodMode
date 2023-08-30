@@ -11,9 +11,7 @@ class Claude2 extends Provider {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
     var inputElement = document.querySelector('div.ProseMirror')
-		if (!inputElement) {
-			console.error('inputElement for \`${fullName}\` doesnt exist, have you logged in or are you on the right page?')
-		} else {
+		if (inputElement) {
 			inputElement.innerHTML = \`${input}\`
 		}
 	}`);
@@ -24,9 +22,11 @@ class Claude2 extends Provider {
 		var btn = document.querySelector("button[aria-label*='Send Message']"); // subsequent screens use this
     if (!btn) var btn = document.querySelector('button:has(div svg)'); // new chats use this
     if (!btn) var btn = document.querySelector('button:has(svg)'); // last ditch attempt
-		btn.focus();
-    btn.disabled = false;
-    btn.click();
+		if (btn) {
+			btn.focus();
+			btn.disabled = false;
+			btn.click();
+		}
   }`);
 	}
 

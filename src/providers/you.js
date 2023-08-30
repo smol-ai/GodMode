@@ -10,13 +10,11 @@ class YouChat extends Provider {
 	static handleInput(input) {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
-        var inputElement = document.querySelector('textarea[placeholder*="Ask me anything..."]'); 
-        if (!inputElement) {
-          console.error('inputElement for ${fullName} doesnt exist, have you logged in or are you on the right page?')
-        } else {
+        var inputElement = document.querySelector('textarea[placeholder*="Ask me anything..."]');
+        if (inputElement) {
 					var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 					nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
-	
+
 					var event = new Event('input', { bubbles: true});
 					inputElement.dispatchEvent(event);
         }
@@ -26,7 +24,9 @@ class YouChat extends Provider {
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
     var buttons = Array.from(document.querySelectorAll('button[type="submit"]'));
-    buttons[0].click();
+		if (buttons[0]) {
+			buttons[0].click();
+		}
   }`);
 	}
 	static handleCss() {
