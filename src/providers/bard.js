@@ -28,7 +28,7 @@ class Bard extends Provider {
         btn.focus();
         btn.click();
       }
-    }`)
+    }`);
 	}
 
 	static handleCss() {
