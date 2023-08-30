@@ -89,9 +89,9 @@ class Bard extends Provider {
 		}
 	}
 
-  static getUserAgent() {
-    return 'Chrome'
-  }
+	static getUserAgent() {
+		return 'Chrome';
+	}
 
 	static isEnabled() {
 		return window.electron.electronStore.get(`${this.webviewId}Enabled`, true);
