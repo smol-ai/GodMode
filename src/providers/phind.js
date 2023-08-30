@@ -39,27 +39,29 @@ class Phind extends Provider {
 	}
 
 	static handleCss() {
-		this.getWebview().addEventListener('dom-ready', () => {
-			setTimeout(() => {
-				this.getWebview().executeJavaScript(`{
-        // Hide Phind Logo
-        const images = document.querySelectorAll('img[src*="phind"]');
-        if (images) images[images.length - 1].setAttribute('style', 'display: none;');
+    this.getWebview().addEventListener('dom-ready', () => {
+      // briefly commented out in order to get Phind to work - swyx
+			// setTimeout(() => {
+			// 	this.getWebview().executeJavaScript(`{
+      //   // Hide Phind Logo
+      //   const images = document.querySelectorAll('img[src*="phind"]');
+      //   if (images) images[images.length - 1].setAttribute('style', 'display: none;');
 
-        // Hide Tagline
-        const tagline = document.querySelector('h1');
-        if (tagline) tagline.setAttribute('style', 'display: none;');
+      //   // Hide Tagline
+      //   const tagline = document.querySelector('h1');
+      //   if (tagline) tagline.setAttribute('style', 'display: none;');
 
-        // Hide Explore Options
-        const exploreOptions = document.querySelector('div.container:has(h4)');
-        if (exploreOptions) exploreOptions.setAttribute('style', 'display: none;');
-        }`);
-			}, 100);
+      //   // Hide Explore Options
+      //   const exploreOptions = document.querySelector('div.container:has(h4)');
+      //   if (exploreOptions) exploreOptions.setAttribute('style', 'display: none;');
+      //   }`);
+			// }, 100);
 		});
 	}
 
 	// Some providers will have their own dark mode implementation
 	static handleDarkMode(isDarkMode) {
+    // briefly commented out in order to get Phind to work - swyx
 		// Implement dark or light mode using prodiver-specific code
 		if (isDarkMode) {
 			this.getWebview().executeJavaScript(`{
