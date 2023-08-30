@@ -247,7 +247,7 @@ app.on('web-contents-created', (event, contents) => {
 	const domainallowlist = [
 		'https://accounts.google.com',
 		'https://login.live.com',
-	]
+	];
 	contents.setWindowOpenHandler(({ url }) => {
 		// return allow if url starts with domainallowlist member. for SSO
 		if (domainallowlist.some((domain) => url.startsWith(domain))) {
