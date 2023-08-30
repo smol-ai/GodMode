@@ -86,7 +86,7 @@ export default function Layout() {
 
 	function submitProviders() {
 		enabledProviders.forEach((provider) => {
-			provider.handleSubmit();
+			provider.handleSubmit(superprompt);
 		});
 	}
 
