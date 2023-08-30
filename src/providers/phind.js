@@ -2,7 +2,7 @@ const Provider = require('./provider');
 
 class Phind extends Provider {
 	static webviewId = 'webviewPhind';
-	static fullName = 'Phind';
+	static fullName = 'Phind (Buggy)';
 	static shortName = 'Phind';
 
 	static url = 'https://www.phind.com/';
@@ -25,40 +25,17 @@ class Phind extends Provider {
       }`);
 	}
 
-	static handleSubmit() {
-		this.getWebview().executeJavaScript(`{
-      var inputElement = document.querySelector('textarea[placeholder*="Describe your task in detail. What are you stuck on"]');
-      if (!inputElement) {
-          inputElement = document.querySelector('textarea[placeholder*="Send message"]');
-      }
+	static handleSubmit(superprompt) {
+    // url encode superprompt and navigate webview
+    const encodedSuperprompt = encodeURIComponent(superprompt);
+    this.getWebview().loadURL(`https://www.phind.com/search?q=${encodedSuperprompt}&source=searchbox`);
 
-      if (inputElement) {
-        // simulate keypress to trigger the submit button
-        var keyEvent = new KeyboardEvent('keydown', {key: ' ', bubbles: true});
-        inputElement.dispatchEvent(keyEvent);
 
-        // add a space to the input value
-        inputElement.value = inputElement.value + ' ';
-
-        // simulate keyup event
-        var keyupEvent = new KeyboardEvent('keyup', {key: ' ', bubbles: true});
-        inputElement.dispatchEvent(keyupEvent);
-
-        function findParentButton() {
-          let buttons = document.querySelectorAll('button[type="submit"]');
-          for(let button of buttons) {
-            let childIcon = button.querySelector('i.fe.fe-arrow-right');
-            if(childIcon) {
-              return button;
-            }
-          }
-          return null;
-        }
-
-        var buttonElement = findParentButton();
-        buttonElement.click();
-      }
-      }`);
+    // doesnt work
+		// this.getWebview().executeJavaScript(`{
+    //   var button = document.querySelector('button[type="submit"]');
+    //   button.click();
+    //   }`);
 	}
 
 	static handleCss() {

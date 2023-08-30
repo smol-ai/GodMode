@@ -25,7 +25,7 @@ export const allProviders = [
 	Claude2,
 	YouChat,
 	Perplexity,
-	// Phind, // Broken
+	Phind,
 	Poe,
 	InflectionPi,
 	HuggingChat,
