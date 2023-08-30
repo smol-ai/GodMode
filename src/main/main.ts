@@ -244,8 +244,16 @@ app.on('web-contents-created', (event, contents) => {
 		});
 	}
 
-	// Open urls in the user's browser
+	const domainallowlist = [
+		'https://accounts.google.com',
+		'https://login.live.com',
+	];
 	contents.setWindowOpenHandler(({ url }) => {
+		// return allow if url starts with domainallowlist member. for SSO
+		if (domainallowlist.some((domain) => url.startsWith(domain))) {
+			return { action: 'allow' };
+		}
+		// Open all external urls in the user's browser
 		setImmediate(() => {
 			shell.openExternal(url);
 		});
