@@ -16,6 +16,7 @@ import Vercel from 'providers/vercel';
 import OpenRouter from '../providers/openrouter';
 import Poe from 'providers/poe';
 import InflectionPi from 'providers/inflection';
+import StableChat from 'providers/stablechat';
 
 export const allProviders = [
 	OpenAi,
@@ -29,6 +30,7 @@ export const allProviders = [
 	Poe,
 	InflectionPi,
 	HuggingChat,
+	StableChat,
 	OobaBooga,
 	Together,
 	OpenRouter,
