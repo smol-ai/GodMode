@@ -17,6 +17,7 @@ import OpenRouter from '../providers/openrouter';
 import Poe from 'providers/poe';
 import InflectionPi from 'providers/inflection';
 import StableChat from 'providers/stablechat';
+import Falcon180BSpace from 'providers/falcon180bspace';
 
 export const allProviders = [
 	OpenAi,
@@ -31,6 +32,7 @@ export const allProviders = [
 	InflectionPi,
 	HuggingChat,
 	StableChat,
+	Falcon180BSpace,
 	OobaBooga,
 	Together,
 	OpenRouter,
