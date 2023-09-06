@@ -151,7 +151,7 @@ export default function Pane({
 							{provider.fullName}
 							<div className="flex">
 								<XButton
-									tooltip={`Zoom in: ${CmdOrCtrlKey} + =`}
+									tooltip={`Zoom in`} //: ${CmdOrCtrlKey} + =`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -162,7 +162,7 @@ export default function Pane({
 									<ZoomInIcon />
 								</XButton>
 								<XButton
-									tooltip={`Zoom out: ${CmdOrCtrlKey} + -`}
+									tooltip={`Zoom out`} //: ${CmdOrCtrlKey} + -`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -173,7 +173,7 @@ export default function Pane({
 									<ZoomOutIcon />
 								</XButton>
 								<XButton
-									tooltip={`Reset Zoom: ${CmdOrCtrlKey} + 0`}
+									tooltip={`Reset Zoom`} // : ${CmdOrCtrlKey} + 0`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -187,7 +187,7 @@ export default function Pane({
 							<Input type="url" value={shownUrl || ''} readOnly={true} />
 							<div className="flex">
 								<XButton
-									tooltip={`Reload window: ${CmdOrCtrlKey} + R`}
+									tooltip={`Reload window`} // : ${CmdOrCtrlKey} + R`}
 									className="mr-4"
 									onClick={() => {
 										const webview = provider.getWebview();
@@ -201,7 +201,7 @@ export default function Pane({
 									<ReloadIcon />
 								</XButton>
 								<XButton
-									tooltip={`Go Back: ${CmdOrCtrlKey} + H`}
+									tooltip={`Go Back`} // : ${CmdOrCtrlKey} + H`}
 									onClick={() => {
 										provider.getWebview()?.goBack();
 									}}
@@ -209,7 +209,7 @@ export default function Pane({
 									<ArrowLeftIcon />
 								</XButton>
 								<XButton
-									tooltip={`Go forward: ${CmdOrCtrlKey} + L`}
+									tooltip={`Go forward`} // : ${CmdOrCtrlKey} + L`}
 									onClick={() => {
 										provider.getWebview()?.goForward();
 									}}
