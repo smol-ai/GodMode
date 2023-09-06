@@ -69,7 +69,9 @@ export default function Layout() {
 		enabledProviders.forEach((provider) => {
 			// Call provider-specific CSS handling and custom paste setup
 			try {
-				provider.handleInput(superprompt);
+				// regex to sanitize superprompt from backticks since we will put it into a template string
+				// solves https://github.com/smol-ai/GodMode/issues/218
+				provider.handleInput(superprompt.replace(/`/g, '\\`'));
 			} catch (err) {
 				console.error('error settling ' + provider.paneId(), err);
 			}
