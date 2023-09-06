@@ -66,16 +66,16 @@ export default function Layout() {
 	}, [enabledProviders]);
 
 	React.useEffect(() => {
-		if (superprompt) {
-			enabledProviders.forEach((provider) => {
-				// Call provider-specific CSS handling and custom paste setup
-				try {
-					provider.handleInput(superprompt);
-				} catch (err) {
-					console.error('error settling ' + provider.paneId(), err);
-				}
-			});
-		}
+		enabledProviders.forEach((provider) => {
+			// Call provider-specific CSS handling and custom paste setup
+			try {
+				// regex to sanitize superprompt from backticks since we will put it into a template string
+				// solves https://github.com/smol-ai/GodMode/issues/218
+				provider.handleInput(superprompt.replace(/`/g, '\\`'));
+			} catch (err) {
+				console.error('error settling ' + provider.paneId(), err);
+			}
+		});
 	}, [enabledProviders, superprompt]);
 
 	const formRef = React.useRef<HTMLDivElement>(null); // don't actually use a <form> because it will just reload on submit even if you preventdefault
@@ -127,7 +127,6 @@ export default function Layout() {
 	console.warn('paneShortcutKeys', paneShortcutKeys);
 
 	const [currentlyOpenPreviewPane, setOpenPreviewPane] = React.useState(0);
-	const closePreviewPane = () => setOpenPreviewPane(0);
 
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
