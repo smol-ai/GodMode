@@ -125,7 +125,6 @@ export default function Layout() {
 	console.warn('paneShortcutKeys', paneShortcutKeys);
 
 	const [currentlyOpenPreviewPane, setOpenPreviewPane] = React.useState(0);
-	const closePreviewPane = () => setOpenPreviewPane(0);
 
 	function onKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;

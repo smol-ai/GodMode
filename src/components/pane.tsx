@@ -104,7 +104,14 @@ export default function Pane({
 			<div className="hidden powerbar group-hover:block">
 				<Button
 					className="text-xs shadow-2xl"
-					onClick={() => setOpenPreviewPane(number)}
+					onClick={() => {
+						setOpenPreviewPane(number);
+						console.log('zooming in on ', provider)
+						// @ts-ignore
+						const zoomLevel = provider?.getWebview()?.getZoomLevel() + 2
+						// @ts-ignore
+						provider.getWebview()?.setZoomLevel(zoomLevel);
+					}}
 					variant="ghost"
 				>
 					<svg
@@ -124,7 +131,14 @@ export default function Pane({
 					{CmdOrCtrlKey} + {number}
 				</Button>
 			</div>
-			<Dialog open={isPreviewOpen} onOpenChange={() => setOpenPreviewPane(0)}>
+			<Dialog open={isPreviewOpen} onOpenChange={() => {
+				setOpenPreviewPane(0);
+				// zoom out when dropping out of preview
+				provider
+					.getWebview()
+					// @ts-ignore
+					.setZoomLevel(provider.getWebview().getZoomLevel() - 2);
+			}}>
 				<DialogXContent
 					className="bg-white pointer-events-none"
 					ref={contentRef}
@@ -134,7 +148,7 @@ export default function Pane({
 							{provider.fullName}
 							<div className="flex">
 								<XButton
-									tooltip={`${CmdOrCtrlKey} + =`}
+									tooltip={`Zoom in: ${CmdOrCtrlKey} + =`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -145,7 +159,7 @@ export default function Pane({
 									<ZoomInIcon />
 								</XButton>
 								<XButton
-									tooltip={`${CmdOrCtrlKey} + -`}
+									tooltip={`Zoom out: ${CmdOrCtrlKey} + -`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -156,7 +170,7 @@ export default function Pane({
 									<ZoomOutIcon />
 								</XButton>
 								<XButton
-									tooltip={`${CmdOrCtrlKey} + 0`}
+									tooltip={`Reset Zoom: ${CmdOrCtrlKey} + 0`}
 									onClick={() => {
 										provider
 											.getWebview()
@@ -170,7 +184,7 @@ export default function Pane({
 							<Input type="url" value={shownUrl || ''} readOnly={true} />
 							<div className="flex">
 								<XButton
-									tooltip={`${CmdOrCtrlKey} + R`}
+									tooltip={`Reload window: ${CmdOrCtrlKey} + R`}
 									className="mr-4"
 									onClick={() => {
 										const webview = provider.getWebview();
@@ -184,7 +198,7 @@ export default function Pane({
 									<ReloadIcon />
 								</XButton>
 								<XButton
-									tooltip={`${CmdOrCtrlKey} + h`}
+									tooltip={`Go Back: ${CmdOrCtrlKey} + H`}
 									onClick={() => {
 										provider.getWebview()?.goBack();
 									}}
@@ -192,7 +206,7 @@ export default function Pane({
 									<ArrowLeftIcon />
 								</XButton>
 								<XButton
-									tooltip={`${CmdOrCtrlKey} + ;`}
+									tooltip={`Go forward: ${CmdOrCtrlKey} + L`}
 									onClick={() => {
 										provider.getWebview()?.goForward();
 									}}
@@ -200,14 +214,14 @@ export default function Pane({
 									<ArrowRightIcon />
 								</XButton>
 								{provider.clearCookies && (
-									<Button
-										variant="outline"
+									<XButton
+										tooltip={`Clear Cookies`}
 										onClick={() => {
 											provider.clearCookies();
 										}}
 									>
 										<ResetIcon className="mr-1" /> Clear Cookies
-									</Button>
+									</XButton>
 								)}
 							</div>
 						</DialogTitle>
