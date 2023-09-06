@@ -1,7 +1,7 @@
 {
 	"name": "godmode",
 	"productName": "GodMode",
-	"version": "1.0.0-beta.7",
+	"version": "1.0.0-beta.8",
 	"author": "smol-ai",
 	"description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
 	"main": "src/main/main.ts",
