@@ -66,16 +66,14 @@ export default function Layout() {
 	}, [enabledProviders]);
 
 	React.useEffect(() => {
-		if (superprompt) {
-			enabledProviders.forEach((provider) => {
-				// Call provider-specific CSS handling and custom paste setup
-				try {
-					provider.handleInput(superprompt);
-				} catch (err) {
-					console.error('error settling ' + provider.paneId(), err);
-				}
-			});
-		}
+		enabledProviders.forEach((provider) => {
+			// Call provider-specific CSS handling and custom paste setup
+			try {
+				provider.handleInput(superprompt);
+			} catch (err) {
+				console.error('error settling ' + provider.paneId(), err);
+			}
+		});
 	}, [enabledProviders, superprompt]);
 
 	const formRef = React.useRef<HTMLDivElement>(null); // don't actually use a <form> because it will just reload on submit even if you preventdefault
