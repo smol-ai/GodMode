@@ -133,11 +133,17 @@ export default function Layout() {
 		const isCmdOrCtrl = event.metaKey || event.ctrlKey;
 		const isShift = event.shiftKey;
 		console.debug('keydown', event.key, isCmdOrCtrl, event);
-		if (isCmdOrCtrl && !isShift && event.key in paneShortcutKeys) {
-			if (paneShortcutKeys[event.key] === null) {
+		if (
+			isCmdOrCtrl &&
+			(event.key in paneShortcutKeys ||
+				(event.code.match(/Digit[1-9]/) &&
+					event.code[event.code.length - 1] in paneShortcutKeys))
+		) {
+			const digit = +event.key || +event.code[event.code.length - 1];
+			if (paneShortcutKeys[digit] === null) {
 				window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
 			} else {
-				setOpenPreviewPane(+event.key);
+				setOpenPreviewPane(digit);
 			}
 		} else if (isCmdOrCtrl && isShift && event.key.toLowerCase() === 'a') {
 			window.electron.browserWindow.reload();
