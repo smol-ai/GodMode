@@ -364,10 +364,6 @@ function quickOpen() {
 			}
 			mainWindow.show();
 			mainWindow.focus();
-			// put focus on the #prompt textarea if it is at all present on the document inside mainWindow
-			mainWindow.webContents.executeJavaScript(
-				`{document.querySelector('#prompt')?.focus()}`,
-			);
 		}
 	} else {
 		createWindow();
