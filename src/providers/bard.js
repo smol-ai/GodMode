@@ -91,7 +91,7 @@ class Bard extends Provider {
 
 	static getUserAgent() {
 		// bard does not accept Electron mentions.
-    // also must be realistic UA string, not just "Chrome", or this happens https://github.com/smol-ai/GodMode/pull/231
+		// also must be realistic UA string, not just "Chrome", or this happens https://github.com/smol-ai/GodMode/pull/231
 		return 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36';
 	}
 
