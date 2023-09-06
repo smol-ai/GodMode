@@ -106,9 +106,9 @@ export default function Pane({
 					className="text-xs shadow-2xl"
 					onClick={() => {
 						setOpenPreviewPane(number);
-						console.log('zooming in on ', provider)
+						console.log('zooming in on ', provider);
 						// @ts-ignore
-						const zoomLevel = provider?.getWebview()?.getZoomLevel() + 2
+						const zoomLevel = provider?.getWebview()?.getZoomLevel() + 2;
 						// @ts-ignore
 						provider.getWebview()?.setZoomLevel(zoomLevel);
 					}}
@@ -131,14 +131,17 @@ export default function Pane({
 					{CmdOrCtrlKey} + {number}
 				</Button>
 			</div>
-			<Dialog open={isPreviewOpen} onOpenChange={() => {
-				setOpenPreviewPane(0);
-				// zoom out when dropping out of preview
-				provider
-					.getWebview()
-					// @ts-ignore
-					.setZoomLevel(provider.getWebview().getZoomLevel() - 2);
-			}}>
+			<Dialog
+				open={isPreviewOpen}
+				onOpenChange={() => {
+					setOpenPreviewPane(0);
+					// zoom out when dropping out of preview
+					provider
+						.getWebview()
+						// @ts-ignore
+						.setZoomLevel(provider.getWebview().getZoomLevel() - 2);
+				}}
+			>
 				<DialogXContent
 					className="bg-white pointer-events-none"
 					ref={contentRef}
