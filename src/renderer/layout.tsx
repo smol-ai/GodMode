@@ -143,6 +143,14 @@ export default function Layout() {
 				window.electron.browserWindow.reload(); // this is a hack; setSizes by itself does not seem to update the splits, seems like a bug, but we dont have a choice here
 			} else {
 				setOpenPreviewPane(digit);
+				const previewProvider = enabledProviders.find(
+					(provider) =>
+						provider.webviewId === storedPaneList[digit - 1].webviewId,
+				);
+				// @ts-ignore
+				const zoomLevel = previewProvider.getWebview()?.getZoomLevel() + 2;
+				// @ts-ignore
+				previewProvider.getWebview().setZoomLevel(zoomLevel);
 			}
 		} else if (isCmdOrCtrl && isShift && event.key.toLowerCase() === 'a') {
 			window.electron.browserWindow.reload();
