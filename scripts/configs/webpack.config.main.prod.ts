@@ -33,7 +33,7 @@ const configuration: webpack.Configuration = {
 		path: webpackPaths.distMainPath,
 		filename: '[name].js',
 		library: {
-			type: 'umd',
+			type: 'commonjs2',
 		},
 	},
 
