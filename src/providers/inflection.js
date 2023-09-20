@@ -9,7 +9,7 @@ class InflectionPi extends Provider {
 
 	static handleInput(input) {
 		this.getWebview().executeJavaScript(`{
-        var inputElement = document.querySelector('.text-muted textarea');
+        var inputElement = document.querySelector('textarea[placeholder="Talk with Pi"]');
         if (inputElement) {
 					var nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 					nativeTextAreaValueSetter.call(inputElement, \`${input}\`);
@@ -21,9 +21,8 @@ class InflectionPi extends Provider {
 	}
 
 	static handleSubmit() {
-		// this does not work yet.. how to fix?
 		this.getWebview().executeJavaScript(`{
-      var inputElement = document.querySelector('.text-muted textarea');
+      var inputElement = document.querySelector('textarea[placeholder="Talk with Pi"]');
 			if (inputElement) {
 				const event = new KeyboardEvent('keydown', {
 					key: 'Enter',
