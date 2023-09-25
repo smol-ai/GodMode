@@ -27,6 +27,8 @@ export interface ProviderInterface {
 export interface Settings {
 	getGlobalShortcut: () => Promise<string>;
 	setGlobalShortcut: (shortcut: string) => Promise<boolean>;
+	getFocusSuperprompt: () => Promise<boolean>;
+	setFocusSuperprompt: (state: boolean) => Promise<boolean>;
 	getPlatform: () => Promise<string>;
 }
 

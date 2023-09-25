@@ -23,6 +23,7 @@ export default function SettingsMenu({
 	const [isRecording, setIsRecording] = useState(false);
 	const [metaKey, setMetaKey] = useState('');
 	const [openAtLogin, setOpenAtLogin] = useState(false);
+	const [superpromptFocus, setSuperpromptFocus] = useState(false);
 
 	function classNames(...classes) {
 		return classes.filter(Boolean).join(' ');
@@ -81,14 +82,19 @@ export default function SettingsMenu({
 		if (isValidShortcut(shortcut)) fetchPlatform();
 	}, []);
 
-	// Set the shortcut from the main process on mount
+	// Set the initial super prompt focus and shortcut states from the main process on mount
 	useEffect(() => {
 		const displayShortcut = async () => {
 			const initialShortcut = await settings.getGlobalShortcut();
 			console.debug('initialShortcut', initialShortcut);
 			setShortcut(initialShortcut?.split('+'));
 		};
+		const setInitialSuperpromptFocus = async () => {
+			const initialState = await settings.getFocusSuperprompt();
+			setSuperpromptFocus(initialState);
+		};
 		displayShortcut();
+		setInitialSuperpromptFocus();
 	}, []);
 
 	// Whenever shortcut is updated, update it in the electron store in the main process via IPC
@@ -101,7 +107,13 @@ export default function SettingsMenu({
 		};
 		updateShortcut(validShortcut);
 	}, [validShortcut]);
-
+	// Toggle superprompt focus setting in electron store
+	useEffect(() => {
+		const updateSuperpromptFocus = async () => {
+			await settings.setFocusSuperprompt(superpromptFocus);
+		};
+		updateSuperpromptFocus();
+	}, [superpromptFocus]);
 	// Turn on key listeners when recording shortcuts
 	useEffect(() => {
 		if (isRecording && validShortcut.length === 0) {
@@ -166,6 +178,33 @@ export default function SettingsMenu({
 							aria-hidden="true"
 							className={classNames(
 								openAtLogin ? 'translate-x-5' : 'translate-x-0',
+								'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+							)}
+						/>
+					</Switch>
+				</Switch.Group>
+				<Switch.Group as="div" className="flex items-center justify-between">
+					<span className="flex flex-col flex-grow">
+						<Switch.Label
+							as="span"
+							className="text-sm font-medium leading-6 text-gray-900"
+							passive
+						>
+							Focus superprompt input on quick open shortcut
+						</Switch.Label>
+					</span>
+					<Switch
+						checked={superpromptFocus}
+						onChange={setSuperpromptFocus}
+						className={classNames(
+							superpromptFocus ? 'bg-indigo-600' : 'bg-gray-200',
+							'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none',
+						)}
+					>
+						<span
+							aria-hidden="true"
+							className={classNames(
+								superpromptFocus ? 'translate-x-5' : 'translate-x-0',
 								'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
 							)}
 						/>
