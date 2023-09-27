@@ -6,14 +6,25 @@
   "description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
   "main": ".webpack/main",
   "scripts": {
-    "start": "cross-env ELECTRON_FORGE_LOG_LEVEL=debug electron-forge start",
-    "start:prod": "cross-env ELECTRON_FORGE_LOG_LEVEL=debug NODE_ENV=production electron-forge start",
-    "start:dev": "cross-env ELECTRON_FORGE_LOG_LEVEL=debug NODE_ENV=development electron-forge start",
+    "build": "npm run build:copy && concurrently \"npm run build:main\" \"npm run build:renderer\"",
+    "build:copy": "node scripts/scripts/copy-version-number.js",
+    "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.main.prod.ts",
+    "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.prod.ts",
+    "postinstall": "ts-node scripts/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.renderer.dev.dll.ts",
+    "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
     "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "package-mac": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --mac --publish never",
+    "package-lin": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --linux --publish never",
+    "package-win": "ts-node ./scripts/scripts/clean.js dist && npm run build && electron-builder build --win --x64  --publish never",
+    "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
+    "start": "electron-forge start",
+    "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
+    "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.preload.dev.ts",
+    "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./scripts/configs/webpack.config.renderer.dev.ts",
+    "format": "prettier '**/*.{js,jsx,ts,tsx}' --write",
+    "make": "electron-forge make"
   },
+  "type": "module",
   "config": {
     "forge": "./forge.config.js"
   },
@@ -24,8 +35,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@electron-forge/plugin-webpack": "^6.4.2",
-    "@electron-forge/publisher-github": "^6.4.2",
     "@electron/asar": "^3.2.4",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
@@ -129,5 +138,95 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "webpack-merge": "^5.9.0"
+  },
+  "build": {
+    "productName": "GodMode",
+    "appId": "org.smol.GodMode",
+    "asar": true,
+    "asarUnpack": "**\\*.{node,dll}",
+    "copyright": "Copyright 2023 smol.ai/godmode",
+    "files": [
+      "dist",
+      "node_modules",
+      "package.json"
+    ],
+    "afterSign": "scripts/scripts/notarize.js",
+    "mac": {
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64",
+          "universal",
+          "x64"
+        ]
+      },
+      "category": "public.app-category.developer-tools",
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "app": "release/app",
+      "buildResources": "assets",
+      "output": "release/build"
+    },
+    "extraResources": [
+      "./assets/**"
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "smol-ai",
+      "repo": "GodMode"
+    }
+  },
+  "devEngines": {
+    "node": ">=18.x",
+    "npm": ">=7.x"
+  },
+  "electronmon": {
+    "patterns": [
+      "!**/**",
+      "src/main/**"
+    ],
+    "logLevel": "verbose"
   }
 }

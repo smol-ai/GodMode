@@ -49,11 +49,11 @@ const configuration: webpack.Configuration = {
 		plugins: [new TsconfigPathsPlugins()],
 	},
 
-	plugins: [
-		new webpack.EnvironmentPlugin({
-			NODE_ENV: 'production',
-		}),
-	],
+	// plugins: [
+	// 	new webpack.EnvironmentPlugin({
+	// 		NODE_ENV: 'production',
+	// 	}),
+	// ],
 };
 
 export default configuration;
