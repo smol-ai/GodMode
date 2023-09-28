@@ -37,7 +37,7 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
-  app.quit();
+	app.quit();
 }
 
 let store = new Store();
@@ -179,7 +179,7 @@ const createWindow = async () => {
 
 	let { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-  // NOTE: Removing this due to webpack global constant
+	// NOTE: Removing this due to webpack global constant
 	// const preload = app.isPackaged
 	// 	? path.join(__dirname, 'preload.js')
 	// 	: path.join(__dirname, '../../scripts/dll/preload.js');
@@ -193,7 +193,7 @@ const createWindow = async () => {
 		icon: getAssetPath('icon.png'),
 		// alwaysOnTop: true,
 		webPreferences: {
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+			preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
 			webviewTag: true,
 			nodeIntegration: true,
 		},
@@ -206,7 +206,7 @@ const createWindow = async () => {
 	app.name = 'GodMode';
 
 	// mainWindow.loadURL(resolveHtmlPath('index.html'));
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+	mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
 	mainWindow.on('ready-to-show', () => {
 		if (!mainWindow) {
