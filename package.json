@@ -4,7 +4,7 @@
   "version": "1.0.0-beta.8",
   "author": "smol-ai",
   "description": "Simultaneously chat with ChatGPT, Claude, Bing, Bard, Llama2, et al in a full chat browser, NO API",
-  "main": ".webpack/main",
+  "main": "scripts/configs/webpack.config.main.prod.ts",
   "scripts": {
     "start": "cross-env ELECTRON_FORGE_LOG_LEVEL=debug electron-forge start",
     "start:prod": "cross-env ELECTRON_FORGE_LOG_LEVEL=debug NODE_ENV=production electron-forge start",
