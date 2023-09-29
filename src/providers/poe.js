@@ -8,7 +8,6 @@ class Poe extends Provider {
 	static url = 'https://poe.com/';
 
 	static handleInput(input) {
-		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
         var inputElement = document.querySelector('textarea');
         if (inputElement) {
@@ -23,9 +22,8 @@ class Poe extends Provider {
 
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
-        var buttons = Array.from(document.querySelectorAll('button.Button_primary__pIDjn'));
-				if (buttons[0]) {
-					var button = buttons[buttons.length - 1];
+        var button = document.querySelectorAll('button[class*="ChatMessageSendButton_sendButton"]')[0]
+				if (button) {
 					button.click();
 				}
     }`);
