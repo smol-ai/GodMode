@@ -10,11 +10,13 @@ class Bard extends Provider {
 	static handleInput(input) {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
-      var inputElement = document.querySelector("#mat-input-0");
+      var inputElement = document.querySelector(".ql-editor.textarea");
       if (inputElement) {
         const inputEvent = new Event('input', { bubbles: true });
         inputElement.value = \`${input}\`; // must be escaped backticks to support multiline
         inputElement.dispatchEvent(inputEvent);
+        // bard is weird
+        inputElement.querySelector('p').textContent = \`${input}\`
       }
     }
       `);
