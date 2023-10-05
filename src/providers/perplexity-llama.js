@@ -92,6 +92,10 @@ class PerplexityLlama extends Provider {
 		});
 	}
 
+	static getUserAgent() {
+		'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36';
+	}
+
 	static isEnabled() {
 		return window.electron.electronStore.get(`${this.webviewId}Enabled`, false);
 	}
