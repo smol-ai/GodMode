@@ -7,7 +7,7 @@ import OobaBooga from '../providers/oobabooga';
 import OpenAi from '../providers/openai';
 import Perplexity from '../providers/perplexity';
 import YouChat from '../providers/you';
-import PerplexityLlama from '../providers/perplexity-llama.js';
+import PerplexityLlama from '../providers/perplexity-labs.js';
 import LeptonLlama from '../providers/lepton-llama.js';
 import Phind from '../providers/phind';
 import Smol from '../providers/smol';

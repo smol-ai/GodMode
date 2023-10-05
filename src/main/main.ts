@@ -26,7 +26,7 @@ import MenuBuilder from './menu';
 import { streamChatResponse } from './apify';
 import { resolveHtmlPath } from './util';
 import { isValidShortcut } from '../lib/utils';
-import PerplexityLlama from '../providers/perplexity-llama';
+import PerplexityLlama from '../providers/perplexity-labs';
 import contextMenu from 'electron-context-menu';
 
 let store = new Store();

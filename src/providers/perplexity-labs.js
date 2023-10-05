@@ -1,9 +1,9 @@
 const Provider = require('./provider');
 
-class PerplexityLlama extends Provider {
-	static webviewId = 'webiewPerplexityLlama';
-	static fullName = 'Llama 2 (via Perplexity)';
-	static shortName = 'Llama2-Perplexity';
+class PerplexityLabs extends Provider {
+	static webviewId = 'webiewPerplexityLabs';
+	static fullName = 'Perplexity Labs (Llama, Mistral)';
+	static shortName = 'Perplexity-Labs';
 
 	static url = 'https://labs.perplexity.ai/';
 
@@ -19,7 +19,7 @@ class PerplexityLlama extends Provider {
         }
 		}`);
 		} catch (e) {
-			console.debug('Error in PerplexityLlama.handleInput():', e);
+			console.debug('Error in PerplexityLabs.handleInput():', e);
 		}
 	}
 
@@ -54,7 +54,7 @@ class PerplexityLlama extends Provider {
 		}
       `);
 		} catch (e) {
-			console.debug('Error in PerplexityLlama.handleSubmit():', e);
+			console.debug('Error in PerplexityLabs.handleSubmit():', e);
 		}
 	}
 
@@ -79,7 +79,7 @@ class PerplexityLlama extends Provider {
 				}`);
 				}, 1000);
 			} catch (e) {
-				console.debug('Error in PerplexityLlama.handleCss():', e);
+				console.debug('Error in PerplexityLabs.handleCss():', e);
 			}
 			// Hide the "Try asking" segment
 			setTimeout(() => {
@@ -101,4 +101,4 @@ class PerplexityLlama extends Provider {
 	}
 }
 
-module.exports = PerplexityLlama;
+module.exports = PerplexityLabs;
