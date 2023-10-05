@@ -339,8 +339,11 @@ const quickOpenDefaultShortcut = store.get(
 	'CommandOrControl+Shift+G',
 ) as string;
 
+const focusSuperpromptDefault = store.get('focusSuperpromptEnabled', false);
+
 console.log(quickOpenDefaultShortcut);
 console.log(isValidShortcut(quickOpenDefaultShortcut));
+console.log('focus superprompt enabled', focusSuperpromptDefault);
 /*
  * Update the global shortcut to one provided
  */
@@ -351,6 +354,9 @@ function changeGlobalShortcut(newShortcut: string) {
 	globalShortcut.register(newShortcut, quickOpen);
 }
 
+function setSuperpromptFocusState(state: boolean) {
+	store.set('focusSuperpromptEnabled', state);
+}
 /*
  * Open and focus the main window
  */
@@ -364,6 +370,11 @@ function quickOpen() {
 			}
 			mainWindow.show();
 			mainWindow.focus();
+			if (store.get('focusSuperpromptEnabled') === true) {
+				mainWindow.webContents.executeJavaScript(
+					`{document.querySelector('#prompt')?.focus()}`,
+				);
+			}
 		}
 	} else {
 		createWindow();
@@ -386,6 +397,15 @@ ipcMain.handle('set-global-shortcut', async (event, shortcut: string) => {
 	return true;
 });
 
+ipcMain.handle('get-focus-superprompt', () => {
+	return store.get('focusSuperpromptEnabled', false);
+});
+
+ipcMain.handle('set-focus-superprompt', async (_, state: boolean) => {
+	setSuperpromptFocusState(state);
+	return true;
+});
+
 app.on('ready', () => {
 	/*
 	 * Register global shortcut on app ready
@@ -394,6 +414,7 @@ app.on('ready', () => {
 		store.set('quickOpenShortcut', quickOpenDefaultShortcut);
 		globalShortcut.register(quickOpenDefaultShortcut, quickOpen);
 	}
+	store.set('focusSuperpromptEnabled', focusSuperpromptDefault);
 
 	/*
 	 * Re-register global shortcut when it is changed in settings
