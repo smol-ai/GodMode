@@ -10,7 +10,8 @@ class Phind extends Provider {
 	static handleInput(input) {
 		const fullName = this.fullName;
 		this.getWebview().executeJavaScript(`{
-        var inputElement = document.querySelector('textarea[placeholder*="Describe your task in detail. What are you stuck on"]');
+	// can be "Ask anything." or "Ask a followup question"
+        var inputElement = document.querySelector('textarea[placeholder*="Ask"]');
         if (!inputElement) {
             inputElement = document.querySelector('textarea[placeholder*="Send message"]');
         }
