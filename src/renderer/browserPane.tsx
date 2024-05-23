@@ -80,7 +80,10 @@ export function BrowserPane({
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="droppable">
 				{(provided2, snapshot) => (
-					<div className="flex flex-col justify-between">
+					<div className="flex flex-col justify-between"
+					ref={provided2.innerRef} // Add this line
+					{...provided2.droppableProps} // And this line
+					>
 						<Menu as="div" className="relative inline-block text-left">
 							<div>
 								<Menu.Button className="inline-flex justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">

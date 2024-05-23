@@ -18,6 +18,7 @@ import Poe from 'providers/poe';
 import InflectionPi from 'providers/inflection';
 import StableChat from 'providers/stablechat';
 import Falcon180BSpace from 'providers/falcon180bspace';
+import Google from 'providers/google';
 
 export const allProviders = [
 	OpenAi,
@@ -40,4 +41,5 @@ export const allProviders = [
 	LeptonLlama,
 	Vercel,
 	Smol,
+	Google,
 ];
