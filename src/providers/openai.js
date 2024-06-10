@@ -22,7 +22,7 @@ class OpenAI extends Provider {
 	static handleSubmit() {
 		this.getWebview().executeJavaScript(`{
         // var btn = document.querySelector("textarea[placeholder*='Send a message']+button"); // this one broke recently .. note that they add another div (for the file upload) in code interpreter mode
-        var btn = document.querySelector('button[data-testid="send-button"]');
+        var btn = document.querySelector('button[data-testid="fruitjuice-send-button"]');
         if (btn) {
             btn.focus();
             btn.disabled = false;
