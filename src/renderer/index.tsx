@@ -3,6 +3,31 @@ import App from './App';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
+
+const safeElectron = {
+	ipcRenderer: {
+		sendMessage: () => {},
+		on: () => () => {},
+		once: () => {},
+	},
+	electronStore: {
+		get: (_val: any, def: any) => def,
+		set: () => {},
+	},
+	browserWindow: {
+		reload: () => {},
+		getAlwaysOnTop: () => false,
+		setAlwaysOnTop: () => {},
+		promptHiddenChat: () => {},
+		enableOpenAtLogin: () => {},
+		disableOpenAtLogin: () => {},
+	},
+};
+
+if (!window.electron) {
+	window.electron = safeElectron as any;
+}
+
 root.render(<App />);
 
 // calling IPC exposed from preload script
