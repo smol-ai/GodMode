@@ -130,7 +130,8 @@ ipcMain.handle('get-platform', () => {
 
 if (process.env.NODE_ENV === 'production') {
 	const sourceMapSupport = require('source-map-support');
-	sourceMapSupport.install();
+	sourceMapSupport.	cd /workspaces/GodMode
+	git remote set-url origin https://github.com/YOUR_USERNAME/GodMode.gitinstall();
 }
 
 const isDebug =
