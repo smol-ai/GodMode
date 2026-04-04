@@ -209,7 +209,7 @@
 			"repo": "GodMode"
 		}
 	},
-	"devEngines": {
+	"engines": {
 		"node": ">=18.x",
 		"npm": ">=7.x"
 	},
