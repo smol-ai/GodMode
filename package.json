@@ -234,13 +234,10 @@
 			"**/?(*.)+(spec|test).[jt]s?(x)"
 		],
 		"transform": {
-			"\\.(ts|tsx|js|jsx)$": [
+			"^.+\\.(ts|tsx)$": [
 				"ts-jest",
 				{
-					"tsconfig": {
-						"jsx": "react-jsx",
-						"module": "commonjs"
-					},
+					"tsconfig": "<rootDir>/tsconfig.json",
 					"diagnostics": false
 				}
 			]
