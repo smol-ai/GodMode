@@ -21,7 +21,8 @@
 		"start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
 		"start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./scripts/configs/webpack.config.preload.dev.ts",
 		"start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./scripts/configs/webpack.config.renderer.dev.ts",
-		"format": "prettier '**/*.{js,jsx,ts,tsx}' --write"
+		"format": "prettier '**/*.{js,jsx,ts,tsx}' --write",
+		"test": "jest"
 	},
 	"config": {
 		"forge": "./forge.config.js"
@@ -210,8 +211,14 @@
 		}
 	},
 	"devEngines": {
-		"node": ">=18.x",
-		"npm": ">=7.x"
+		"runtime": {
+			"name": "node",
+			"version": ">=18.x"
+		},
+		"packageManager": {
+			"name": "npm",
+			"version": ">=7.x"
+		}
 	},
 	"electronmon": {
 		"patterns": [
@@ -219,5 +226,38 @@
 			"src/main/**"
 		],
 		"logLevel": "verbose"
+	},
+	"jest": {
+		"testEnvironment": "jsdom",
+		"testMatch": [
+			"**/__tests__/**/*.test.[jt]s?(x)",
+			"**/?(*.)+(spec|test).[jt]s?(x)"
+		],
+		"transform": {
+			"^.+\\.(ts|tsx)$": [
+				"ts-jest",
+				{
+					"tsconfig": "<rootDir>/tsconfig.json",
+					"diagnostics": false
+				}
+			]
+		},
+		"moduleNameMapper": {
+			"\\.(jpg|jpeg|png|gif|svg|ico|eot|ttf|woff|woff2)$": "<rootDir>/src/__tests__/__mocks__/fileMock.js",
+			"tailwindcss/tailwind\\.css": "identity-obj-proxy",
+			"\\.(css|less|sass|scss)$": "identity-obj-proxy",
+			"^/lib/(.*)$": "<rootDir>/src/lib/$1"
+		},
+		"setupFilesAfterEnv": [
+			"<rootDir>/src/__tests__/setupTests.ts"
+		],
+		"moduleDirectories": [
+			"node_modules",
+			"src"
+		],
+		"testPathIgnorePatterns": [
+			"/node_modules/",
+			"/release/"
+		]
 	}
 }
